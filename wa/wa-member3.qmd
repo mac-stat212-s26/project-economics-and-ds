@@ -1,5 +1,0 @@
----
-title: "Member 3 First Name & Last Name Initial"
----
-
-Work area to try code
