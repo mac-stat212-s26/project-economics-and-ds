@@ -62,6 +62,8 @@ there are 3 of us.
 ## Data Import
 
 ```{r}
+library(httr2)
+
 us_census_data_api_key <- "ec034959242822ec7117a80c8bd3f7e40892791c"
 
 base_url <- "https://api.census.gov"
