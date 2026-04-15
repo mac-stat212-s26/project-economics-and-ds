@@ -1,5 +1,5 @@
 ---
-title: "Member 2 First Name & Last Name Initial"
+title: "Katherine M."
 ---
 
 Your exploratory data analysis of the team datasets go here.
