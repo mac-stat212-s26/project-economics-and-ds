@@ -3,3 +3,90 @@ title: "Katherine M."
 ---
 
 Your exploratory data analysis of the team datasets go here.
+
+```{r}
+library(ggplot2)
+library(forcats)
+```
+
+
+
+```{r}
+summary(merged_panel) # general summary of the dataset
+```
+```{r}
+unique(merged_panel$NAICS2017)
+
+merged_panel <- merged_panel |> 
+  mutate(
+    NAICS2017 = fct_recode(as.factor(NAICS2017),
+        "Total" = "00",
+        "Agriculture, Forestry, Fishing and Hunting" = "11",
+        "Mining" = "21",
+        "Construction" = "23",
+        "Utilities" = "22",
+        "Wholesale Trade" = "42",
+        "Information" = "51",
+        "Real Estate Rental and Leasing" = "53",
+        "Finance and Insurance" = "52",
+        "Professional, Scientific, and Technical Services" = "54",
+        "Management of Companies and Enterprises" = "55",
+        "Educational Services" = "61",
+        "Arts, Entertainment, and Recreation" = "71",
+        "Other Services (except Public Administration)" = "81",
+        "Health Care and Social Assistance" = "62",
+        "Administrative and Support and Waste Management and Remediation Services" = "56",
+        "Accommodation and Food Services" = "72",
+        "NA" = "99"))
+
+
+ai_barriers <- ai_barriers |> 
+  mutate(
+    NAICS2017 = fct_recode(as.factor(NAICS2017),
+        "Total" = "00",
+        "Agriculture, Forestry, Fishing and Hunting" = "11",
+        "Mining" = "21",
+        "Construction" = "23",
+        "Utilities" = "22",
+        "Wholesale Trade" = "42",
+        "Information" = "51",
+        "Real Estate Rental and Leasing" = "53",
+        "Finance and Insurance" = "52",
+        "Professional, Scientific, and Technical Services" = "54",
+        "Management of Companies and Enterprises" = "55",
+        "Educational Services" = "61",
+        "Arts, Entertainment, and Recreation" = "71",
+        "Other Services (except Public Administration)" = "81",
+        "Health Care and Social Assistance" = "62",
+        "Administrative and Support and Waste Management and Remediation Services" = "56",
+        "Accommodation and Food Services" = "72",
+        "NA" = "99"))
+
+# looking at how general high AI usage has changed by state from 2017-2021
+merged_panel |> 
+  ggplot(aes(x = state, y = ai_firms_high_use)) +
+  geom_point() +
+  facet_wrap(~year) +
+  labs(x = "Firms by State", y = "# of Firms with High Reported AI Usage",
+       title = "AI Usage by State (2017-2021)")
+
+# high AI usage by industry from 2017-2021
+merged_panel |> 
+  ggplot(aes(x = NAICS2017, y = ai_firms_high_use, fill = NAICS2017)) +
+  geom_col() + 
+  facet_wrap(~year) +
+  theme(axis.text.x = element_blank()) +
+  labs(x = "Firms by Industry", 
+       y = "# of Firms with High Reported AI Usage",
+       title = "AI Usage by Industry (2017-2021)")
+
+# barriers to AI usage by industry
+ai_barriers |> 
+  filter(NAICS2017 != "00", NAICS2017 != "99") |> 
+  ggplot(aes(x = NAICS2017, y = n_firms, fill = barrier)) +
+  geom_col() +
+  labs(x = "Industry", y = "Number of Firms by Industry",
+       fill = "Perceived Barriers to AI Adoption",
+       title = "Near Half of Firms Across Industries See AI as Unnecessary")
+```
+
