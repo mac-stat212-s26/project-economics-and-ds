@@ -1,5 +1,16 @@
 ---
+<<<<<<< Updated upstream
 title: "Katherine M."
+=======
+<<<<<<< HEAD
+title: "Member 2 First Name & Last Name Initial"
+format: 
+  html: 
+    embed-resources: true
+=======
+title: "Katherine M."
+>>>>>>> b8ac6bcafd6f0ec07cd1d2ed7aea2782728bf54a
+>>>>>>> Stashed changes
 ---
 
 Your exploratory data analysis of the team datasets go here.
