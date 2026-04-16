@@ -1,4 +1,4 @@
-## Last updated: April 9th, 2026
+## Last updated: April 16th, 2026
 ## By David Rios
 
 # ───────────────────────────────────────────────────────
@@ -10,10 +10,14 @@ library(tidyr)
 library(stringr)
 library(janitor)
 library(readr)
+library(here)
 
 # Load raw data
-tech_2018_raw <- read_csv("data/tech_2018_raw.csv")
-cs_panel_raw  <- read_csv("data/cs_panel_raw.csv")
+tech_2018_raw <- readr::read_csv(
+  here::here("data", "tech_2018_raw.csv"))
+
+cs_panel_raw <- readr::read_csv(
+  here::here("data", "cs_panel_raw.csv"))
 
 #  Clean technology data
 # The label columns follow the pattern "Technology Type: Description"
@@ -158,10 +162,18 @@ ai_production <- tech_2018_raw |>
   filter(!str_detect(produced, "Total Reporting"))
 
 # saving all documents as .csv
-write_csv(ai_motivations,      "data/ai_motivations.csv")
-write_csv(ai_barriers,         "data/ai_barriers.csv")
-write_csv(ai_workforce_impact, "data/ai_workforce_impact.csv")
-write_csv(ai_production,       "data/ai_production.csv")
+## had to change them cuz of a relative path issue.
+
+# write_csv(ai_motivations,      "data/ai_motivations.csv")
+# write_csv(ai_barriers,         "data/ai_barriers.csv")
+# write_csv(ai_workforce_impact, "data/ai_workforce_impact.csv")
+# write_csv(ai_production,       "data/ai_production.csv")
+
+write_csv(ai_motivations, here::here("data", "ai_motivations.csv"))
+write_csv(ai_barriers, here::here("data", "ai_barriers.csv"))
+write_csv(ai_workforce_impact, here::here("data", "ai_workforce_impact.csv"))
+write_csv(ai_production, here::here("data", "ai_production.csv"))
+
 
 
 # Clean company summary panel
@@ -217,9 +229,24 @@ merged_panel |>
   )
 
 # Saving cleaned data
-write_csv(tech_2018_clean,       "data/tech_2018_clean.csv")
-write_csv(ai_adoption_2018,      "data/ai_adoption_2018.csv")
-write_csv(tech_adoption_summary, "data/tech_adoption_summary.csv")
-write_csv(cs_panel_clean,        "data/cs_panel_clean.csv")
-write_csv(merged_panel,          "data/merged_panel.csv")
+#
+# write_csv(tech_2018_clean,       "data/tech_2018_clean.csv")
+# write_csv(ai_adoption_2018,      "data/ai_adoption_2018.csv")
+# write_csv(tech_adoption_summary, "data/tech_adoption_summary.csv")
+# write_csv(cs_panel_clean,        "data/cs_panel_clean.csv")
+# write_csv(merged_panel,          "data/merged_panel.csv")
+
+
+
+write_csv(tech_2018_clean, here::here("data", "tech_2018_clean.csv"))
+write_csv(ai_adoption_2018, here::here("data", "ai_adoption_2018.csv"))
+write_csv(tech_adoption_summary, here::here("data", "tech_adoption_summary.csv"))
+write_csv(cs_panel_clean, here::here("data", "cs_panel_clean.csv"))
+write_csv(merged_panel, here::here("data", "merged_panel.csv"))
+
+
+
+
+
+
 

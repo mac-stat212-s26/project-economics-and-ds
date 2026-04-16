@@ -1,16 +1,8 @@
 ---
-<<<<<<< Updated upstream
 title: "Katherine M."
-=======
-<<<<<<< HEAD
-title: "Member 2 First Name & Last Name Initial"
 format: 
   html: 
     embed-resources: true
-=======
-title: "Katherine M."
->>>>>>> b8ac6bcafd6f0ec07cd1d2ed7aea2782728bf54a
->>>>>>> Stashed changes
 ---
 
 Your exploratory data analysis of the team datasets go here.
@@ -18,13 +10,18 @@ Your exploratory data analysis of the team datasets go here.
 ```{r}
 library(ggplot2)
 library(forcats)
+library(here)
+library(tidyverse)
+
+source(here::here("data", "data_cleaning.R"))
 ```
 
 
 
-```{r}
+```{r eval=FALSE}
 summary(merged_panel) # general summary of the dataset
 ```
+
 ```{r}
 unique(merged_panel$NAICS2017)
 

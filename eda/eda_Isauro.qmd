@@ -5,6 +5,11 @@ title: "Isauro R"
 ```{r}
 # load ggplot2
 library(ggplot2)
+library(here)
+library(tidyverse)
+
+source(here::here("data", "data_cleaning.R"))
+
 ```
 
 ## EDA 1: Average Number of Firms
