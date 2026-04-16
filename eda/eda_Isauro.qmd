@@ -1,5 +1,105 @@
 ---
-title: "Member 3 First Name & Last Name Initial"
+title: "Isauro R"
 ---
 
-Your exploratory data analysis of the team datasets go here.
+```{r}
+# load ggplot2
+library(ggplot2)
+```
+
+## EDA 1: Average Number of Firms
+
+### By Types of Tech
+
+```{r}
+tech_2018_clean |>
+  group_by(tech_type) |>
+  summarize(avgFirms = mean(n_firms)) |>
+  arrange(desc(avgFirms))
+```
+
+> Among Tech Companies in the North America, `Robotics` companies have the highest average number of firms at `1529.508`. `Specialized Software` companies report the lowest at `1501.812` firms.
+
+### By Tech Usage
+
+```{r}
+tech_2018_clean |>
+  group_by(used_tech) |>
+  summarize(avgFirms = mean(n_firms)) |>
+  arrange(desc(avgFirms))
+```
+
+> Among Tech Companies in the North America, Companies that `Did not use` their tech have the highest average number of firms at `6872.37554`. Companies that `Tested only` their tech report the lowest at `30.13016` firms.
+
+### By Types of Tech and If They Were Used
+
+```{r}
+tech_2018_clean |>
+  group_by(tech_type, used_tech) |>
+  summarize(avgFirms = mean(n_firms)) |>
+  arrange(desc(avgFirms))
+```
+
+> Among Tech Companies in the North America, `Robotics` companies that `Did not use` their tech have the highest average number of firms at `8630.75257`. `Robotics` companies that `Tested only` their tech report the lowest at `14.45658` firms.
+
+## EDA 2: Average Payroll per Employee
+
+### North American Industry Classification System (NAICS2017)
+
+**Note:** `NAICS2017` indices and their respective industry:
+
+-   Total = `00`
+-   Agriculture, Forestry, Fishing and Hunting = `11`
+-   Mining, Quarrying, and Oil and Gas Extraction = `21`
+-   Utilities = `22`
+-   Construction = `23`
+-   Manufacturing = `31-33`
+-   Wholesale Trade = `42`
+-   Retail Trade = `44-45`
+-   Transportation and Warehousing = `48-49`
+-   Information = `51`
+-   Finance and Insurance = `52`
+-   Real Estate Rental and Leasing = `53`
+-   Professional, Scientific, and Technical Services = `54`
+-   Management of Companies and Enterprises = `55`
+-   Administrative and Support and Waste Management and Remediation Services = `56`
+-   Educational Services = `61`
+-   Health Care and Social Assistance = `62`
+-   Arts, Entertainment, and Recreation = `71`
+-   Accommodation and Food Services = `72`
+-   Other Services (except Public Administration) = `81`
+-   Public Administration = `92`
+-   NA = `99`
+
+> **Source:** https://www.census.gov/naics/?58967?yearbck=2017
+
+```{r}
+cs_panel_clean |>
+  group_by(NAICS2017) |>
+  summarize(medianPay = median(payroll_per_emp)) |>
+  arrange(desc(medianPay))
+```
+
+> Among industries in North America, `Utilities` report the highest median payroll per employee at `$105.31`. `Accomodation and Food Services` report the lowest at `$18.67`.
+
+### Year
+
+```{r}
+cs_panel_clean |>
+  group_by(year) |>
+  summarize(medianPay = median(payroll_per_emp)) |>
+  arrange(desc(medianPay))
+```
+
+> `2021` reported the highest median payroll per employee at `$58.71`. `2017` reported the lowest at `$47.78`.
+
+### NAICS2017 and Year
+
+```{r}
+cs_panel_clean |>
+  group_by(NAICS2017, year) |>
+  summarize(medianPay = median(payroll_per_emp)) |>
+  arrange(desc(medianPay))
+```
+
+> Among industries in North America throughout a 5-year period, `Utilities` report the highest median payroll per employee at `$111.38` during `2021`. `Accomodation and Food Services` report the lowest at `$16.18` during `2020`.
