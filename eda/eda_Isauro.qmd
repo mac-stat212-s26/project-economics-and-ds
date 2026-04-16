@@ -1,5 +1,8 @@
 ---
 title: "Member 3 First Name & Last Name Initial"
+format: 
+  html: 
+    embed-resources: true
 ---
 
 Your exploratory data analysis of the team datasets go here.

@@ -1,5 +1,8 @@
 ---
 title: "David's EDA"
+format: 
+  html: 
+    embed-resources: true
 ---
 
 ## Intro

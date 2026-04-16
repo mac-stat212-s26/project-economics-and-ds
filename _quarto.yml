@@ -61,9 +61,9 @@ book:
 
     - part: "EDA"
       chapters:
-        - eda/eda-member1.qmd
-        - eda/eda-member2.qmd
-        - eda/eda-member3.qmd
+        - eda/eda_David.qmd
+        - eda/eda_Isauro.qmd
+        - eda/eda_Katherine.qmd
 
   appendices:
   - appx/proposal.qmd
