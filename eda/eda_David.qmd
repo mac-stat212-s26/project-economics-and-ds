@@ -1,5 +1,148 @@
 ---
-title: "Member 1 First Name & Last Name Initial"
+title: "David's EDA"
 ---
 
+## Intro
+
 Your exploratory data analysis of the team datasets go here.
+This is my QMD for my EDA for the project.
+
+```{r, package, warning=FALSE}
+library(tidyverse)
+library(tidyr)
+library(ggplot2)
+```
+
+## Descriptive Statistics
+
+```{r}
+merged_panel %>%
+  summarize(
+    missing_ai_rate = sum(is.na(ai_adoption_rate)),
+    nan_ai_rate = sum(is.nan(ai_adoption_rate)),
+    zero_ai_total = sum(ai_firms_total == 0, na.rm = TRUE))
+
+merged_panel <- merged_panel %>%
+  mutate(
+    ai_adoption_rate = ifelse(ai_firms_total == 0, NA, ai_adoption_rate))
+```
+
+## Graphs
+
+```{r}
+merged_panel %>%
+  ggplot(aes(x = revenue)) +
+  geom_histogram(bins = 50) +
+  scale_x_log10() +
+  labs(title = "Distribution of Revenue (log scale)")
+
+merged_panel %>%
+  ggplot(aes(x = n_firms)) +
+  geom_histogram(bins = 50) +
+  scale_x_log10() +
+  labs(title = "Distribution of Revenue (log scale)")
+
+merged_panel %>%
+  ggplot(aes(x = n_emp)) +
+  geom_histogram(bins = 50) +
+  scale_x_log10() +
+  labs(title = "Distribution of Revenue (log scale)")
+
+merged_panel %>%
+  ggplot(aes(x = payroll_per_emp)) +
+  geom_histogram(bins = 50) +
+  scale_x_log10() +
+  labs(title = "Distribution of Revenue (log scale)")
+
+## AI adoption at the core level:
+
+merged_panel %>%
+  ggplot(aes(x = ai_adoption_rate)) +
+  geom_histogram(bins = 50) +
+  labs(title = "Distribution of AI Adoption Rate")
+
+## time trend
+merged_panel %>%
+  group_by(year) %>%
+  summarize(mean_ai = mean(ai_adoption_rate, na.rm = TRUE)) %>%
+  ggplot(aes(year, mean_ai)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Average AI Adoption Over Time")
+
+## industry heterogeinity
+merged_panel %>%
+  group_by(NAICS2017) %>%
+  summarize(mean_ai = mean(ai_adoption_rate, na.rm = TRUE)) %>%
+  arrange(desc(mean_ai)) %>%
+  slice_head(n = 10)
+
+
+## state variation
+merged_panel %>%
+  group_by(state) %>%
+  summarize(mean_ai = mean(ai_adoption_rate, na.rm = TRUE)) %>%
+  ggplot(aes(x = reorder(state, mean_ai), y = mean_ai)) +
+  geom_col() +
+  coord_flip()
+
+## relationship with firm outcome
+merged_panel %>%
+  ggplot(aes(x = ai_adoption_rate, y = payroll_per_emp)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "lm") +
+  scale_y_log10()
+
+
+## AI vs. firm size
+merged_panel %>%
+  ggplot(aes(x = ai_adoption_rate, y = n_firms)) +
+  geom_point(alpha = 0.3) +
+  scale_y_log10()
+
+## revenue
+merged_panel %>%
+  ggplot(aes(x = ai_adoption_rate, y = revenue)) +
+  geom_point(alpha = 0.3) +
+  scale_y_log10()
+
+
+merged_panel %>%
+  group_by(NAICS2017) %>%
+  summarize(mean_ai = mean(ai_adoption_rate, na.rm = TRUE)) %>%
+  ggplot(aes(x = reorder(NAICS2017, mean_ai), y = mean_ai)) +
+  geom_col() +
+  coord_flip() +
+  labs(title = "AI Adoption by Industry")
+
+
+merged_panel <- merged_panel %>%
+  mutate(
+    share_high_ai = ai_firms_high_use / ai_firms_total,
+    share_low_ai  = ai_firms_low_use / ai_firms_total
+  )
+ggplot(merged_panel, aes(x = share_high_ai)) +
+  geom_histogram(bins = 40)
+
+merged_panel %>%
+  count(state, NAICS2017) %>%
+  summarize(
+    min_years = min(n),
+    max_years = max(n))
+
+
+merged_panel %>%
+  select(ai_adoption_rate, n_emp, revenue, payroll_per_emp) %>%
+  cor(use = "complete.obs")
+
+ai_motivations |> 
+  group_by(motivation) |> 
+  count()
+
+ai_motivations |> 
+    ggplot(aes(x = n_firms, y = n_emp, colour = motivation)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme_minimal()
+
+```
