@@ -24,6 +24,7 @@ source(here::here("data", "data_cleaning.R"))
 summary(merged_panel) # general summary of the dataset
 ```
 
+# Data Cleaning
 ```{r}
 unique(merged_panel$NAICS2017)
 
@@ -71,7 +72,10 @@ ai_barriers <- ai_barriers |>
         "Administrative and Support and Waste Management and Remediation Services" = "56",
         "Accommodation and Food Services" = "72",
         "NA" = "99"))
+```
 
+# AI Usage Over Time by State
+```{r}
 # looking at how general high AI usage has changed by state from 2017-2021
 merged_panel |> 
   ggplot(aes(x = state, y = ai_firms_high_use)) +
@@ -79,7 +83,10 @@ merged_panel |>
   facet_wrap(~year) +
   labs(x = "Firms by State", y = "# of Firms with High Reported AI Usage",
        title = "AI Usage by State (2017-2021)")
+```
 
+# AI Usage by Industry
+```{r}
 # high AI usage by industry from 2017-2021
 merged_panel |> 
   ggplot(aes(x = NAICS2017, y = ai_firms_high_use, fill = NAICS2017)) +
@@ -89,7 +96,10 @@ merged_panel |>
   labs(x = "Firms by Industry", 
        y = "# of Firms with High Reported AI Usage",
        title = "AI Usage by Industry (2017-2021)")
+```
 
+# Barriers to AI Usage by Industry
+```{r}
 # barriers to AI usage by industry
 ai_barriers |> 
   filter(NAICS2017 != "00", NAICS2017 != "99") |> 
