@@ -21,8 +21,8 @@ number-depth: 2
 
 
 book:
-  title: "Project Title"
-  author: ["Member 1 first and last name initial", "Member 2 first and last name initial", "Member 3 first and last name initial"]
+  title: "AI: It's Usage in North American Companies"
+  author: ["David", "Katherine M.", "Isauro R"]
   date: today  # use today to update date published based on last time project was edited
   date-format: full
   # favicon: path/to/favorite-logo.png
@@ -45,8 +45,8 @@ book:
       # footer text
 
   sidebar:
-    title: "Team Name"
-    logo: assets/sidebar-logo.png
+    title: "K.I.D."
+    logo: assets/kahoot.jpeg
     logo-alt: "Random negative space illustration"
     collapse-level: 2
     style: "docked"
