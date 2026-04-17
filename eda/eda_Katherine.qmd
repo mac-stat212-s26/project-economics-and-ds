@@ -12,6 +12,8 @@ library(ggplot2)
 library(forcats)
 library(here)
 library(tidyverse)
+library(downlit)
+library(xml2)
 
 source(here::here("data", "data_cleaning.R"))
 ```
