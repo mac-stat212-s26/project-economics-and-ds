@@ -21,7 +21,7 @@ source(here::here("data", "data_cleaning.R"))
 
 
 ```{r eval=FALSE}
-summary(merged_panel) # general summary of the dataset
+#summary(merged_panel) # general summary of the dataset
 ```
 
 # Data Cleaning
@@ -97,6 +97,21 @@ merged_panel |>
        y = "# of Firms with High Reported AI Usage",
        title = "AI Usage by Industry (2017-2021)")
 ```
+
+# AI Usage by Industry (Excluding Total)
+```{r}
+# high AI usage by industry from 2017-2021
+merged_panel |> 
+  filter(!str_detect(NAICS2017, "Total")) |> 
+  ggplot(aes(x = NAICS2017, y = ai_firms_high_use, fill = NAICS2017)) +
+  geom_col() + 
+  facet_wrap(~year) +
+  theme(axis.text.x = element_blank()) +
+  labs(x = "Firms by Industry", 
+       y = "# of Firms with High Reported AI Usage",
+       title = "AI Usage by Industry (2017-2021)")
+```
+
 
 # Barriers to AI Usage by Industry
 ```{r}
