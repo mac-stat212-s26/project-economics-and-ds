@@ -9,7 +9,6 @@ library(here)
 library(tidyverse)
 
 source(here::here("data", "data_cleaning.R"))
-
 ```
 
 ## EDA 1: Average Number of Firms
@@ -108,3 +107,11 @@ cs_panel_clean |>
 ```
 
 > Among industries in North America throughout a 5-year period, `Utilities` report the highest median payroll per employee at `$111.38` during `2021`. `Accomodation and Food Services` report the lowest at `$16.18` during `2020`.
+
+```{r}
+merged_panel |>
+  mutate(ai_firms_ratio = ai_firms_total / n_firms) |>
+  group_by(year)
+  
+```
+
