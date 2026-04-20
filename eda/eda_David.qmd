@@ -9,17 +9,10 @@ format: html
 Your exploratory data analysis of the team datasets go here.
 This is my QMD for my EDA for the project.
 
-```{r, package}
+```{r, package, message=FALSE}
 library(here)
 library(tidyverse)
 library(ggplot2)
-
-
-# tech_2018_raw <- readr::read_csv(
-#   here::here("data", "tech_2018_raw.csv"))
-# 
-# cs_panel_raw <- readr::read_csv(
-#   here::here("data", "cs_panel_raw.csv"))
 
 source(here::here("data", "data_cleaning.R"))
 ```
