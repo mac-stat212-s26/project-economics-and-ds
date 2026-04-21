@@ -7,6 +7,7 @@ title: "Isauro R"
 library(ggplot2)
 library(here)
 library(tidyverse)
+library(plotly)
 
 source(here::here("data", "data_cleaning.R"))
 ```
@@ -111,7 +112,10 @@ cs_panel_clean |>
 ```{r}
 merged_panel |>
   mutate(ai_firms_ratio = ai_firms_total / n_firms) |>
-  group_by(year)
-  
+  group_by(year) |>
+  ggplot(aes(x = ai_firms_ratio, y = NAICS2017, fill = NAICS2017)) +
+  geom_boxplot() +
+  theme_classic() +
+  scale_fill_viridis_d()
 ```
 
