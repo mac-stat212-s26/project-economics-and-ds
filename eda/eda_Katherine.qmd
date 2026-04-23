@@ -25,12 +25,12 @@ summary(merged_panel) # general summary of the dataset
 ```
 
 # Data Cleaning
-```{r}
-unique(merged_panel$NAICS2017)
+```{r eval= FALSE}
+unique(merged_panel$naics_sector)
 
 merged_panel <- merged_panel |> 
   mutate(
-    NAICS2017 = fct_recode(as.factor(NAICS2017),
+    naics_sector = fct_recode(as.factor(naics_sector),
         "Total" = "00",
         "Agriculture, Forestry, Fishing and Hunting" = "11",
         "Mining" = "21",
@@ -53,7 +53,7 @@ merged_panel <- merged_panel |>
 
 ai_barriers <- ai_barriers |> 
   mutate(
-    NAICS2017 = fct_recode(as.factor(NAICS2017),
+    naics_sector = fct_recode(as.factor(naics_sector),
         "Total" = "00",
         "Agriculture, Forestry, Fishing and Hunting" = "11",
         "Mining" = "21",
@@ -75,7 +75,7 @@ ai_barriers <- ai_barriers |>
 ```
 
 # AI Usage Over Time by State
-```{r}
+```{r eval=FALSE}
 # looking at how general high AI usage has changed by state from 2017-2021
 merged_panel |> 
   ggplot(aes(x = state, y = ai_firms_high_use)) +
@@ -86,10 +86,10 @@ merged_panel |>
 ```
 
 # AI Usage by Industry
-```{r}
+```{r eval=FALSE}
 # high AI usage by industry from 2017-2021
 merged_panel |> 
-  ggplot(aes(x = NAICS2017, y = ai_firms_high_use, fill = NAICS2017)) +
+  ggplot(aes(x = naics_sector, y = ai_firms_high_use, fill = naics_sector)) +
   geom_col() + 
   facet_wrap(~year) +
   theme(axis.text.x = element_blank()) +
@@ -99,11 +99,11 @@ merged_panel |>
 ```
 
 # Barriers to AI Usage by Industry
-```{r}
+```{r eval=FALSE}
 # barriers to AI usage by industry
 ai_barriers |> 
-  filter(NAICS2017 != "00", NAICS2017 != "99") |> 
-  ggplot(aes(x = NAICS2017, y = n_firms, fill = barrier)) +
+  filter(naics_sector != "00", naics_sector != "99") |> 
+  ggplot(aes(x = naics_sector, y = n_firms, fill = barrier)) +
   geom_col() +
   labs(x = "Industry", y = "Number of Firms by Industry",
        fill = "Perceived Barriers to AI Adoption",
