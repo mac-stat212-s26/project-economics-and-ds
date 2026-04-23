@@ -410,9 +410,9 @@ cookieconsent.run({
   <li>
 <a href="#eda-2-average-payroll-per-employee" id="toc-eda-2-average-payroll-per-employee" class="nav-link" data-scroll-target="#eda-2-average-payroll-per-employee">EDA 2: Average Payroll per Employee</a>
   <ul class="collapse">
-<li><a href="#north-american-industry-classification-system-naics2017" id="toc-north-american-industry-classification-system-naics2017" class="nav-link" data-scroll-target="#north-american-industry-classification-system-naics2017">North American Industry Classification System (NAICS2017)</a></li>
+<li><a href="#north-american-industry-classification-system-naics_sector" id="toc-north-american-industry-classification-system-naics_sector" class="nav-link" data-scroll-target="#north-american-industry-classification-system-naics_sector">North American Industry Classification System (naics_sector)</a></li>
   <li><a href="#year" id="toc-year" class="nav-link" data-scroll-target="#year">Year</a></li>
-  <li><a href="#naics2017-and-year" id="toc-naics2017-and-year" class="nav-link" data-scroll-target="#naics2017-and-year">NAICS2017 and Year</a></li>
+  <li><a href="#naics_sector-and-year" id="toc-naics_sector-and-year" class="nav-link" data-scroll-target="#naics_sector-and-year">naics_sector and Year</a></li>
   </ul>
 </li>
   </ul></nav>
@@ -438,96 +438,27 @@ cookieconsent.run({
 <span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(here)</span>
 <span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-5"><a href="#cb1-5"></a></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"data_cleaning.R"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details><div class="cell-output cell-output-stdout">
-<pre><code>Rows: 32,130
-Columns: 10
-$ year      &lt;dbl&gt; 2018, 2018, 2018, 2018, 2018, 2018, 2018, 2018, 2018, 2018, …
-$ state     &lt;chr&gt; "01", "01", "01", "01", "01", "01", "01", "01", "01", "01", …
-$ NAICS2017 &lt;chr&gt; "00", "00", "00", "00", "00", "00", "00", "00", "00", "00", …
-$ tech_type &lt;chr&gt; "Specialized Software", "Specialized Software", "Specialized…
-$ use_level &lt;chr&gt; "Tested, but did not use in production or service", "Did not…
-$ used_tech &lt;chr&gt; "Tested only", "Did not use", "Used", "Used", "Used", "Unkno…
-$ n_firms   &lt;dbl&gt; 253, 30912, 4191, 7449, 10974, 4056, 53464, 89, 516, 755, 44…
-$ n_emp     &lt;dbl&gt; 13853, 427265, 119682, 278957, 395031, 182545, 987330, 14785…
-$ revenue   &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
-$ payroll   &lt;dbl&gt; 899625, 17464089, 5254931, 12884444, 18226943, 10414926, 418…
-Rows: 1,071
-Columns: 11
-$ state                                                    &lt;chr&gt; "01", "02", "…
-$ naics2017                                                &lt;chr&gt; "00", "00", "…
-$ ai_firms_did_not_use                                     &lt;dbl&gt; 51572, 11675,…
-$ ai_firms_tested_but_did_not_use_in_production_or_service &lt;dbl&gt; 179, 18, 482,…
-$ ai_firms_low_use                                         &lt;dbl&gt; 696, 181, 165…
-$ ai_firms_moderate_use                                    &lt;dbl&gt; 803, 175, 755…
-$ ai_firms_high_use                                        &lt;dbl&gt; 356, 62, 471,…
-$ ai_firms_dont_know                                       &lt;dbl&gt; 4244, 578, 44…
-$ ai_firms_any_use                                         &lt;dbl&gt; 1855, 418, 28…
-$ ai_firms_total                                           &lt;dbl&gt; 59705, 13107,…
-$ ai_adoption_rate                                         &lt;dbl&gt; 0.03106942, 0…
-Rows: 1,071
-Columns: 12
-$ state                               &lt;chr&gt; "01", "01", "01", "01", "01", "01"…
-$ naics2017                           &lt;chr&gt; "00", "11", "21", "22", "23", "31-…
-$ firms_using_artificial_intelligence &lt;dbl&gt; 1855, 0, 0, 0, 0, 85, 168, 332, 37…
-$ firms_using_cloud_based             &lt;dbl&gt; 17448, 0, 0, 0, 1475, 794, 1358, 2…
-$ firms_using_robotics                &lt;dbl&gt; 1714, 0, 0, 0, 0, 396, 213, 71, 22…
-$ firms_using_specialized_equipment   &lt;dbl&gt; 10559, 0, 0, 0, 1162, 1030, 1033, …
-$ firms_using_specialized_software    &lt;dbl&gt; 22614, 0, 0, 0, 1985, 1320, 1486, …
-$ emp_using_artificial_intelligence   &lt;dbl&gt; 196095, 0, 0, 0, 0, 32874, 7313, 6…
-$ emp_using_cloud_based               &lt;dbl&gt; 786873, 0, 0, 0, 30438, 137779, 48…
-$ emp_using_robotics                  &lt;dbl&gt; 258485, 0, 0, 0, 0, 85396, 7102, 2…
-$ emp_using_specialized_equipment     &lt;dbl&gt; 509617, 0, 0, 0, 24205, 131964, 38…
-$ emp_using_specialized_software      &lt;dbl&gt; 793670, 0, 0, 0, 39719, 148246, 50…
-Rows: 4,280
-Columns: 8
-$ year            &lt;int&gt; 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017, 2017, …
-$ n_firms         &lt;dbl&gt; 68829, 839, 160, 7474, 110, 4000, 798, 3166, 3091, 846…
-$ n_emp           &lt;dbl&gt; 1623751, 6942, 5174, 82349, 13552, 73212, 38168, 22785…
-$ payroll         &lt;dbl&gt; 68104199, 272484, 353759, 3934806, 1308714, 4002769, 2…
-$ revenue         &lt;dbl&gt; 444283064, 1387005, 2312798, 21888777, 9627018, 781459…
-$ NAICS2017       &lt;chr&gt; "00", "11", "21", "23", "22", "42", "51", "53", "52", …
-$ state           &lt;chr&gt; "01", "01", "01", "01", "01", "01", "01", "01", "01", …
-$ payroll_per_emp &lt;dbl&gt; 41.94251, 39.25151, 68.37244, 47.78207, 96.56981, 54.6…
-Rows: 4,280
-Columns: 18
-$ year                                                     &lt;int&gt; 2017, 2017, 2…
-$ n_firms                                                  &lt;dbl&gt; 68829, 839, 1…
-$ n_emp                                                    &lt;dbl&gt; 1623751, 6942…
-$ payroll                                                  &lt;dbl&gt; 68104199, 272…
-$ revenue                                                  &lt;dbl&gt; 444283064, 13…
-$ NAICS2017                                                &lt;chr&gt; "00", "11", "…
-$ state                                                    &lt;chr&gt; "01", "01", "…
-$ payroll_per_emp                                          &lt;dbl&gt; 41.94251, 39.…
-$ ai_firms_did_not_use                                     &lt;dbl&gt; 51572, 0, 54,…
-$ ai_firms_tested_but_did_not_use_in_production_or_service &lt;dbl&gt; 179, 0, 0, 0,…
-$ ai_firms_low_use                                         &lt;dbl&gt; 696, 0, 0, 0,…
-$ ai_firms_moderate_use                                    &lt;dbl&gt; 803, 0, 0, 0,…
-$ ai_firms_high_use                                        &lt;dbl&gt; 356, 0, 0, 0,…
-$ ai_firms_dont_know                                       &lt;dbl&gt; 4244, 0, 0, 2…
-$ ai_firms_any_use                                         &lt;dbl&gt; 1855, 0, 0, 0…
-$ ai_firms_total                                           &lt;dbl&gt; 59705, 0, 54,…
-$ ai_adoption_rate                                         &lt;dbl&gt; 0.03106942, N…
-$ high_ai                                                  &lt;chr&gt; "High AI adop…</code></pre>
-</div>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"data_cleaning.R"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 <section id="eda-1-average-number-of-firms" class="level2"><h2 class="anchored" data-anchor-id="eda-1-average-number-of-firms">EDA 1: Average Number of Firms</h2>
 <section id="by-types-of-tech" class="level3"><h3 class="anchored" data-anchor-id="by-types-of-tech">By Types of Tech</h3>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">group_by</span>(tech_type) <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">summarize</span>(<span class="at">avgFirms =</span> <span class="fu">mean</span>(n_firms)) <span class="sc">|&gt;</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avgFirms))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">group_by</span>(tech_type) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">summarize</span>(<span class="at">avgFirms =</span> <span class="fu">mean</span>(n_firms)) <span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avgFirms))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 2
   tech_type               avgFirms
   &lt;chr&gt;                      &lt;dbl&gt;
-1 Robotics                   1530.
-2 Specialized Equipment      1516.
-3 Artificial Intelligence    1514.
-4 Cloud-Based                1510.
-5 Specialized Software       1502.</code></pre>
+1 robotics                   1530.
+2 specialized equipment      1516.
+3 artificial intelligence    1514.
+4 cloud-based                1510.
+5 specialized software       1502.</code></pre>
 </div>
 </div>
 <blockquote class="blockquote">
@@ -535,10 +466,10 @@ $ high_ai                                                  &lt;chr&gt; "High AI 
 </blockquote>
 </section><section id="by-tech-usage" class="level3"><h3 class="anchored" data-anchor-id="by-tech-usage">By Tech Usage</h3>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">group_by</span>(used_tech) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">summarize</span>(<span class="at">avgFirms =</span> <span class="fu">mean</span>(n_firms)) <span class="sc">|&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avgFirms))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">group_by</span>(used_tech) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">summarize</span>(<span class="at">avgFirms =</span> <span class="fu">mean</span>(n_firms)) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avgFirms))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 2
   used_tech   avgFirms
@@ -554,43 +485,43 @@ $ high_ai                                                  &lt;chr&gt; "High AI 
 </blockquote>
 </section><section id="by-types-of-tech-and-if-they-were-used" class="level3"><h3 class="anchored" data-anchor-id="by-types-of-tech-and-if-they-were-used">By Types of Tech and If They Were Used</h3>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">group_by</span>(tech_type, used_tech) <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">summarize</span>(<span class="at">avgFirms =</span> <span class="fu">mean</span>(n_firms)) <span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avgFirms))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">group_by</span>(tech_type, used_tech) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">summarize</span>(<span class="at">avgFirms =</span> <span class="fu">mean</span>(n_firms)) <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avgFirms))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 20 × 3
 # Groups:   tech_type [5]
    tech_type               used_tech   avgFirms
    &lt;chr&gt;                   &lt;chr&gt;          &lt;dbl&gt;
- 1 Robotics                Did not use   8631. 
- 2 Artificial Intelligence Did not use   8298. 
- 3 Specialized Equipment   Did not use   6966. 
- 4 Cloud-Based             Did not use   5503. 
- 5 Specialized Software    Did not use   4964. 
- 6 Specialized Software    Used          1163. 
- 7 Cloud-Based             Used           996. 
- 8 Specialized Equipment   Used           531. 
- 9 Specialized Software    Unknown        526. 
-10 Specialized Equipment   Unknown        522. 
-11 Cloud-Based             Unknown        521. 
-12 Artificial Intelligence Unknown        502. 
-13 Robotics                Unknown        351. 
-14 Artificial Intelligence Used            82.3
-15 Robotics                Used            60.2
-16 Cloud-Based             Tested only     51.4
-17 Artificial Intelligence Tested only     38.1
-18 Specialized Software    Tested only     30.6
-19 Specialized Equipment   Tested only     16.1
-20 Robotics                Tested only     14.5</code></pre>
+ 1 robotics                Did not use   8631. 
+ 2 artificial intelligence Did not use   8298. 
+ 3 specialized equipment   Did not use   6966. 
+ 4 cloud-based             Did not use   5503. 
+ 5 specialized software    Did not use   4964. 
+ 6 specialized software    Used          1163. 
+ 7 cloud-based             Used           996. 
+ 8 specialized equipment   Used           531. 
+ 9 specialized software    Unknown        526. 
+10 specialized equipment   Unknown        522. 
+11 cloud-based             Unknown        521. 
+12 artificial intelligence Unknown        502. 
+13 robotics                Unknown        351. 
+14 artificial intelligence Used            82.3
+15 robotics                Used            60.2
+16 cloud-based             Tested only     51.4
+17 artificial intelligence Tested only     38.1
+18 specialized software    Tested only     30.6
+19 specialized equipment   Tested only     16.1
+20 robotics                Tested only     14.5</code></pre>
 </div>
 </div>
 <blockquote class="blockquote">
 <p>Among Tech Companies in the North America, <code>Robotics</code> companies that <code>Did not use</code> their tech have the highest average number of firms at <code>8630.75257</code>. <code>Robotics</code> companies that <code>Tested only</code> their tech report the lowest at <code>14.45658</code> firms.</p>
 </blockquote>
 </section></section><section id="eda-2-average-payroll-per-employee" class="level2"><h2 class="anchored" data-anchor-id="eda-2-average-payroll-per-employee">EDA 2: Average Payroll per Employee</h2>
-<section id="north-american-industry-classification-system-naics2017" class="level3"><h3 class="anchored" data-anchor-id="north-american-industry-classification-system-naics2017">North American Industry Classification System (NAICS2017)</h3>
-<p><strong>Note:</strong> <code>NAICS2017</code> indices and their respective industry:</p>
+<section id="north-american-industry-classification-system-naics_sector" class="level3"><h3 class="anchored" data-anchor-id="north-american-industry-classification-system-naics_sector">North American Industry Classification System (naics_sector)</h3>
+<p><strong>Note:</strong> <code>naics_sector</code> indices and their respective industry:</p>
 <ul>
 <li>Total = <code>00</code>
 </li>
@@ -641,32 +572,25 @@ $ high_ai                                                  &lt;chr&gt; "High AI 
 <p><strong>Source:</strong> https://www.census.gov/naics/?58967?yearbck=2017</p>
 </blockquote>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>cs_panel_clean <span class="sc">|&gt;</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">group_by</span>(NAICS2017) <span class="sc">|&gt;</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">summarize</span>(<span class="at">medianPay =</span> <span class="fu">median</span>(payroll_per_emp)) <span class="sc">|&gt;</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(medianPay))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>cs_panel_clean <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">group_by</span>(naics_sector) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">summarize</span>(<span class="at">medianPay =</span> <span class="fu">median</span>(payroll_per_emp)) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(medianPay))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 18 × 2
-   NAICS2017 medianPay
-   &lt;chr&gt;         &lt;dbl&gt;
- 1 22            105. 
- 2 55             98.4
- 3 52             82.9
- 4 51             76.5
- 5 54             75.8
- 6 21             75.0
- 7 42             65.9
- 8 23             59.6
- 9 00             50.3
-10 62             49.3
-11 53             48.8
-12 11             39.9
-13 56             38.9
-14 61             36.0
-15 81             33.4
-16 71             29.3
-17 99             23.2
-18 72             18.7</code></pre>
+<pre><code># A tibble: 1,910 × 2
+   naics_sector medianPay
+   &lt;chr&gt;            &lt;dbl&gt;
+ 1 522293         407473.
+ 2 711211         293208.
+ 3 5232           214697.
+ 4 52413          186906.
+ 5 524130         186906.
+ 6 5231           176339.
+ 7 52311          162067.
+ 8 523110         162067.
+ 9 52312          156349.
+10 523120         156349.
+# ℹ 1,900 more rows</code></pre>
 </div>
 </div>
 <blockquote class="blockquote">
@@ -674,78 +598,60 @@ $ high_ai                                                  &lt;chr&gt; "High AI 
 </blockquote>
 </section><section id="year" class="level3"><h3 class="anchored" data-anchor-id="year">Year</h3>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>cs_panel_clean <span class="sc">|&gt;</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">group_by</span>(year) <span class="sc">|&gt;</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">summarize</span>(<span class="at">medianPay =</span> <span class="fu">median</span>(payroll_per_emp)) <span class="sc">|&gt;</span></span>
-<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(medianPay))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>cs_panel_clean <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">group_by</span>(year) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">summarize</span>(<span class="at">medianPay =</span> <span class="fu">median</span>(payroll_per_emp)) <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(medianPay))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 2
    year medianPay
-  &lt;int&gt;     &lt;dbl&gt;
-1  2021      58.7
-2  2020      54.9
-3  2019      53.6
-4  2018      51.6
-5  2017      47.8</code></pre>
+  &lt;dbl&gt;     &lt;dbl&gt;
+1  2018    50848.
+2  2019    50565.
+3  2017    45386.
+4  2020       NA 
+5  2021       NA </code></pre>
 </div>
 </div>
 <blockquote class="blockquote">
 <p><code>2021</code> reported the highest median payroll per employee at <code>$58.71</code>. <code>2017</code> reported the lowest at <code>$47.78</code>.</p>
 </blockquote>
-</section><section id="naics2017-and-year" class="level3"><h3 class="anchored" data-anchor-id="naics2017-and-year">NAICS2017 and Year</h3>
+</section><section id="naics_sector-and-year" class="level3"><h3 class="anchored" data-anchor-id="naics_sector-and-year">naics_sector and Year</h3>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>cs_panel_clean <span class="sc">|&gt;</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">group_by</span>(NAICS2017, year) <span class="sc">|&gt;</span></span>
-<span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">summarize</span>(<span class="at">medianPay =</span> <span class="fu">median</span>(payroll_per_emp)) <span class="sc">|&gt;</span></span>
-<span id="cb13-4"><a href="#cb13-4"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(medianPay))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>cs_panel_clean <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">group_by</span>(naics_sector, year) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">summarize</span>(<span class="at">medianPay =</span> <span class="fu">median</span>(payroll_per_emp)) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(medianPay))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 90 × 3
-# Groups:   NAICS2017 [18]
-   NAICS2017  year medianPay
-   &lt;chr&gt;     &lt;int&gt;     &lt;dbl&gt;
- 1 22         2021     111. 
- 2 22         2020     110. 
- 3 55         2021     107. 
- 4 22         2019     106. 
- 5 22         2018     103. 
- 6 55         2019      99.5
- 7 55         2018      99.3
- 8 22         2017      98.0
- 9 55         2020      96.5
-10 52         2021      93.4
-# ℹ 80 more rows</code></pre>
+<pre><code># A tibble: 2,804 × 3
+# Groups:   naics_sector [1,910]
+   naics_sector  year medianPay
+   &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;
+ 1 522293        2017   407473.
+ 2 711211        2017   293208.
+ 3 5232          2021   248386.
+ 4 5231          2021   203980.
+ 5 52413         2017   186906.
+ 6 524130        2017   186906.
+ 7 5231          2020   177422.
+ 8 5232          2020   177010.
+ 9 523           2021   166128.
+10 52311         2017   162067.
+# ℹ 2,794 more rows</code></pre>
 </div>
 </div>
 <blockquote class="blockquote">
 <p>Among industries in North America throughout a 5-year period, <code>Utilities</code> report the highest median payroll per employee at <code>$111.38</code> during <code>2021</code>. <code>Accomodation and Food Services</code> report the lowest at <code>$16.18</code> during <code>2020</code>.</p>
 </blockquote>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>merged_panel <span class="sc">|&gt;</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">mutate</span>(<span class="at">ai_firms_ratio =</span> ai_firms_total <span class="sc">/</span> n_firms) <span class="sc">|&gt;</span></span>
-<span id="cb15-3"><a href="#cb15-3"></a>  <span class="fu">group_by</span>(year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details><div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 4,280 × 19
-# Groups:   year [5]
-    year n_firms   n_emp  payroll   revenue NAICS2017 state payroll_per_emp
-   &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;           &lt;dbl&gt;
- 1  2017   68829 1623751 68104199 444283064 00        01               41.9
- 2  2017     839    6942   272484   1387005 11        01               39.3
- 3  2017     160    5174   353759   2312798 21        01               68.4
- 4  2017    7474   82349  3934806  21888777 23        01               47.8
- 5  2017     110   13552  1308714   9627018 22        01               96.6
- 6  2017    4000   73212  4002769  78145913 42        01               54.7
- 7  2017     798   38168  2279532  12059681 51        01               59.7
- 8  2017    3166   22785   928097   6372675 53        01               40.7
- 9  2017    3091   74267  4894220  28298081 52        01               65.9
-10  2017    8464  100764  7103947  19528856 54        01               70.5
-# ℹ 4,270 more rows
-# ℹ 11 more variables: ai_firms_did_not_use &lt;dbl&gt;,
-#   ai_firms_tested_but_did_not_use_in_production_or_service &lt;dbl&gt;,
-#   ai_firms_low_use &lt;dbl&gt;, ai_firms_moderate_use &lt;dbl&gt;,
-#   ai_firms_high_use &lt;dbl&gt;, ai_firms_dont_know &lt;dbl&gt;, ai_firms_any_use &lt;dbl&gt;,
-#   ai_firms_total &lt;dbl&gt;, ai_adoption_rate &lt;dbl&gt;, high_ai &lt;chr&gt;,
-#   ai_firms_ratio &lt;dbl&gt;</code></pre>
-</div>
+<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>merged_panel <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>  <span class="fu">mutate</span>(<span class="at">ai_firms_ratio =</span> ai_firms_total <span class="sc">/</span> n_firms) <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>  <span class="fu">group_by</span>(year) <span class="sc">|&gt;</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ai_firms_ratio, <span class="at">y =</span> naics_sector, <span class="at">fill =</span> naics_sector)) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a>  <span class="fu">scale_fill_viridis_d</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
 
 
@@ -1230,122 +1136,126 @@ $ high_ai                                                  &lt;chr&gt; "High AI 
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb17-1"><a href="#cb17-1"></a><span class="co">---</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a><span class="an">title:</span><span class="co"> "Isauro R"</span></span>
-<span id="cb17-3"><a href="#cb17-3"></a><span class="co">---</span></span>
-<span id="cb17-4"><a href="#cb17-4"></a></span>
-<span id="cb17-7"><a href="#cb17-7"></a><span class="in">```{r}</span></span>
-<span id="cb17-8"><a href="#cb17-8"></a><span class="co"># load ggplot2</span></span>
-<span id="cb17-9"><a href="#cb17-9"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb17-10"><a href="#cb17-10"></a><span class="fu">library</span>(here)</span>
-<span id="cb17-11"><a href="#cb17-11"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb17-12"><a href="#cb17-12"></a></span>
-<span id="cb17-13"><a href="#cb17-13"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"data_cleaning.R"</span>))</span>
-<span id="cb17-14"><a href="#cb17-14"></a><span class="in">```</span></span>
-<span id="cb17-15"><a href="#cb17-15"></a></span>
-<span id="cb17-16"><a href="#cb17-16"></a><span class="fu">## EDA 1: Average Number of Firms</span></span>
-<span id="cb17-17"><a href="#cb17-17"></a></span>
-<span id="cb17-18"><a href="#cb17-18"></a><span class="fu">### By Types of Tech</span></span>
-<span id="cb17-19"><a href="#cb17-19"></a></span>
-<span id="cb17-22"><a href="#cb17-22"></a><span class="in">```{r}</span></span>
-<span id="cb17-23"><a href="#cb17-23"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
-<span id="cb17-24"><a href="#cb17-24"></a>  <span class="fu">group_by</span>(tech_type) <span class="sc">|&gt;</span></span>
-<span id="cb17-25"><a href="#cb17-25"></a>  <span class="fu">summarize</span>(<span class="at">avgFirms =</span> <span class="fu">mean</span>(n_firms)) <span class="sc">|&gt;</span></span>
-<span id="cb17-26"><a href="#cb17-26"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avgFirms))</span>
-<span id="cb17-27"><a href="#cb17-27"></a><span class="in">```</span></span>
-<span id="cb17-28"><a href="#cb17-28"></a></span>
-<span id="cb17-29"><a href="#cb17-29"></a><span class="at">&gt; Among Tech Companies in the North America, </span><span class="in">`Robotics`</span><span class="at"> companies have the highest average number of firms at </span><span class="in">`1529.508`</span><span class="at">. </span><span class="in">`Specialized Software`</span><span class="at"> companies report the lowest at </span><span class="in">`1501.812`</span><span class="at"> firms.</span></span>
-<span id="cb17-30"><a href="#cb17-30"></a></span>
-<span id="cb17-31"><a href="#cb17-31"></a><span class="fu">### By Tech Usage</span></span>
-<span id="cb17-32"><a href="#cb17-32"></a></span>
-<span id="cb17-35"><a href="#cb17-35"></a><span class="in">```{r}</span></span>
-<span id="cb17-36"><a href="#cb17-36"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
-<span id="cb17-37"><a href="#cb17-37"></a>  <span class="fu">group_by</span>(used_tech) <span class="sc">|&gt;</span></span>
-<span id="cb17-38"><a href="#cb17-38"></a>  <span class="fu">summarize</span>(<span class="at">avgFirms =</span> <span class="fu">mean</span>(n_firms)) <span class="sc">|&gt;</span></span>
-<span id="cb17-39"><a href="#cb17-39"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avgFirms))</span>
-<span id="cb17-40"><a href="#cb17-40"></a><span class="in">```</span></span>
-<span id="cb17-41"><a href="#cb17-41"></a></span>
-<span id="cb17-42"><a href="#cb17-42"></a><span class="at">&gt; Among Tech Companies in the North America, Companies that </span><span class="in">`Did not use`</span><span class="at"> their tech have the highest average number of firms at </span><span class="in">`6872.37554`</span><span class="at">. Companies that </span><span class="in">`Tested only`</span><span class="at"> their tech report the lowest at </span><span class="in">`30.13016`</span><span class="at"> firms.</span></span>
-<span id="cb17-43"><a href="#cb17-43"></a></span>
-<span id="cb17-44"><a href="#cb17-44"></a><span class="fu">### By Types of Tech and If They Were Used</span></span>
-<span id="cb17-45"><a href="#cb17-45"></a></span>
-<span id="cb17-48"><a href="#cb17-48"></a><span class="in">```{r}</span></span>
-<span id="cb17-49"><a href="#cb17-49"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
-<span id="cb17-50"><a href="#cb17-50"></a>  <span class="fu">group_by</span>(tech_type, used_tech) <span class="sc">|&gt;</span></span>
-<span id="cb17-51"><a href="#cb17-51"></a>  <span class="fu">summarize</span>(<span class="at">avgFirms =</span> <span class="fu">mean</span>(n_firms)) <span class="sc">|&gt;</span></span>
-<span id="cb17-52"><a href="#cb17-52"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avgFirms))</span>
-<span id="cb17-53"><a href="#cb17-53"></a><span class="in">```</span></span>
-<span id="cb17-54"><a href="#cb17-54"></a></span>
-<span id="cb17-55"><a href="#cb17-55"></a><span class="at">&gt; Among Tech Companies in the North America, </span><span class="in">`Robotics`</span><span class="at"> companies that </span><span class="in">`Did not use`</span><span class="at"> their tech have the highest average number of firms at </span><span class="in">`8630.75257`</span><span class="at">. </span><span class="in">`Robotics`</span><span class="at"> companies that </span><span class="in">`Tested only`</span><span class="at"> their tech report the lowest at </span><span class="in">`14.45658`</span><span class="at"> firms.</span></span>
-<span id="cb17-56"><a href="#cb17-56"></a></span>
-<span id="cb17-57"><a href="#cb17-57"></a><span class="fu">## EDA 2: Average Payroll per Employee</span></span>
-<span id="cb17-58"><a href="#cb17-58"></a></span>
-<span id="cb17-59"><a href="#cb17-59"></a><span class="fu">### North American Industry Classification System (NAICS2017)</span></span>
-<span id="cb17-60"><a href="#cb17-60"></a></span>
-<span id="cb17-61"><a href="#cb17-61"></a>**Note:** <span class="in">`NAICS2017`</span> indices and their respective industry:</span>
-<span id="cb17-62"><a href="#cb17-62"></a></span>
-<span id="cb17-63"><a href="#cb17-63"></a><span class="ss">-   </span>Total = <span class="in">`00`</span></span>
-<span id="cb17-64"><a href="#cb17-64"></a><span class="ss">-   </span>Agriculture, Forestry, Fishing and Hunting = <span class="in">`11`</span></span>
-<span id="cb17-65"><a href="#cb17-65"></a><span class="ss">-   </span>Mining, Quarrying, and Oil and Gas Extraction = <span class="in">`21`</span></span>
-<span id="cb17-66"><a href="#cb17-66"></a><span class="ss">-   </span>Utilities = <span class="in">`22`</span></span>
-<span id="cb17-67"><a href="#cb17-67"></a><span class="ss">-   </span>Construction = <span class="in">`23`</span></span>
-<span id="cb17-68"><a href="#cb17-68"></a><span class="ss">-   </span>Manufacturing = <span class="in">`31-33`</span></span>
-<span id="cb17-69"><a href="#cb17-69"></a><span class="ss">-   </span>Wholesale Trade = <span class="in">`42`</span></span>
-<span id="cb17-70"><a href="#cb17-70"></a><span class="ss">-   </span>Retail Trade = <span class="in">`44-45`</span></span>
-<span id="cb17-71"><a href="#cb17-71"></a><span class="ss">-   </span>Transportation and Warehousing = <span class="in">`48-49`</span></span>
-<span id="cb17-72"><a href="#cb17-72"></a><span class="ss">-   </span>Information = <span class="in">`51`</span></span>
-<span id="cb17-73"><a href="#cb17-73"></a><span class="ss">-   </span>Finance and Insurance = <span class="in">`52`</span></span>
-<span id="cb17-74"><a href="#cb17-74"></a><span class="ss">-   </span>Real Estate Rental and Leasing = <span class="in">`53`</span></span>
-<span id="cb17-75"><a href="#cb17-75"></a><span class="ss">-   </span>Professional, Scientific, and Technical Services = <span class="in">`54`</span></span>
-<span id="cb17-76"><a href="#cb17-76"></a><span class="ss">-   </span>Management of Companies and Enterprises = <span class="in">`55`</span></span>
-<span id="cb17-77"><a href="#cb17-77"></a><span class="ss">-   </span>Administrative and Support and Waste Management and Remediation Services = <span class="in">`56`</span></span>
-<span id="cb17-78"><a href="#cb17-78"></a><span class="ss">-   </span>Educational Services = <span class="in">`61`</span></span>
-<span id="cb17-79"><a href="#cb17-79"></a><span class="ss">-   </span>Health Care and Social Assistance = <span class="in">`62`</span></span>
-<span id="cb17-80"><a href="#cb17-80"></a><span class="ss">-   </span>Arts, Entertainment, and Recreation = <span class="in">`71`</span></span>
-<span id="cb17-81"><a href="#cb17-81"></a><span class="ss">-   </span>Accommodation and Food Services = <span class="in">`72`</span></span>
-<span id="cb17-82"><a href="#cb17-82"></a><span class="ss">-   </span>Other Services (except Public Administration) = <span class="in">`81`</span></span>
-<span id="cb17-83"><a href="#cb17-83"></a><span class="ss">-   </span>Public Administration = <span class="in">`92`</span></span>
-<span id="cb17-84"><a href="#cb17-84"></a><span class="ss">-   </span>NA = <span class="in">`99`</span></span>
-<span id="cb17-85"><a href="#cb17-85"></a></span>
-<span id="cb17-86"><a href="#cb17-86"></a><span class="at">&gt; **Source:** https://www.census.gov/naics/?58967?yearbck=2017</span></span>
-<span id="cb17-87"><a href="#cb17-87"></a></span>
-<span id="cb17-90"><a href="#cb17-90"></a><span class="in">```{r}</span></span>
-<span id="cb17-91"><a href="#cb17-91"></a>cs_panel_clean <span class="sc">|&gt;</span></span>
-<span id="cb17-92"><a href="#cb17-92"></a>  <span class="fu">group_by</span>(NAICS2017) <span class="sc">|&gt;</span></span>
-<span id="cb17-93"><a href="#cb17-93"></a>  <span class="fu">summarize</span>(<span class="at">medianPay =</span> <span class="fu">median</span>(payroll_per_emp)) <span class="sc">|&gt;</span></span>
-<span id="cb17-94"><a href="#cb17-94"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(medianPay))</span>
-<span id="cb17-95"><a href="#cb17-95"></a><span class="in">```</span></span>
-<span id="cb17-96"><a href="#cb17-96"></a></span>
-<span id="cb17-97"><a href="#cb17-97"></a><span class="at">&gt; Among industries in North America, </span><span class="in">`Utilities`</span><span class="at"> report the highest median payroll per employee at </span><span class="in">`$105.31`</span><span class="at">. </span><span class="in">`Accomodation and Food Services`</span><span class="at"> report the lowest at </span><span class="in">`$18.67`</span><span class="at">.</span></span>
-<span id="cb17-98"><a href="#cb17-98"></a></span>
-<span id="cb17-99"><a href="#cb17-99"></a><span class="fu">### Year</span></span>
-<span id="cb17-100"><a href="#cb17-100"></a></span>
-<span id="cb17-103"><a href="#cb17-103"></a><span class="in">```{r}</span></span>
-<span id="cb17-104"><a href="#cb17-104"></a>cs_panel_clean <span class="sc">|&gt;</span></span>
-<span id="cb17-105"><a href="#cb17-105"></a>  <span class="fu">group_by</span>(year) <span class="sc">|&gt;</span></span>
-<span id="cb17-106"><a href="#cb17-106"></a>  <span class="fu">summarize</span>(<span class="at">medianPay =</span> <span class="fu">median</span>(payroll_per_emp)) <span class="sc">|&gt;</span></span>
-<span id="cb17-107"><a href="#cb17-107"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(medianPay))</span>
-<span id="cb17-108"><a href="#cb17-108"></a><span class="in">```</span></span>
-<span id="cb17-109"><a href="#cb17-109"></a></span>
-<span id="cb17-110"><a href="#cb17-110"></a><span class="at">&gt; </span><span class="in">`2021`</span><span class="at"> reported the highest median payroll per employee at </span><span class="in">`$58.71`</span><span class="at">. </span><span class="in">`2017`</span><span class="at"> reported the lowest at </span><span class="in">`$47.78`</span><span class="at">.</span></span>
-<span id="cb17-111"><a href="#cb17-111"></a></span>
-<span id="cb17-112"><a href="#cb17-112"></a><span class="fu">### NAICS2017 and Year</span></span>
-<span id="cb17-113"><a href="#cb17-113"></a></span>
-<span id="cb17-116"><a href="#cb17-116"></a><span class="in">```{r}</span></span>
-<span id="cb17-117"><a href="#cb17-117"></a>cs_panel_clean <span class="sc">|&gt;</span></span>
-<span id="cb17-118"><a href="#cb17-118"></a>  <span class="fu">group_by</span>(NAICS2017, year) <span class="sc">|&gt;</span></span>
-<span id="cb17-119"><a href="#cb17-119"></a>  <span class="fu">summarize</span>(<span class="at">medianPay =</span> <span class="fu">median</span>(payroll_per_emp)) <span class="sc">|&gt;</span></span>
-<span id="cb17-120"><a href="#cb17-120"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(medianPay))</span>
-<span id="cb17-121"><a href="#cb17-121"></a><span class="in">```</span></span>
-<span id="cb17-122"><a href="#cb17-122"></a></span>
-<span id="cb17-123"><a href="#cb17-123"></a><span class="at">&gt; Among industries in North America throughout a 5-year period, </span><span class="in">`Utilities`</span><span class="at"> report the highest median payroll per employee at </span><span class="in">`$111.38`</span><span class="at"> during </span><span class="in">`2021`</span><span class="at">. </span><span class="in">`Accomodation and Food Services`</span><span class="at"> report the lowest at </span><span class="in">`$16.18`</span><span class="at"> during </span><span class="in">`2020`</span><span class="at">.</span></span>
-<span id="cb17-124"><a href="#cb17-124"></a></span>
-<span id="cb17-127"><a href="#cb17-127"></a><span class="in">```{r}</span></span>
-<span id="cb17-128"><a href="#cb17-128"></a>merged_panel <span class="sc">|&gt;</span></span>
-<span id="cb17-129"><a href="#cb17-129"></a>  <span class="fu">mutate</span>(<span class="at">ai_firms_ratio =</span> ai_firms_total <span class="sc">/</span> n_firms) <span class="sc">|&gt;</span></span>
-<span id="cb17-130"><a href="#cb17-130"></a>  <span class="fu">group_by</span>(year)</span>
-<span id="cb17-131"><a href="#cb17-131"></a>  </span>
-<span id="cb17-132"><a href="#cb17-132"></a><span class="in">```</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">---</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="an">title:</span><span class="co"> "Isauro R"</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="co">---</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a></span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="in">```{r}</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="co"># load ggplot2</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="fu">library</span>(here)</span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb15-13"><a href="#cb15-13"></a></span>
+<span id="cb15-14"><a href="#cb15-14"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"data_cleaning.R"</span>))</span>
+<span id="cb15-15"><a href="#cb15-15"></a><span class="in">```</span></span>
+<span id="cb15-16"><a href="#cb15-16"></a></span>
+<span id="cb15-17"><a href="#cb15-17"></a><span class="fu">## EDA 1: Average Number of Firms</span></span>
+<span id="cb15-18"><a href="#cb15-18"></a></span>
+<span id="cb15-19"><a href="#cb15-19"></a><span class="fu">### By Types of Tech</span></span>
+<span id="cb15-20"><a href="#cb15-20"></a></span>
+<span id="cb15-23"><a href="#cb15-23"></a><span class="in">```{r}</span></span>
+<span id="cb15-24"><a href="#cb15-24"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
+<span id="cb15-25"><a href="#cb15-25"></a>  <span class="fu">group_by</span>(tech_type) <span class="sc">|&gt;</span></span>
+<span id="cb15-26"><a href="#cb15-26"></a>  <span class="fu">summarize</span>(<span class="at">avgFirms =</span> <span class="fu">mean</span>(n_firms)) <span class="sc">|&gt;</span></span>
+<span id="cb15-27"><a href="#cb15-27"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avgFirms))</span>
+<span id="cb15-28"><a href="#cb15-28"></a><span class="in">```</span></span>
+<span id="cb15-29"><a href="#cb15-29"></a></span>
+<span id="cb15-30"><a href="#cb15-30"></a><span class="at">&gt; Among Tech Companies in the North America, </span><span class="in">`Robotics`</span><span class="at"> companies have the highest average number of firms at </span><span class="in">`1529.508`</span><span class="at">. </span><span class="in">`Specialized Software`</span><span class="at"> companies report the lowest at </span><span class="in">`1501.812`</span><span class="at"> firms.</span></span>
+<span id="cb15-31"><a href="#cb15-31"></a></span>
+<span id="cb15-32"><a href="#cb15-32"></a><span class="fu">### By Tech Usage</span></span>
+<span id="cb15-33"><a href="#cb15-33"></a></span>
+<span id="cb15-36"><a href="#cb15-36"></a><span class="in">```{r}</span></span>
+<span id="cb15-37"><a href="#cb15-37"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
+<span id="cb15-38"><a href="#cb15-38"></a>  <span class="fu">group_by</span>(used_tech) <span class="sc">|&gt;</span></span>
+<span id="cb15-39"><a href="#cb15-39"></a>  <span class="fu">summarize</span>(<span class="at">avgFirms =</span> <span class="fu">mean</span>(n_firms)) <span class="sc">|&gt;</span></span>
+<span id="cb15-40"><a href="#cb15-40"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avgFirms))</span>
+<span id="cb15-41"><a href="#cb15-41"></a><span class="in">```</span></span>
+<span id="cb15-42"><a href="#cb15-42"></a></span>
+<span id="cb15-43"><a href="#cb15-43"></a><span class="at">&gt; Among Tech Companies in the North America, Companies that </span><span class="in">`Did not use`</span><span class="at"> their tech have the highest average number of firms at </span><span class="in">`6872.37554`</span><span class="at">. Companies that </span><span class="in">`Tested only`</span><span class="at"> their tech report the lowest at </span><span class="in">`30.13016`</span><span class="at"> firms.</span></span>
+<span id="cb15-44"><a href="#cb15-44"></a></span>
+<span id="cb15-45"><a href="#cb15-45"></a><span class="fu">### By Types of Tech and If They Were Used</span></span>
+<span id="cb15-46"><a href="#cb15-46"></a></span>
+<span id="cb15-49"><a href="#cb15-49"></a><span class="in">```{r}</span></span>
+<span id="cb15-50"><a href="#cb15-50"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
+<span id="cb15-51"><a href="#cb15-51"></a>  <span class="fu">group_by</span>(tech_type, used_tech) <span class="sc">|&gt;</span></span>
+<span id="cb15-52"><a href="#cb15-52"></a>  <span class="fu">summarize</span>(<span class="at">avgFirms =</span> <span class="fu">mean</span>(n_firms)) <span class="sc">|&gt;</span></span>
+<span id="cb15-53"><a href="#cb15-53"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avgFirms))</span>
+<span id="cb15-54"><a href="#cb15-54"></a><span class="in">```</span></span>
+<span id="cb15-55"><a href="#cb15-55"></a></span>
+<span id="cb15-56"><a href="#cb15-56"></a><span class="at">&gt; Among Tech Companies in the North America, </span><span class="in">`Robotics`</span><span class="at"> companies that </span><span class="in">`Did not use`</span><span class="at"> their tech have the highest average number of firms at </span><span class="in">`8630.75257`</span><span class="at">. </span><span class="in">`Robotics`</span><span class="at"> companies that </span><span class="in">`Tested only`</span><span class="at"> their tech report the lowest at </span><span class="in">`14.45658`</span><span class="at"> firms.</span></span>
+<span id="cb15-57"><a href="#cb15-57"></a></span>
+<span id="cb15-58"><a href="#cb15-58"></a><span class="fu">## EDA 2: Average Payroll per Employee</span></span>
+<span id="cb15-59"><a href="#cb15-59"></a></span>
+<span id="cb15-60"><a href="#cb15-60"></a><span class="fu">### North American Industry Classification System (naics_sector)</span></span>
+<span id="cb15-61"><a href="#cb15-61"></a></span>
+<span id="cb15-62"><a href="#cb15-62"></a>**Note:** <span class="in">`naics_sector`</span> indices and their respective industry:</span>
+<span id="cb15-63"><a href="#cb15-63"></a></span>
+<span id="cb15-64"><a href="#cb15-64"></a><span class="ss">-   </span>Total = <span class="in">`00`</span></span>
+<span id="cb15-65"><a href="#cb15-65"></a><span class="ss">-   </span>Agriculture, Forestry, Fishing and Hunting = <span class="in">`11`</span></span>
+<span id="cb15-66"><a href="#cb15-66"></a><span class="ss">-   </span>Mining, Quarrying, and Oil and Gas Extraction = <span class="in">`21`</span></span>
+<span id="cb15-67"><a href="#cb15-67"></a><span class="ss">-   </span>Utilities = <span class="in">`22`</span></span>
+<span id="cb15-68"><a href="#cb15-68"></a><span class="ss">-   </span>Construction = <span class="in">`23`</span></span>
+<span id="cb15-69"><a href="#cb15-69"></a><span class="ss">-   </span>Manufacturing = <span class="in">`31-33`</span></span>
+<span id="cb15-70"><a href="#cb15-70"></a><span class="ss">-   </span>Wholesale Trade = <span class="in">`42`</span></span>
+<span id="cb15-71"><a href="#cb15-71"></a><span class="ss">-   </span>Retail Trade = <span class="in">`44-45`</span></span>
+<span id="cb15-72"><a href="#cb15-72"></a><span class="ss">-   </span>Transportation and Warehousing = <span class="in">`48-49`</span></span>
+<span id="cb15-73"><a href="#cb15-73"></a><span class="ss">-   </span>Information = <span class="in">`51`</span></span>
+<span id="cb15-74"><a href="#cb15-74"></a><span class="ss">-   </span>Finance and Insurance = <span class="in">`52`</span></span>
+<span id="cb15-75"><a href="#cb15-75"></a><span class="ss">-   </span>Real Estate Rental and Leasing = <span class="in">`53`</span></span>
+<span id="cb15-76"><a href="#cb15-76"></a><span class="ss">-   </span>Professional, Scientific, and Technical Services = <span class="in">`54`</span></span>
+<span id="cb15-77"><a href="#cb15-77"></a><span class="ss">-   </span>Management of Companies and Enterprises = <span class="in">`55`</span></span>
+<span id="cb15-78"><a href="#cb15-78"></a><span class="ss">-   </span>Administrative and Support and Waste Management and Remediation Services = <span class="in">`56`</span></span>
+<span id="cb15-79"><a href="#cb15-79"></a><span class="ss">-   </span>Educational Services = <span class="in">`61`</span></span>
+<span id="cb15-80"><a href="#cb15-80"></a><span class="ss">-   </span>Health Care and Social Assistance = <span class="in">`62`</span></span>
+<span id="cb15-81"><a href="#cb15-81"></a><span class="ss">-   </span>Arts, Entertainment, and Recreation = <span class="in">`71`</span></span>
+<span id="cb15-82"><a href="#cb15-82"></a><span class="ss">-   </span>Accommodation and Food Services = <span class="in">`72`</span></span>
+<span id="cb15-83"><a href="#cb15-83"></a><span class="ss">-   </span>Other Services (except Public Administration) = <span class="in">`81`</span></span>
+<span id="cb15-84"><a href="#cb15-84"></a><span class="ss">-   </span>Public Administration = <span class="in">`92`</span></span>
+<span id="cb15-85"><a href="#cb15-85"></a><span class="ss">-   </span>NA = <span class="in">`99`</span></span>
+<span id="cb15-86"><a href="#cb15-86"></a></span>
+<span id="cb15-87"><a href="#cb15-87"></a><span class="at">&gt; **Source:** https://www.census.gov/naics/?58967?yearbck=2017</span></span>
+<span id="cb15-88"><a href="#cb15-88"></a></span>
+<span id="cb15-91"><a href="#cb15-91"></a><span class="in">```{r}</span></span>
+<span id="cb15-92"><a href="#cb15-92"></a>cs_panel_clean <span class="sc">|&gt;</span></span>
+<span id="cb15-93"><a href="#cb15-93"></a>  <span class="fu">group_by</span>(naics_sector) <span class="sc">|&gt;</span></span>
+<span id="cb15-94"><a href="#cb15-94"></a>  <span class="fu">summarize</span>(<span class="at">medianPay =</span> <span class="fu">median</span>(payroll_per_emp)) <span class="sc">|&gt;</span></span>
+<span id="cb15-95"><a href="#cb15-95"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(medianPay))</span>
+<span id="cb15-96"><a href="#cb15-96"></a><span class="in">```</span></span>
+<span id="cb15-97"><a href="#cb15-97"></a></span>
+<span id="cb15-98"><a href="#cb15-98"></a><span class="at">&gt; Among industries in North America, </span><span class="in">`Utilities`</span><span class="at"> report the highest median payroll per employee at </span><span class="in">`$105.31`</span><span class="at">. </span><span class="in">`Accomodation and Food Services`</span><span class="at"> report the lowest at </span><span class="in">`$18.67`</span><span class="at">.</span></span>
+<span id="cb15-99"><a href="#cb15-99"></a></span>
+<span id="cb15-100"><a href="#cb15-100"></a><span class="fu">### Year</span></span>
+<span id="cb15-101"><a href="#cb15-101"></a></span>
+<span id="cb15-104"><a href="#cb15-104"></a><span class="in">```{r}</span></span>
+<span id="cb15-105"><a href="#cb15-105"></a>cs_panel_clean <span class="sc">|&gt;</span></span>
+<span id="cb15-106"><a href="#cb15-106"></a>  <span class="fu">group_by</span>(year) <span class="sc">|&gt;</span></span>
+<span id="cb15-107"><a href="#cb15-107"></a>  <span class="fu">summarize</span>(<span class="at">medianPay =</span> <span class="fu">median</span>(payroll_per_emp)) <span class="sc">|&gt;</span></span>
+<span id="cb15-108"><a href="#cb15-108"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(medianPay))</span>
+<span id="cb15-109"><a href="#cb15-109"></a><span class="in">```</span></span>
+<span id="cb15-110"><a href="#cb15-110"></a></span>
+<span id="cb15-111"><a href="#cb15-111"></a><span class="at">&gt; </span><span class="in">`2021`</span><span class="at"> reported the highest median payroll per employee at </span><span class="in">`$58.71`</span><span class="at">. </span><span class="in">`2017`</span><span class="at"> reported the lowest at </span><span class="in">`$47.78`</span><span class="at">.</span></span>
+<span id="cb15-112"><a href="#cb15-112"></a></span>
+<span id="cb15-113"><a href="#cb15-113"></a><span class="fu">### naics_sector and Year</span></span>
+<span id="cb15-114"><a href="#cb15-114"></a></span>
+<span id="cb15-117"><a href="#cb15-117"></a><span class="in">```{r}</span></span>
+<span id="cb15-118"><a href="#cb15-118"></a>cs_panel_clean <span class="sc">|&gt;</span></span>
+<span id="cb15-119"><a href="#cb15-119"></a>  <span class="fu">group_by</span>(naics_sector, year) <span class="sc">|&gt;</span></span>
+<span id="cb15-120"><a href="#cb15-120"></a>  <span class="fu">summarize</span>(<span class="at">medianPay =</span> <span class="fu">median</span>(payroll_per_emp)) <span class="sc">|&gt;</span></span>
+<span id="cb15-121"><a href="#cb15-121"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(medianPay))</span>
+<span id="cb15-122"><a href="#cb15-122"></a><span class="in">```</span></span>
+<span id="cb15-123"><a href="#cb15-123"></a></span>
+<span id="cb15-124"><a href="#cb15-124"></a><span class="at">&gt; Among industries in North America throughout a 5-year period, </span><span class="in">`Utilities`</span><span class="at"> report the highest median payroll per employee at </span><span class="in">`$111.38`</span><span class="at"> during </span><span class="in">`2021`</span><span class="at">. </span><span class="in">`Accomodation and Food Services`</span><span class="at"> report the lowest at </span><span class="in">`$16.18`</span><span class="at"> during </span><span class="in">`2020`</span><span class="at">.</span></span>
+<span id="cb15-125"><a href="#cb15-125"></a></span>
+<span id="cb15-126"><a href="#cb15-126"></a><span class="in">```{r eval=FALSE}</span></span>
+<span id="cb15-127"><a href="#cb15-127"></a>merged_panel <span class="sc">|&gt;</span></span>
+<span id="cb15-128"><a href="#cb15-128"></a>  <span class="fu">mutate</span>(<span class="at">ai_firms_ratio =</span> ai_firms_total <span class="sc">/</span> n_firms) <span class="sc">|&gt;</span></span>
+<span id="cb15-129"><a href="#cb15-129"></a>  <span class="fu">group_by</span>(year) <span class="sc">|&gt;</span></span>
+<span id="cb15-130"><a href="#cb15-130"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ai_firms_ratio, <span class="at">y =</span> naics_sector, <span class="at">fill =</span> naics_sector)) <span class="sc">+</span></span>
+<span id="cb15-131"><a href="#cb15-131"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb15-132"><a href="#cb15-132"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb15-133"><a href="#cb15-133"></a>  <span class="fu">scale_fill_viridis_d</span>()</span>
+<span id="cb15-134"><a href="#cb15-134"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
