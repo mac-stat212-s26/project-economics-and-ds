@@ -1,12 +1,15 @@
 ---
 title: "David's EDA"
-format: html
+format: 
+  html:
+    toc: true
+    code-fold: true
 ---
 
 
 ## Introduction
 
-```{r, package, message=FALSE, warning=FALSE}
+```{r, setup, message=FALSE, warning=FALSE}
 library(here)
 library(tidyverse)
 library(ggplot2)
@@ -19,154 +22,124 @@ library(sf)
 library(stringr)
 
 source(here::here("data", "data_cleaning.R"))
-```
 
-```{r cleaning}
-tech_2018_clean <- tech_2018_clean |> 
-  mutate(
-    naics_sector = fct_recode(as.factor(naics_sector),
-                              "Total"                          = "00",
-                              "Agriculture"       = "11",
-                              "Mining"                         = "21",
-                              "Utilities"                      = "22",
-                              "Construction"                   = "23",
-                              "Manufacturing"                  = "31-33",  
-                              "Wholesale Trade"                = "42",
-                              "Retail Trade"                   = "44-45",  
-                              "Transportation" = "48-49",  
-                              "Information"                    = "51",
-                              "Finance and Insurance"          = "52",
-                              "Real Estate"                    = "53",
-                              "Professional Services"          = "54",
-                              "Management"                     = "55",
-                              "Administrative Services"        = "56",
-                              "Educational Services"           = "61",
-                              "Health Care"                    = "62",
-                              "Arts and Recreation"            = "71",
-                              "Food Services"= "72",
-                              "Other Services"                 = "81",
-                              "Unknown"                        = "99"     
-    )
-  )
-
-
-tech_2018_clean |> 
-  group_by(naics_sector) |> 
-  count()
-
-## setting theme for plots
+## Theme Settings
 theme_set(theme_minimal(base_size = 12))
 
-# reusable color scale for use levels
 scale_use_level <- function(...) {
   scale_color_brewer(palette = "Dark2", name = NULL, ...)
 }
+
 scale_use_level_fill <- function(...) {
   scale_fill_brewer(palette = "Dark2", name = NULL, ...)
 }
 ```
 
-## Descriptive Statistics
 
-```{r prueba}
-merged_panel %>%
-  summarize(
-    missing_ai_rate = sum(is.na(ai_adoption_rate)),
-    nan_ai_rate = sum(is.nan(ai_adoption_rate)),
-    zero_ai_total = sum(ai_firms_total == 0, na.rm = TRUE))
 
-merged_panel <- merged_panel %>%
+## Cleaning
+
+```{r cleaning}
+# Map NAICS codes to friendly names for readability
+tech_2018_clean <- tech_2018_clean |> 
   mutate(
-    ai_adoption_rate = ifelse(ai_firms_total == 0, NA, ai_adoption_rate))
-```
+    naics_sector = fct_recode(as.factor(naics_sector),
+                              "Total"                   = "00",
+                              "Agriculture"             = "11",
+                              "Mining"                  = "21",
+                              "Utilities"               = "22",
+                              "Construction"            = "23",
+                              "Manufacturing"           = "31-33",  
+                              "Wholesale Trade"         = "42",
+                              "Retail Trade"            = "44-45",  
+                              "Transportation"          = "48-49",  
+                              "Information"             = "51",
+                              "Finance and Insurance"   = "52",
+                              "Real Estate"             = "53",
+                              "Professional Services"   = "54",
+                              "Management"              = "55",
+                              "Administrative Services" = "56",
+                              "Educational Services"    = "61",
+                              "Health Care"             = "62",
+                              "Arts and Recreation"     = "71",
+                              "Food Services"           = "72",
+                              "Other Services"          = "81",
+                              "Unknown"                 = "99")
+  )
 
+```
 
 
 > Based on the payroll/n_emp and ai usage, how much is the revenue changing? Are those firms who are paying their employee more seeing more gains? Or is it a matter of company size?
 
 
+## The AI Wage Premium
 
-
-## Tech 2018 Data Set: ABS
-
-### Size vs. AI
+Does the AI wage premium holds constant as firms grow in size?
 
 ```{r}
-# 1. What tech types and use levels do we have?
-tech_2018_clean |> count(tech_type, used_tech)
-
-# 2. Revenue is all zeros — confirm and check payroll coverage
-tech_2018_clean |>
-  summarise(
-    pct_zero_revenue = mean(revenue == 0) * 100,
-    pct_zero_payroll = mean(payroll == 0) * 100,
-    median_payroll   = median(payroll[payroll > 0], na.rm = TRUE)
-  )
-
-# 3. AI-specific: payroll by usage level
+## wage premium story
 tech_2018_clean |>
   filter(tech_type == "artificial intelligence",
          used_tech != "Unknown",
-         naics_sector != "00",
-         payroll > 0) |>
-  group_by(used_tech, naics_sector) |>
-  summarise(
-    total_firms   = sum(n_firms,  na.rm = TRUE),
-    total_emp     = sum(n_emp,    na.rm = TRUE),
-    total_payroll = sum(payroll,  na.rm = TRUE),
-    .groups = "drop"
-  ) |>
-  mutate(payroll_per_emp = total_payroll / total_emp) |>
-  arrange(used_tech, desc(payroll_per_emp))
-
-# Check if payroll is at firm or employee level
-tech_2018_clean |>
-  filter(tech_type == "artificial intelligence",
-         naics_sector == "00",   # total economy
-         used_tech == "Used") |>
-  select(state, n_firms, n_emp, payroll) |>
-  mutate(payroll_per_emp = payroll / n_emp) |>
-  arrange(desc(payroll_per_emp))
-
-
-
-## wage premium story
-tech_2018_clean |>
-  select(-revenue) |> 
-  filter(tech_type    == "artificial intelligence",
-    used_tech    != "Unknown",
-    naics_sector != "00",
-    naics_sector != "99",
-    payroll > 0,
-    n_emp   > 0) |>
+         naics_sector != "Total", 
+         payroll > 0,
+         n_emp > 0) |>
   mutate(
-    ai_used         = if_else(used_tech == "Used", "AI Adopters", "Non-Adopters"),
-    payroll_per_emp = payroll / n_emp) |>
+    ai_used = if_else(used_tech == "Used", "AI Adopters", "Non-Adopters"),
+    payroll_per_emp = payroll / n_emp) |> 
   ggplot(aes(x = n_emp, y = payroll_per_emp, color = ai_used)) +
-  geom_point(alpha = 0.4, size = 1) +
-  geom_smooth(method = "lm", se = FALSE, linewidth = 1.2) +
+  geom_point(alpha = 0.3, size = 1.5) +
+  geom_smooth(se = FALSE, linewidth = 1.5) + 
   scale_x_log10(labels = scales::comma) +
-scale_use_level () +
-  scale_use_level_fill() +  
+  scale_y_continuous(
+    labels = scales::label_dollar(suffix = "K"), 
+    breaks = seq(0, 300, by = 50)
+  ) +  
+  scale_use_level() +
   labs(
-    title    = "Firm Size, AI Adoption, and Payroll",
-    subtitle = "Each point is a state × industry cell",
-    x        = "Number of Employees (log scale)",
-    y        = "Payroll per Employee, ($K)",
-    caption  = "Source: 2018 Annual Business Survey") +
+    title = "Does AI Pay?",
+    subtitle = "Evidence of higher payroll standards among technology adopters across firm scales",
+    x = "Number of Employees (Log Scale)",
+    y = "Avg. Payroll per Employee (USD)",
+    color = "Adoption Status",
+    caption = "Source: 2018 Annual Business Survey (ABS) | Author: David Rios\nNote: Payroll standardized to thousands of dollars per employee. Trend lines calculated via local regression (LOESS)."
+  ) +
   theme_minimal() +
-  theme(legend.position = "top")
+  theme(legend.position = "right",
+        plot.title = element_text(face = "bold", size = 16),
+        plot.subtitle = element_text(color = "grey30"),
+        plot.caption = element_text(hjust = 0, color = "grey40", size = 8))
+```
+## Patterns within Industries
+
+
+### Company Size Panel Clean (2017-2021)
+
+> While adoption alone signals a premium, intensity is the true driver. In sectors like Finance and Information, high implementation leads to the most significant wage increases.
+
+```{r explo}
+# Management sector
+tech_2018_clean |> 
+  filter(naics_sector == "Management", tech_type == "artificial intelligence") |> 
+  group_by(use_level) |> 
+  summarise(firm_count = sum(n_firms, na.rm = TRUE)) |> 
+  arrange(use_level)
 
 ```
 
-## Company Size Panel Clean (2017-2021)
+## Patterns within Industries
 
-```{r}
+```{r industry_patterns, message=FALSE, warning=FALSE}
+# Ensure the scaling matches your data source
+# If payroll is $80,000, scale = 0.001 makes it $80K
+# If payroll is already 80, scale = 0.001 makes it $0.08K (incorrect)
+
 tech_2018_clean |>
   filter(
     tech_type == "artificial intelligence",
-    # FIX: Filter by the NEW names, not the old codes
-    naics_sector %in% c("Information", "Finance and Insurance", "Professional Services", "Management"),
+    naics_sector %in% c("Information", "Finance and Insurance", 
+                        "Professional Services", "Management"),
     use_level != "Don't know",
     n_emp > 0, 
     payroll > 0
@@ -174,36 +147,40 @@ tech_2018_clean |>
   mutate(
     payroll_per_emp = payroll / n_emp,
     use_level = fct_relevel(use_level,
-      "Did not use",
-      "Tested, but did not use in production or service",
-      "Low use", "Moderate use", "High use")
+                            "Did not use",
+                            "Tested, but did not use in production or service",
+                            "Low use", "Moderate use", "High use")
   ) |>
-  group_by(naics_sector, use_level) |> # Use naics_sector directly
+  group_by(naics_sector, use_level) |> 
   summarise(
     wpay = weighted.mean(payroll_per_emp, w = n_emp, na.rm = TRUE),
     .groups = "drop"
   ) |>
   ggplot(aes(x = use_level, y = wpay, fill = use_level)) +
   geom_col(width = 0.7) +
-  scale_fill_brewer(palette = "Dark2", name = NULL) +
+  scale_use_level_fill() +
   scale_x_discrete(labels = c(
     "Did not use" = "None",
     "Tested, but did not use in production or service" = "Tested",
-    "Low use" = "Low", "Moderate use" = "Mod", "High use" = "High"
+    "Low use" = "Low", "Moderate use" = "Moderate", "High use" = "High"
   )) +
-  scale_y_continuous(labels = scales::comma) +
-  facet_wrap(~naics_sector, scales = "free_y") + # Facet by the sector name
+  # This line is the most common point of failure:
+  scale_y_continuous(labels = scales::label_dollar( suffix = "K")) +
+  facet_wrap(~naics_sector, scales = "free_y") + 
   labs(
-    title    = "AI Intensity and Payroll: Pattern Holds Within Industries",
-    subtitle = "Weighted mean payroll per employee ($000s) by AI use level, 2018",
-    x = NULL, y = "Payroll per Employee ($000s)",
-    caption  = "Source: 2018 ABS. Weighted by employment."
+    title = "AI Intensity and Payroll",
+    subtitle = "Higher levels of AI implementation correlate with significant wage premiums",
+    x = NULL, 
+    y = "Avg. Payroll per Employee",
+    caption = "Source: 2018 ABS. Note: 'High Use' category for Management contains zero or suppressed reporting firms."
   ) +
-  theme_minimal() +
-  theme(legend.position = "none",
-        axis.text.x = element_text(size = 7))
-
+  theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 8),
+    strip.text = element_text(face = "bold")
+  )
 ```
+
 
 ## AI Adoption Spatial
 
@@ -212,6 +189,7 @@ tech_2018_clean |>
 ## AI Adoption Spatial
 
 ```{r maps}
+# --- PREPARATION: State Lookups ---
 fips_to_name <- tibble(
   state_fips = c("01", "02", "04", "05", "06", "08", "09", "10", "11", "12", "13", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "44", "45", "46", "47", "48", "49", "50", "51", "53", "54", "55", "56"),
   state_name = c("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming")
@@ -236,47 +214,26 @@ ai_rates <- tech_2018_clean |>
   group_by(state, naics_sector) |>
   summarise(
     ai_adoption_rate = sum(n_firms[used_tech == "Used"], na.rm = TRUE) / 
-                       sum(n_firms, na.rm = TRUE),
+      sum(n_firms, na.rm = TRUE),
     .groups = "drop"
   )
 
-# --- STEP 3: Payroll (Standardizing Sector Names) ---
+# --- STEP 3: Payroll (Matching by Cleaned Sector Names) ---
 payroll_stats <- cs_panel_clean |>
   ungroup() |> 
-  mutate(sector_name = case_when(
-    naics_sector == "11" ~ "Agriculture",
-    naics_sector == "21" ~ "Mining",
-    naics_sector == "22" ~ "Utilities",
-    naics_sector == "23" ~ "Construction",
-    naics_sector == "31-33" ~ "Manufacturing",
-    naics_sector == "42" ~ "Wholesale Trade",
-    naics_sector == "44-45" ~ "Retail Trade",
-    naics_sector == "48-49" ~ "Transportation",
-    naics_sector == "51" ~ "Information",
-    naics_sector == "52" ~ "Finance and Insurance",
-    naics_sector == "53" ~ "Real Estate",
-    naics_sector == "54" ~ "Professional Services",
-    naics_sector == "55" ~ "Management",
-    naics_sector == "56" ~ "Administrative Services",
-    naics_sector == "61" ~ "Educational Services",
-    naics_sector == "62" ~ "Health Care",
-    naics_sector == "71" ~ "Arts and Recreation",
-    naics_sector == "72" ~ "Food Services",
-    naics_sector == "81" ~ "Other Services",
-    TRUE ~ "Unknown"
-  )) |>
-  group_by(state, sector_name) |>
+  group_by(state, naics_sector) |>
   summarise(
-    mean_payroll_per_emp = mean(payroll_per_emp / 1000, na.rm = TRUE),
-    .groups = "drop")
+    mean_payroll_per_emp = mean(payroll_per_emp, na.rm = TRUE), # Raw USD
+    .groups = "drop"
+  )
 
 # --- STEP 4: Final Merge & Industry Filter ---
 state_ai_spatial <- ai_rates |>
-  left_join(payroll_stats, by = c("state" = "state", "naics_sector" = "sector_name")) |>
+  left_join(payroll_stats, by = c("state", "naics_sector")) |>
   left_join(fips_to_name, by = c("state" = "state_fips")) |>
   filter(!is.na(state_name))
 
-# Data Quality Check: Filter out industries with > 10 missing states
+# Identify industries with enough data to show in the dropdown
 valid_industries <- state_ai_spatial |>
   group_by(naics_sector) |>
   summarise(missing = sum(is.na(ai_adoption_rate)), .groups = "drop") |>
@@ -308,18 +265,17 @@ server <- function(input, output, session) {
       st_as_sf() |>
       filter(!st_is_empty(geometry))
   })
-
+  
   output$map <- renderLeaflet({
     leaflet() |>
       addProviderTiles(providers$CartoDB.Positron) |>
       setView(lng = -98.58, lat = 39.82, zoom = 4)
   })
-
+  
   observe({
     data <- filtered_data()
     req(nrow(data) > 0)
     
-    # Custom palette that handles NAs as grey
     pal <- colorNumeric("YlOrRd", 
                         domain = c(0, max(data$ai_adoption_rate * 100, na.rm = TRUE)), 
                         na.color = "#D3D3D3")
@@ -329,11 +285,17 @@ server <- function(input, output, session) {
        Sector: %s<br/>
        AI Adoption: <b>%s</b><br/>
        Payroll/Emp: <b>%s</b>",
-      data$state_name, data$naics_sector, 
-      ifelse(is.na(data$ai_adoption_rate), "Insufficient Data", paste0(round(data$ai_adoption_rate * 100, 2), "%")),
-      ifelse(is.na(data$mean_payroll_per_emp), "N/A", paste0("$", formatC(data$mean_payroll_per_emp, format="f", digits=1, big.mark=","), "k"))
+      data$state_name, 
+      data$naics_sector, 
+      ifelse(is.na(data$ai_adoption_rate), 
+             "Insufficient Data", 
+             paste0(round(data$ai_adoption_rate * 100, 2), "%")),
+      # Applied / 1000 fix here for raw USD to 'k' display
+      ifelse(is.na(data$mean_payroll_per_emp), 
+             "N/A", 
+             paste0("$", formatC(data$mean_payroll_per_emp / 1000, format="f", digits=1, big.mark=","), "k"))
     ) |> lapply(htmltools::HTML)
-
+    
     leafletProxy("map", data = data) |>
       clearShapes() |>
       addPolygons(
