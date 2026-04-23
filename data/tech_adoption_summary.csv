@@ -1,4 +1,4 @@
-state,naics2017,firms_using_artificial_intelligence,firms_using_cloud_based,firms_using_robotics,firms_using_specialized_equipment,firms_using_specialized_software,emp_using_artificial_intelligence,emp_using_cloud_based,emp_using_robotics,emp_using_specialized_equipment,emp_using_specialized_software
+state,naics_sector,firms_using_artificial_intelligence,firms_using_cloud_based,firms_using_robotics,firms_using_specialized_equipment,firms_using_specialized_software,emp_using_artificial_intelligence,emp_using_cloud_based,emp_using_robotics,emp_using_specialized_equipment,emp_using_specialized_software
 01,00,1855,17448,1714,10559,22614,196095,786873,258485,509617,793670
 01,11,0,0,0,0,0,0,0,0,0,0
 01,21,0,0,0,0,0,0,0,0,0,0

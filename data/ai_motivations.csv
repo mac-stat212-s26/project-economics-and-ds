@@ -1,4 +1,4 @@
-state,NAICS2017,motivation,n_firms,n_emp
+state,naics_sector,motivation,n_firms,n_emp
 01,00,To automate tasks performed by labor,541,122269
 01,00,To upgrade outdated processes or methods,830,89416
 01,00,To improve quality or reliability of processes or methods,1190,157909

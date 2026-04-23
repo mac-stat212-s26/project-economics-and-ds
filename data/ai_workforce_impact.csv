@@ -1,4 +1,4 @@
-state,NAICS2017,impact,n_firms,n_emp
+state,naics_sector,impact,n_firms,n_emp
 01,00,Increased number of workers employed by this business,348,82800
 01,00,Decreased number of workers employed by this business,88,4332
 01,00,Did not change skill level of workers employed by this business,920,68846
