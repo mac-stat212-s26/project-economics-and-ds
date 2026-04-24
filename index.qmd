@@ -16,7 +16,7 @@ Your report goes here.
 ```
 
 ## Motivation
-
+With how much companies seem to be adopting artificial intelligence into its , it seems like nowadays we can't seem to escape it.
 
 ## Research Question
 

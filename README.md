@@ -4,9 +4,7 @@ editor:
     wrap: 72
 ---
 
-# Project Title
-
-Check the project requirements for what should go into this file.
+# AI Business Wellbeing in 2018
 
 Code
 
