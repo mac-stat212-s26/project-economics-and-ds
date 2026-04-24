@@ -2,7 +2,11 @@
 title: "Katherine M."
 format: 
   html: 
+    toc: true
+    toc-depth: 3
     embed-resources: true
+    code-overflow: wrap
+    page-layout: full
 ---
 
 Your exploratory data analysis of the team datasets go here.
@@ -30,7 +34,7 @@ unique(merged_panel$NAICS2017)
 
 merged_panel <- merged_panel |> 
   mutate(
-    NAICS2017 = fct_recode(as.factor(NAICS2017),
+    Industry = fct_recode(as.factor(NAICS2017),
         "Total" = "00",
         "Agriculture, Forestry, Fishing and Hunting" = "11",
         "Mining" = "21",
@@ -53,7 +57,7 @@ merged_panel <- merged_panel |>
 
 ai_barriers <- ai_barriers |> 
   mutate(
-    NAICS2017 = fct_recode(as.factor(NAICS2017),
+    Industry = fct_recode(as.factor(NAICS2017),
         "Total" = "00",
         "Agriculture, Forestry, Fishing and Hunting" = "11",
         "Mining" = "21",
@@ -89,7 +93,7 @@ merged_panel |>
 ```{r}
 # high AI usage by industry from 2017-2021
 merged_panel |> 
-  ggplot(aes(x = NAICS2017, y = ai_firms_high_use, fill = NAICS2017)) +
+  ggplot(aes(x = Industry, y = ai_firms_high_use, fill = Industry)) +
   geom_col() + 
   facet_wrap(~year) +
   theme(axis.text.x = element_blank()) +
@@ -103,7 +107,7 @@ merged_panel |>
 # high AI usage by industry from 2017-2021
 merged_panel |> 
   filter(!str_detect(NAICS2017, "Total")) |> 
-  ggplot(aes(x = NAICS2017, y = ai_firms_high_use, fill = NAICS2017)) +
+  ggplot(aes(x = Industry, y = ai_firms_high_use, fill = Industry)) +
   geom_col() + 
   facet_wrap(~year) +
   theme(axis.text.x = element_blank()) +
@@ -112,16 +116,31 @@ merged_panel |>
        title = "AI Usage by Industry (2017-2021)")
 ```
 
-
-# Barriers to AI Usage by Industry
+# Barriers to AI Usage by Industry (Excluding Total)
 ```{r}
-# barriers to AI usage by industry
 ai_barriers |> 
+  filter(!str_detect(Industry, "Total")) |> 
   filter(NAICS2017 != "00", NAICS2017 != "99") |> 
+  mutate(n_firms = n_firms/100000) |> 
   ggplot(aes(x = NAICS2017, y = n_firms, fill = barrier)) +
   geom_col() +
-  labs(x = "Industry", y = "Number of Firms by Industry",
+  theme_minimal() +
+  labs(x = "Industry", y = "Number of Firms by Industry (in hundred-thousands)",
        fill = "Perceived Barriers to AI Adoption",
-       title = "Near Half of Firms Across Industries See AI as Unnecessary")
+       title = "Near Half of Firms Across Industries See AI as Unnecessary (2017)")
+```
+
+# Barriers to AI Usage by State 
+```{r}
+ai_barriers |> 
+  filter(!str_detect(Industry, "Total")) |> 
+  filter(NAICS2017 != "00", NAICS2017 != "99") |> 
+  mutate(n_firms = n_firms/100000) |> 
+  ggplot(aes(x = state, y = n_firms, fill = barrier)) +
+  geom_col() +
+  theme_minimal() +
+  labs(x = "State", y = "Number of Firms by State (in hundred-thousands)",
+       fill = "Perceived Barriers to AI Adoption",
+       title = "Near Half of Firms Across States See AI as Unnecessary (2017)")
 ```
 
