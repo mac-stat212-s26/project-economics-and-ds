@@ -98,6 +98,9 @@ cs_panel_clean <- cs_panel_raw |>
   ) |>
   filter(n_firms > 0)
 
+cs_panel_aggregate_clean <- cs_panel_clean |>
+  filter(str_length(naics_sector) == 2)
+
 
 # Save Master Files
 write_csv(tech_2018_clean, here::here("data", "tech_2018_clean.csv"))
