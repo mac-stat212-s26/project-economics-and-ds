@@ -6,6 +6,9 @@ format:
     code-fold: true
 ---
 
+## Motivations
+
+In this document, I will be looking at the evolution of AI. Since we only have data for 2018 on AI-usage, I would look within those industries leading the AI race, how much have their payroll evolve. We excluded the *total* observations, as well as the *unknown* category.
 
 ## Introduction
 
@@ -35,6 +38,26 @@ scale_use_level_fill <- function(...) {
 }
 ```
 
+
+## Who's the top industry using AI?
+
+```{r}
+tech_2018_clean |> 
+  filter(tech_type == "artificial intelligence") |> 
+  group_by(naics_sector) |> 
+  ggplot(aes(x = used_tech , fill =use_level )) +
+  geom_density(alpha=0.5) +
+  scale_use_level_fill() +
+  theme_set()
+
+tech_2018_clean |> 
+  filter(tech_type == "artificial intelligence") |> 
+  group_by(state, naics_sector) |> 
+  ggplot(aes(x = used_tech , fill  = naics_label)) +
+  geom_density(alpha=0.5) +
+  scale_use_level_fill() +
+  theme_set()
+```
 
 
 
