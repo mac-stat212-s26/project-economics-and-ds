@@ -96,10 +96,13 @@ cs_panel_clean <- cs_panel_raw |>
     n_firms = as.numeric(firmpdemp),
     payroll_per_emp = if_else(n_emp > 0, payroll_total_usd / n_emp, NA_real_)
   ) |>
-  filter(n_firms > 0)
+  filter(n_firms > 0) |>
+  select(-firmpdemp, -emp)
 
 cs_panel_aggregate_clean <- cs_panel_clean |>
   filter(str_length(naics_sector) == 2)
+
+
 
 
 # Save Master Files
