@@ -29,7 +29,7 @@ source(here::here("data", "data_cleaning.R"))
 ```
 
 # Data Cleaning
-```{r}
+```{r eval=FALSE}
 unique(merged_panel$NAICS2017)
 
 merged_panel <- merged_panel |> 
@@ -79,7 +79,7 @@ ai_barriers <- ai_barriers |>
 ```
 
 # AI Usage Over Time by State
-```{r}
+```{r eval=FALSE}
 # looking at how general high AI usage has changed by state from 2017-2021
 merged_panel |> 
   ggplot(aes(x = state, y = ai_firms_high_use)) +
@@ -90,7 +90,7 @@ merged_panel |>
 ```
 
 # AI Usage by Industry
-```{r}
+```{r eval=FALSE}
 # high AI usage by industry from 2017-2021
 merged_panel |> 
   ggplot(aes(x = Industry, y = ai_firms_high_use, fill = Industry)) +
@@ -103,7 +103,7 @@ merged_panel |>
 ```
 
 # AI Usage by Industry (Excluding Total)
-```{r}
+```{r eval=FALSE}
 # high AI usage by industry from 2017-2021
 merged_panel |> 
   filter(!str_detect(NAICS2017, "Total")) |> 
@@ -117,7 +117,7 @@ merged_panel |>
 ```
 
 # Barriers to AI Usage by Industry (Excluding Total)
-```{r}
+```{r eval=FALSE}
 ai_barriers |> 
   filter(!str_detect(Industry, "Total")) |> 
   filter(NAICS2017 != "00", NAICS2017 != "99") |> 
@@ -131,7 +131,7 @@ ai_barriers |>
 ```
 
 # Barriers to AI Usage by State 
-```{r}
+```{r eval=FALSE}
 ai_barriers |> 
   filter(!str_detect(Industry, "Total")) |> 
   filter(NAICS2017 != "00", NAICS2017 != "99") |> 
