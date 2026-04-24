@@ -400,7 +400,6 @@ cookieconsent.run({
    
   <ul>
 <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#cleaning" id="toc-cleaning" class="nav-link" data-scroll-target="#cleaning">Cleaning</a></li>
   <li><a href="#the-ai-wage-premium" id="toc-the-ai-wage-premium" class="nav-link" data-scroll-target="#the-ai-wage-premium">The AI Wage Premium</a></li>
   <li>
 <a href="#patterns-within-industries" id="toc-patterns-within-industries" class="nav-link" data-scroll-target="#patterns-within-industries">Patterns within Industries</a>
@@ -456,74 +455,44 @@ cookieconsent.run({
 <span id="cb1-23"><a href="#cb1-23"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-</section><section id="cleaning" class="level2"><h2 class="anchored" data-anchor-id="cleaning">Cleaning</h2>
-<div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Map NAICS codes to friendly names for readability</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>tech_2018_clean <span class="ot">&lt;-</span> tech_2018_clean <span class="sc">|&gt;</span> </span>
-<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb2-4"><a href="#cb2-4"></a>    <span class="at">naics_sector =</span> <span class="fu">fct_recode</span>(<span class="fu">as.factor</span>(naics_sector),</span>
-<span id="cb2-5"><a href="#cb2-5"></a>                              <span class="st">"Total"</span>                   <span class="ot">=</span> <span class="st">"00"</span>,</span>
-<span id="cb2-6"><a href="#cb2-6"></a>                              <span class="st">"Agriculture"</span>             <span class="ot">=</span> <span class="st">"11"</span>,</span>
-<span id="cb2-7"><a href="#cb2-7"></a>                              <span class="st">"Mining"</span>                  <span class="ot">=</span> <span class="st">"21"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8"></a>                              <span class="st">"Utilities"</span>               <span class="ot">=</span> <span class="st">"22"</span>,</span>
-<span id="cb2-9"><a href="#cb2-9"></a>                              <span class="st">"Construction"</span>            <span class="ot">=</span> <span class="st">"23"</span>,</span>
-<span id="cb2-10"><a href="#cb2-10"></a>                              <span class="st">"Manufacturing"</span>           <span class="ot">=</span> <span class="st">"31-33"</span>,  </span>
-<span id="cb2-11"><a href="#cb2-11"></a>                              <span class="st">"Wholesale Trade"</span>         <span class="ot">=</span> <span class="st">"42"</span>,</span>
-<span id="cb2-12"><a href="#cb2-12"></a>                              <span class="st">"Retail Trade"</span>            <span class="ot">=</span> <span class="st">"44-45"</span>,  </span>
-<span id="cb2-13"><a href="#cb2-13"></a>                              <span class="st">"Transportation"</span>          <span class="ot">=</span> <span class="st">"48-49"</span>,  </span>
-<span id="cb2-14"><a href="#cb2-14"></a>                              <span class="st">"Information"</span>             <span class="ot">=</span> <span class="st">"51"</span>,</span>
-<span id="cb2-15"><a href="#cb2-15"></a>                              <span class="st">"Finance and Insurance"</span>   <span class="ot">=</span> <span class="st">"52"</span>,</span>
-<span id="cb2-16"><a href="#cb2-16"></a>                              <span class="st">"Real Estate"</span>             <span class="ot">=</span> <span class="st">"53"</span>,</span>
-<span id="cb2-17"><a href="#cb2-17"></a>                              <span class="st">"Professional Services"</span>   <span class="ot">=</span> <span class="st">"54"</span>,</span>
-<span id="cb2-18"><a href="#cb2-18"></a>                              <span class="st">"Management"</span>              <span class="ot">=</span> <span class="st">"55"</span>,</span>
-<span id="cb2-19"><a href="#cb2-19"></a>                              <span class="st">"Administrative Services"</span> <span class="ot">=</span> <span class="st">"56"</span>,</span>
-<span id="cb2-20"><a href="#cb2-20"></a>                              <span class="st">"Educational Services"</span>    <span class="ot">=</span> <span class="st">"61"</span>,</span>
-<span id="cb2-21"><a href="#cb2-21"></a>                              <span class="st">"Health Care"</span>             <span class="ot">=</span> <span class="st">"62"</span>,</span>
-<span id="cb2-22"><a href="#cb2-22"></a>                              <span class="st">"Arts and Recreation"</span>     <span class="ot">=</span> <span class="st">"71"</span>,</span>
-<span id="cb2-23"><a href="#cb2-23"></a>                              <span class="st">"Food Services"</span>           <span class="ot">=</span> <span class="st">"72"</span>,</span>
-<span id="cb2-24"><a href="#cb2-24"></a>                              <span class="st">"Other Services"</span>          <span class="ot">=</span> <span class="st">"81"</span>,</span>
-<span id="cb2-25"><a href="#cb2-25"></a>                              <span class="st">"Unknown"</span>                 <span class="ot">=</span> <span class="st">"99"</span>)</span>
-<span id="cb2-26"><a href="#cb2-26"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
 <blockquote class="blockquote">
 <p>Based on the payroll/n_emp and ai usage, how much is the revenue changing? Are those firms who are paying their employee more seeing more gains? Or is it a matter of company size?</p>
 </blockquote>
 </section><section id="the-ai-wage-premium" class="level2"><h2 class="anchored" data-anchor-id="the-ai-wage-premium">The AI Wage Premium</h2>
 <p>Does the AI wage premium holds constant as firms grow in size?</p>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="do">## wage premium story</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">filter</span>(tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4"></a>         used_tech <span class="sc">!=</span> <span class="st">"Unknown"</span>,</span>
-<span id="cb3-5"><a href="#cb3-5"></a>         naics_sector <span class="sc">!=</span> <span class="st">"Total"</span>, </span>
-<span id="cb3-6"><a href="#cb3-6"></a>         payroll <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
-<span id="cb3-7"><a href="#cb3-7"></a>         n_emp <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb3-9"><a href="#cb3-9"></a>    <span class="at">ai_used =</span> <span class="fu">if_else</span>(used_tech <span class="sc">==</span> <span class="st">"Used"</span>, <span class="st">"AI Adopters"</span>, <span class="st">"Non-Adopters"</span>),</span>
-<span id="cb3-10"><a href="#cb3-10"></a>    <span class="at">payroll_per_emp =</span> payroll <span class="sc">/</span> n_emp) <span class="sc">|&gt;</span> </span>
-<span id="cb3-11"><a href="#cb3-11"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n_emp, <span class="at">y =</span> payroll_per_emp, <span class="at">color =</span> ai_used)) <span class="sc">+</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
-<span id="cb3-13"><a href="#cb3-13"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span> </span>
-<span id="cb3-14"><a href="#cb3-14"></a>  <span class="fu">scale_x_log10</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
-<span id="cb3-15"><a href="#cb3-15"></a>  <span class="fu">scale_y_continuous</span>(</span>
-<span id="cb3-16"><a href="#cb3-16"></a>    <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_dollar</span>(<span class="at">suffix =</span> <span class="st">"K"</span>), </span>
-<span id="cb3-17"><a href="#cb3-17"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">300</span>, <span class="at">by =</span> <span class="dv">50</span>)</span>
-<span id="cb3-18"><a href="#cb3-18"></a>  ) <span class="sc">+</span>  </span>
-<span id="cb3-19"><a href="#cb3-19"></a>  <span class="fu">scale_use_level</span>() <span class="sc">+</span></span>
-<span id="cb3-20"><a href="#cb3-20"></a>  <span class="fu">labs</span>(</span>
-<span id="cb3-21"><a href="#cb3-21"></a>    <span class="at">title =</span> <span class="st">"Does AI Pay?"</span>,</span>
-<span id="cb3-22"><a href="#cb3-22"></a>    <span class="at">subtitle =</span> <span class="st">"Evidence of higher payroll standards among technology adopters across firm scales"</span>,</span>
-<span id="cb3-23"><a href="#cb3-23"></a>    <span class="at">x =</span> <span class="st">"Number of Employees (Log Scale)"</span>,</span>
-<span id="cb3-24"><a href="#cb3-24"></a>    <span class="at">y =</span> <span class="st">"Avg. Payroll per Employee (USD)"</span>,</span>
-<span id="cb3-25"><a href="#cb3-25"></a>    <span class="at">color =</span> <span class="st">"Adoption Status"</span>,</span>
-<span id="cb3-26"><a href="#cb3-26"></a>    <span class="at">caption =</span> <span class="st">"Source: 2018 Annual Business Survey (ABS) | Author: David Rios</span><span class="sc">\n</span><span class="st">Note: Payroll standardized to thousands of dollars per employee. Trend lines calculated via local regression (LOESS)."</span></span>
-<span id="cb3-27"><a href="#cb3-27"></a>  ) <span class="sc">+</span></span>
-<span id="cb3-28"><a href="#cb3-28"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb3-29"><a href="#cb3-29"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
-<span id="cb3-30"><a href="#cb3-30"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
-<span id="cb3-31"><a href="#cb3-31"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"grey30"</span>),</span>
-<span id="cb3-32"><a href="#cb3-32"></a>        <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"grey40"</span>, <span class="at">size =</span> <span class="dv">8</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="do">## wage premium story</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">filter</span>(tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4"></a>         used_tech <span class="sc">!=</span> <span class="st">"Unknown"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5"></a>         naics_sector <span class="sc">!=</span> <span class="st">"Total"</span>, </span>
+<span id="cb2-6"><a href="#cb2-6"></a>         payroll <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
+<span id="cb2-7"><a href="#cb2-7"></a>         n_emp <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-9"><a href="#cb2-9"></a>    <span class="at">ai_used =</span> <span class="fu">if_else</span>(used_tech <span class="sc">==</span> <span class="st">"Used"</span>, <span class="st">"AI Adopters"</span>, <span class="st">"Non-Adopters"</span>),</span>
+<span id="cb2-10"><a href="#cb2-10"></a>    <span class="at">payroll_per_emp =</span> payroll <span class="sc">/</span> n_emp) <span class="sc">|&gt;</span> </span>
+<span id="cb2-11"><a href="#cb2-11"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n_emp, <span class="at">y =</span> payroll_per_emp, <span class="at">color =</span> ai_used)) <span class="sc">+</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span> </span>
+<span id="cb2-14"><a href="#cb2-14"></a>  <span class="fu">scale_x_log10</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb2-16"><a href="#cb2-16"></a>    <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_dollar</span>(<span class="at">suffix =</span> <span class="st">"K"</span>), </span>
+<span id="cb2-17"><a href="#cb2-17"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">300</span>, <span class="at">by =</span> <span class="dv">50</span>)</span>
+<span id="cb2-18"><a href="#cb2-18"></a>  ) <span class="sc">+</span>  </span>
+<span id="cb2-19"><a href="#cb2-19"></a>  <span class="fu">scale_use_level</span>() <span class="sc">+</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a>  <span class="fu">labs</span>(</span>
+<span id="cb2-21"><a href="#cb2-21"></a>    <span class="at">title =</span> <span class="st">"Does AI Pay?"</span>,</span>
+<span id="cb2-22"><a href="#cb2-22"></a>    <span class="at">subtitle =</span> <span class="st">"Evidence of higher payroll standards among technology adopters across firm scales"</span>,</span>
+<span id="cb2-23"><a href="#cb2-23"></a>    <span class="at">x =</span> <span class="st">"Number of Employees (Log Scale)"</span>,</span>
+<span id="cb2-24"><a href="#cb2-24"></a>    <span class="at">y =</span> <span class="st">"Avg. Payroll per Employee (USD)"</span>,</span>
+<span id="cb2-25"><a href="#cb2-25"></a>    <span class="at">color =</span> <span class="st">"Adoption Status"</span>,</span>
+<span id="cb2-26"><a href="#cb2-26"></a>    <span class="at">caption =</span> <span class="st">"Source: 2018 Annual Business Survey (ABS) | Author: David Rios</span><span class="sc">\n</span><span class="st">Note: Payroll standardized to thousands of dollars per employee. Trend lines calculated via local regression (LOESS)."</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a>  ) <span class="sc">+</span></span>
+<span id="cb2-28"><a href="#cb2-28"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb2-29"><a href="#cb2-29"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
+<span id="cb2-30"><a href="#cb2-30"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb2-31"><a href="#cb2-31"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"grey30"</span>),</span>
+<span id="cb2-32"><a href="#cb2-32"></a>        <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"grey40"</span>, <span class="at">size =</span> <span class="dv">8</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="eda_David_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
@@ -537,12 +506,12 @@ cookieconsent.run({
 <p>While adoption alone signals a premium, intensity is the true driver. In sectors like Finance and Information, high implementation leads to the most significant wage increases.</p>
 </blockquote>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Management sector</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>tech_2018_clean <span class="sc">|&gt;</span> </span>
-<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">filter</span>(naics_sector <span class="sc">==</span> <span class="st">"Management"</span>, tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">group_by</span>(use_level) <span class="sc">|&gt;</span> </span>
-<span id="cb4-5"><a href="#cb4-5"></a>  <span class="fu">summarise</span>(<span class="at">firm_count =</span> <span class="fu">sum</span>(n_firms, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb4-6"><a href="#cb4-6"></a>  <span class="fu">arrange</span>(use_level)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Management sector</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>tech_2018_clean <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">filter</span>(naics_sector <span class="sc">==</span> <span class="st">"Management"</span>, tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-4"><a href="#cb3-4"></a>  <span class="fu">group_by</span>(use_level) <span class="sc">|&gt;</span> </span>
+<span id="cb3-5"><a href="#cb3-5"></a>  <span class="fu">summarise</span>(<span class="at">firm_count =</span> <span class="fu">sum</span>(n_firms, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-6"><a href="#cb3-6"></a>  <span class="fu">arrange</span>(use_level)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 2
   use_level                                        firm_count
@@ -557,54 +526,54 @@ cookieconsent.run({
 </div>
 </section></section><section id="patterns-within-industries-1" class="level2"><h2 class="anchored" data-anchor-id="patterns-within-industries-1">Patterns within Industries</h2>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Ensure the scaling matches your data source</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co"># If payroll is $80,000, scale = 0.001 makes it $80K</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co"># If payroll is already 80, scale = 0.001 makes it $0.08K (incorrect)</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a></span>
-<span id="cb6-5"><a href="#cb6-5"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a>  <span class="fu">filter</span>(</span>
-<span id="cb6-7"><a href="#cb6-7"></a>    tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>,</span>
-<span id="cb6-8"><a href="#cb6-8"></a>    naics_sector <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Information"</span>, <span class="st">"Finance and Insurance"</span>, </span>
-<span id="cb6-9"><a href="#cb6-9"></a>                        <span class="st">"Professional Services"</span>, <span class="st">"Management"</span>),</span>
-<span id="cb6-10"><a href="#cb6-10"></a>    use_level <span class="sc">!=</span> <span class="st">"Don't know"</span>,</span>
-<span id="cb6-11"><a href="#cb6-11"></a>    n_emp <span class="sc">&gt;</span> <span class="dv">0</span>, </span>
-<span id="cb6-12"><a href="#cb6-12"></a>    payroll <span class="sc">&gt;</span> <span class="dv">0</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb6-15"><a href="#cb6-15"></a>    <span class="at">payroll_per_emp =</span> payroll <span class="sc">/</span> n_emp,</span>
-<span id="cb6-16"><a href="#cb6-16"></a>    <span class="at">use_level =</span> <span class="fu">fct_relevel</span>(use_level,</span>
-<span id="cb6-17"><a href="#cb6-17"></a>                            <span class="st">"Did not use"</span>,</span>
-<span id="cb6-18"><a href="#cb6-18"></a>                            <span class="st">"Tested, but did not use in production or service"</span>,</span>
-<span id="cb6-19"><a href="#cb6-19"></a>                            <span class="st">"Low use"</span>, <span class="st">"Moderate use"</span>, <span class="st">"High use"</span>)</span>
-<span id="cb6-20"><a href="#cb6-20"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb6-21"><a href="#cb6-21"></a>  <span class="fu">group_by</span>(naics_sector, use_level) <span class="sc">|&gt;</span> </span>
-<span id="cb6-22"><a href="#cb6-22"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb6-23"><a href="#cb6-23"></a>    <span class="at">wpay =</span> <span class="fu">weighted.mean</span>(payroll_per_emp, <span class="at">w =</span> n_emp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb6-24"><a href="#cb6-24"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb6-25"><a href="#cb6-25"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb6-26"><a href="#cb6-26"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> use_level, <span class="at">y =</span> wpay, <span class="at">fill =</span> use_level)) <span class="sc">+</span></span>
-<span id="cb6-27"><a href="#cb6-27"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb6-28"><a href="#cb6-28"></a>  <span class="fu">scale_use_level_fill</span>() <span class="sc">+</span></span>
-<span id="cb6-29"><a href="#cb6-29"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(</span>
-<span id="cb6-30"><a href="#cb6-30"></a>    <span class="st">"Did not use"</span> <span class="ot">=</span> <span class="st">"None"</span>,</span>
-<span id="cb6-31"><a href="#cb6-31"></a>    <span class="st">"Tested, but did not use in production or service"</span> <span class="ot">=</span> <span class="st">"Tested"</span>,</span>
-<span id="cb6-32"><a href="#cb6-32"></a>    <span class="st">"Low use"</span> <span class="ot">=</span> <span class="st">"Low"</span>, <span class="st">"Moderate use"</span> <span class="ot">=</span> <span class="st">"Moderate"</span>, <span class="st">"High use"</span> <span class="ot">=</span> <span class="st">"High"</span></span>
-<span id="cb6-33"><a href="#cb6-33"></a>  )) <span class="sc">+</span></span>
-<span id="cb6-34"><a href="#cb6-34"></a>  <span class="co"># This line is the most common point of failure:</span></span>
-<span id="cb6-35"><a href="#cb6-35"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_dollar</span>( <span class="at">suffix =</span> <span class="st">"K"</span>)) <span class="sc">+</span></span>
-<span id="cb6-36"><a href="#cb6-36"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>naics_sector, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span> </span>
-<span id="cb6-37"><a href="#cb6-37"></a>  <span class="fu">labs</span>(</span>
-<span id="cb6-38"><a href="#cb6-38"></a>    <span class="at">title =</span> <span class="st">"AI Intensity and Payroll"</span>,</span>
-<span id="cb6-39"><a href="#cb6-39"></a>    <span class="at">subtitle =</span> <span class="st">"Higher levels of AI implementation correlate with significant wage premiums"</span>,</span>
-<span id="cb6-40"><a href="#cb6-40"></a>    <span class="at">x =</span> <span class="cn">NULL</span>, </span>
-<span id="cb6-41"><a href="#cb6-41"></a>    <span class="at">y =</span> <span class="st">"Avg. Payroll per Employee"</span>,</span>
-<span id="cb6-42"><a href="#cb6-42"></a>    <span class="at">caption =</span> <span class="st">"Source: 2018 ABS. Note: 'High Use' category for Management contains zero or suppressed reporting firms."</span></span>
-<span id="cb6-43"><a href="#cb6-43"></a>  ) <span class="sc">+</span></span>
-<span id="cb6-44"><a href="#cb6-44"></a>  <span class="fu">theme</span>(</span>
-<span id="cb6-45"><a href="#cb6-45"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
-<span id="cb6-46"><a href="#cb6-46"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
-<span id="cb6-47"><a href="#cb6-47"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)</span>
-<span id="cb6-48"><a href="#cb6-48"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Ensure the scaling matches your data source</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="co"># If payroll is $80,000, scale = 0.001 makes it $80K</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co"># If payroll is already 80, scale = 0.001 makes it $0.08K (incorrect)</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a></span>
+<span id="cb5-5"><a href="#cb5-5"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>  <span class="fu">filter</span>(</span>
+<span id="cb5-7"><a href="#cb5-7"></a>    tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8"></a>    naics_sector <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Information"</span>, <span class="st">"Finance and Insurance"</span>, </span>
+<span id="cb5-9"><a href="#cb5-9"></a>                        <span class="st">"Professional Services"</span>, <span class="st">"Management"</span>),</span>
+<span id="cb5-10"><a href="#cb5-10"></a>    use_level <span class="sc">!=</span> <span class="st">"Don't know"</span>,</span>
+<span id="cb5-11"><a href="#cb5-11"></a>    n_emp <span class="sc">&gt;</span> <span class="dv">0</span>, </span>
+<span id="cb5-12"><a href="#cb5-12"></a>    payroll <span class="sc">&gt;</span> <span class="dv">0</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-15"><a href="#cb5-15"></a>    <span class="at">payroll_per_emp =</span> payroll <span class="sc">/</span> n_emp,</span>
+<span id="cb5-16"><a href="#cb5-16"></a>    <span class="at">use_level =</span> <span class="fu">fct_relevel</span>(use_level,</span>
+<span id="cb5-17"><a href="#cb5-17"></a>                            <span class="st">"Did not use"</span>,</span>
+<span id="cb5-18"><a href="#cb5-18"></a>                            <span class="st">"Tested, but did not use in production or service"</span>,</span>
+<span id="cb5-19"><a href="#cb5-19"></a>                            <span class="st">"Low use"</span>, <span class="st">"Moderate use"</span>, <span class="st">"High use"</span>)</span>
+<span id="cb5-20"><a href="#cb5-20"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb5-21"><a href="#cb5-21"></a>  <span class="fu">group_by</span>(naics_sector, use_level) <span class="sc">|&gt;</span> </span>
+<span id="cb5-22"><a href="#cb5-22"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb5-23"><a href="#cb5-23"></a>    <span class="at">wpay =</span> <span class="fu">weighted.mean</span>(payroll_per_emp, <span class="at">w =</span> n_emp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb5-24"><a href="#cb5-24"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb5-25"><a href="#cb5-25"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb5-26"><a href="#cb5-26"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> use_level, <span class="at">y =</span> wpay, <span class="at">fill =</span> use_level)) <span class="sc">+</span></span>
+<span id="cb5-27"><a href="#cb5-27"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb5-28"><a href="#cb5-28"></a>  <span class="fu">scale_use_level_fill</span>() <span class="sc">+</span></span>
+<span id="cb5-29"><a href="#cb5-29"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(</span>
+<span id="cb5-30"><a href="#cb5-30"></a>    <span class="st">"Did not use"</span> <span class="ot">=</span> <span class="st">"None"</span>,</span>
+<span id="cb5-31"><a href="#cb5-31"></a>    <span class="st">"Tested, but did not use in production or service"</span> <span class="ot">=</span> <span class="st">"Tested"</span>,</span>
+<span id="cb5-32"><a href="#cb5-32"></a>    <span class="st">"Low use"</span> <span class="ot">=</span> <span class="st">"Low"</span>, <span class="st">"Moderate use"</span> <span class="ot">=</span> <span class="st">"Moderate"</span>, <span class="st">"High use"</span> <span class="ot">=</span> <span class="st">"High"</span></span>
+<span id="cb5-33"><a href="#cb5-33"></a>  )) <span class="sc">+</span></span>
+<span id="cb5-34"><a href="#cb5-34"></a>  <span class="co"># This line is the most common point of failure:</span></span>
+<span id="cb5-35"><a href="#cb5-35"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_dollar</span>( <span class="at">suffix =</span> <span class="st">"K"</span>)) <span class="sc">+</span></span>
+<span id="cb5-36"><a href="#cb5-36"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>naics_sector, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span> </span>
+<span id="cb5-37"><a href="#cb5-37"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-38"><a href="#cb5-38"></a>    <span class="at">title =</span> <span class="st">"AI Intensity and Payroll"</span>,</span>
+<span id="cb5-39"><a href="#cb5-39"></a>    <span class="at">subtitle =</span> <span class="st">"Higher levels of AI implementation correlate with significant wage premiums"</span>,</span>
+<span id="cb5-40"><a href="#cb5-40"></a>    <span class="at">x =</span> <span class="cn">NULL</span>, </span>
+<span id="cb5-41"><a href="#cb5-41"></a>    <span class="at">y =</span> <span class="st">"Avg. Payroll per Employee"</span>,</span>
+<span id="cb5-42"><a href="#cb5-42"></a>    <span class="at">caption =</span> <span class="st">"Source: 2018 ABS. Note: 'High Use' category for Management contains zero or suppressed reporting firms."</span></span>
+<span id="cb5-43"><a href="#cb5-43"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-44"><a href="#cb5-44"></a>  <span class="fu">theme</span>(</span>
+<span id="cb5-45"><a href="#cb5-45"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb5-46"><a href="#cb5-46"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb5-47"><a href="#cb5-47"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb5-48"><a href="#cb5-48"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="eda_David_files/figure-html/industry_patterns-1.png" class="img-fluid figure-img" width="672"></p>
@@ -618,129 +587,129 @@ cookieconsent.run({
 </blockquote>
 </section><section id="ai-adoption-spatial-1" class="level2"><h2 class="anchored" data-anchor-id="ai-adoption-spatial-1">AI Adoption Spatial</h2>
 <div class="cell">
-<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># --- PREPARATION: State Lookups ---</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>fips_to_name <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb7-3"><a href="#cb7-3"></a>  <span class="at">state_fips =</span> <span class="fu">c</span>(<span class="st">"01"</span>, <span class="st">"02"</span>, <span class="st">"04"</span>, <span class="st">"05"</span>, <span class="st">"06"</span>, <span class="st">"08"</span>, <span class="st">"09"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span>, <span class="st">"13"</span>, <span class="st">"15"</span>, <span class="st">"16"</span>, <span class="st">"17"</span>, <span class="st">"18"</span>, <span class="st">"19"</span>, <span class="st">"20"</span>, <span class="st">"21"</span>, <span class="st">"22"</span>, <span class="st">"23"</span>, <span class="st">"24"</span>, <span class="st">"25"</span>, <span class="st">"26"</span>, <span class="st">"27"</span>, <span class="st">"28"</span>, <span class="st">"29"</span>, <span class="st">"30"</span>, <span class="st">"31"</span>, <span class="st">"32"</span>, <span class="st">"33"</span>, <span class="st">"34"</span>, <span class="st">"35"</span>, <span class="st">"36"</span>, <span class="st">"37"</span>, <span class="st">"38"</span>, <span class="st">"39"</span>, <span class="st">"40"</span>, <span class="st">"41"</span>, <span class="st">"42"</span>, <span class="st">"44"</span>, <span class="st">"45"</span>, <span class="st">"46"</span>, <span class="st">"47"</span>, <span class="st">"48"</span>, <span class="st">"49"</span>, <span class="st">"50"</span>, <span class="st">"51"</span>, <span class="st">"53"</span>, <span class="st">"54"</span>, <span class="st">"55"</span>, <span class="st">"56"</span>),</span>
-<span id="cb7-4"><a href="#cb7-4"></a>  <span class="at">state_name =</span> <span class="fu">c</span>(<span class="st">"Alabama"</span>, <span class="st">"Alaska"</span>, <span class="st">"Arizona"</span>, <span class="st">"Arkansas"</span>, <span class="st">"California"</span>, <span class="st">"Colorado"</span>, <span class="st">"Connecticut"</span>, <span class="st">"Delaware"</span>, <span class="st">"District of Columbia"</span>, <span class="st">"Florida"</span>, <span class="st">"Georgia"</span>, <span class="st">"Hawaii"</span>, <span class="st">"Idaho"</span>, <span class="st">"Illinois"</span>, <span class="st">"Indiana"</span>, <span class="st">"Iowa"</span>, <span class="st">"Kansas"</span>, <span class="st">"Kentucky"</span>, <span class="st">"Louisiana"</span>, <span class="st">"Maine"</span>, <span class="st">"Maryland"</span>, <span class="st">"Massachusetts"</span>, <span class="st">"Michigan"</span>, <span class="st">"Minnesota"</span>, <span class="st">"Mississippi"</span>, <span class="st">"Missouri"</span>, <span class="st">"Montana"</span>, <span class="st">"Nebraska"</span>, <span class="st">"Nevada"</span>, <span class="st">"New Hampshire"</span>, <span class="st">"New Jersey"</span>, <span class="st">"New Mexico"</span>, <span class="st">"New York"</span>, <span class="st">"North Carolina"</span>, <span class="st">"North Dakota"</span>, <span class="st">"Ohio"</span>, <span class="st">"Oklahoma"</span>, <span class="st">"Oregon"</span>, <span class="st">"Pennsylvania"</span>, <span class="st">"Rhode Island"</span>, <span class="st">"South Carolina"</span>, <span class="st">"South Dakota"</span>, <span class="st">"Tennessee"</span>, <span class="st">"Texas"</span>, <span class="st">"Utah"</span>, <span class="st">"Vermont"</span>, <span class="st">"Virginia"</span>, <span class="st">"Washington"</span>, <span class="st">"West Virginia"</span>, <span class="st">"Wisconsin"</span>, <span class="st">"Wyoming"</span>)</span>
-<span id="cb7-5"><a href="#cb7-5"></a>)</span>
-<span id="cb7-6"><a href="#cb7-6"></a></span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="co"># --- STEP 1: Geometry (Silent &amp; Clean) ---</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="fu">sf_use_s2</span>(<span class="cn">FALSE</span>)</span>
-<span id="cb7-9"><a href="#cb7-9"></a>states_sf <span class="ot">&lt;-</span> <span class="fu">suppressMessages</span>(<span class="fu">suppressWarnings</span>(</span>
-<span id="cb7-10"><a href="#cb7-10"></a>  <span class="fu">st_as_sf</span>(maps<span class="sc">::</span><span class="fu">map</span>(<span class="st">"state"</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb7-11"><a href="#cb7-11"></a>    <span class="fu">mutate</span>(<span class="at">state_name =</span> <span class="fu">str_to_title</span>(<span class="fu">word</span>(ID, <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">":"</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb7-12"><a href="#cb7-12"></a>    <span class="fu">st_make_valid</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb7-13"><a href="#cb7-13"></a>    <span class="fu">group_by</span>(state_name) <span class="sc">|&gt;</span> </span>
-<span id="cb7-14"><a href="#cb7-14"></a>    <span class="fu">summarise</span>(<span class="at">geometry =</span> <span class="fu">st_union</span>(geom), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-15"><a href="#cb7-15"></a>    <span class="fu">st_transform</span>(<span class="dv">4326</span>)</span>
-<span id="cb7-16"><a href="#cb7-16"></a>))</span>
-<span id="cb7-17"><a href="#cb7-17"></a></span>
-<span id="cb7-18"><a href="#cb7-18"></a><span class="co"># --- STEP 2: AI Rates (Summarized &amp; Defensive) ---</span></span>
-<span id="cb7-19"><a href="#cb7-19"></a>ai_rates <span class="ot">&lt;-</span> tech_2018_clean <span class="sc">|&gt;</span></span>
-<span id="cb7-20"><a href="#cb7-20"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb7-21"><a href="#cb7-21"></a>  <span class="fu">filter</span>(tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-22"><a href="#cb7-22"></a>  <span class="fu">mutate</span>(<span class="at">naics_sector =</span> <span class="fu">as.character</span>(naics_sector)) <span class="sc">|&gt;</span></span>
-<span id="cb7-23"><a href="#cb7-23"></a>  <span class="fu">group_by</span>(state, naics_sector) <span class="sc">|&gt;</span></span>
-<span id="cb7-24"><a href="#cb7-24"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb7-25"><a href="#cb7-25"></a>    <span class="at">ai_adoption_rate =</span> <span class="fu">sum</span>(n_firms[used_tech <span class="sc">==</span> <span class="st">"Used"</span>], <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> </span>
-<span id="cb7-26"><a href="#cb7-26"></a>      <span class="fu">sum</span>(n_firms, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb7-27"><a href="#cb7-27"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb7-28"><a href="#cb7-28"></a>  )</span>
-<span id="cb7-29"><a href="#cb7-29"></a></span>
-<span id="cb7-30"><a href="#cb7-30"></a><span class="co"># --- STEP 3: Payroll (Matching by Cleaned Sector Names) ---</span></span>
-<span id="cb7-31"><a href="#cb7-31"></a>payroll_stats <span class="ot">&lt;-</span> cs_panel_clean <span class="sc">|&gt;</span></span>
-<span id="cb7-32"><a href="#cb7-32"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb7-33"><a href="#cb7-33"></a>  <span class="fu">group_by</span>(state, naics_sector) <span class="sc">|&gt;</span></span>
-<span id="cb7-34"><a href="#cb7-34"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb7-35"><a href="#cb7-35"></a>    <span class="at">mean_payroll_per_emp =</span> <span class="fu">mean</span>(payroll_per_emp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co"># Raw USD</span></span>
-<span id="cb7-36"><a href="#cb7-36"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb7-37"><a href="#cb7-37"></a>  )</span>
-<span id="cb7-38"><a href="#cb7-38"></a></span>
-<span id="cb7-39"><a href="#cb7-39"></a><span class="co"># --- STEP 4: Final Merge &amp; Industry Filter ---</span></span>
-<span id="cb7-40"><a href="#cb7-40"></a>state_ai_spatial <span class="ot">&lt;-</span> ai_rates <span class="sc">|&gt;</span></span>
-<span id="cb7-41"><a href="#cb7-41"></a>  <span class="fu">left_join</span>(payroll_stats, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"state"</span>, <span class="st">"naics_sector"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb7-42"><a href="#cb7-42"></a>  <span class="fu">left_join</span>(fips_to_name, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"state"</span> <span class="ot">=</span> <span class="st">"state_fips"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb7-43"><a href="#cb7-43"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(state_name))</span>
-<span id="cb7-44"><a href="#cb7-44"></a></span>
-<span id="cb7-45"><a href="#cb7-45"></a><span class="co"># Identify industries with enough data to show in the dropdown</span></span>
-<span id="cb7-46"><a href="#cb7-46"></a>valid_industries <span class="ot">&lt;-</span> state_ai_spatial <span class="sc">|&gt;</span></span>
-<span id="cb7-47"><a href="#cb7-47"></a>  <span class="fu">group_by</span>(naics_sector) <span class="sc">|&gt;</span></span>
-<span id="cb7-48"><a href="#cb7-48"></a>  <span class="fu">summarise</span>(<span class="at">missing =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(ai_adoption_rate)), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-49"><a href="#cb7-49"></a>  <span class="fu">filter</span>(missing <span class="sc">&lt;=</span> <span class="dv">10</span>, <span class="sc">!</span>naics_sector <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Unknown"</span>, <span class="st">"Total"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb7-50"><a href="#cb7-50"></a>  <span class="fu">pull</span>(naics_sector)</span>
-<span id="cb7-51"><a href="#cb7-51"></a></span>
-<span id="cb7-52"><a href="#cb7-52"></a><span class="co"># --- STEP 5: Shiny App ---</span></span>
-<span id="cb7-53"><a href="#cb7-53"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
-<span id="cb7-54"><a href="#cb7-54"></a>  <span class="fu">titlePanel</span>(<span class="st">"US AI Adoption &amp; Payroll by Sector (2018)"</span>),</span>
-<span id="cb7-55"><a href="#cb7-55"></a>  <span class="fu">sidebarLayout</span>(</span>
-<span id="cb7-56"><a href="#cb7-56"></a>    <span class="fu">sidebarPanel</span>(</span>
-<span id="cb7-57"><a href="#cb7-57"></a>      <span class="fu">selectInput</span>(<span class="st">"industry_choice"</span>, <span class="st">"Select Industry Sector:"</span>, </span>
-<span id="cb7-58"><a href="#cb7-58"></a>                  <span class="at">choices =</span> <span class="fu">sort</span>(valid_industries),</span>
-<span id="cb7-59"><a href="#cb7-59"></a>                  <span class="at">selected =</span> <span class="st">"Professional Services"</span>),</span>
-<span id="cb7-60"><a href="#cb7-60"></a>      <span class="fu">hr</span>(),</span>
-<span id="cb7-61"><a href="#cb7-61"></a>      <span class="fu">helpText</span>(<span class="st">"Hover over states for metrics. Grey indicates insufficient data."</span>)</span>
-<span id="cb7-62"><a href="#cb7-62"></a>    ),</span>
-<span id="cb7-63"><a href="#cb7-63"></a>    <span class="fu">mainPanel</span>(<span class="fu">leafletOutput</span>(<span class="st">"map"</span>, <span class="at">height =</span> <span class="st">"750px"</span>))</span>
-<span id="cb7-64"><a href="#cb7-64"></a>  )</span>
-<span id="cb7-65"><a href="#cb7-65"></a>)</span>
-<span id="cb7-66"><a href="#cb7-66"></a></span>
-<span id="cb7-67"><a href="#cb7-67"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
-<span id="cb7-68"><a href="#cb7-68"></a>  </span>
-<span id="cb7-69"><a href="#cb7-69"></a>  filtered_data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
-<span id="cb7-70"><a href="#cb7-70"></a>    <span class="fu">req</span>(input<span class="sc">$</span>industry_choice)</span>
-<span id="cb7-71"><a href="#cb7-71"></a>    state_ai_spatial <span class="sc">|&gt;</span></span>
-<span id="cb7-72"><a href="#cb7-72"></a>      <span class="fu">filter</span>(naics_sector <span class="sc">==</span> input<span class="sc">$</span>industry_choice) <span class="sc">|&gt;</span></span>
-<span id="cb7-73"><a href="#cb7-73"></a>      <span class="fu">left_join</span>(states_sf, <span class="at">by =</span> <span class="st">"state_name"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-74"><a href="#cb7-74"></a>      <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-75"><a href="#cb7-75"></a>      <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">st_is_empty</span>(geometry))</span>
-<span id="cb7-76"><a href="#cb7-76"></a>  })</span>
-<span id="cb7-77"><a href="#cb7-77"></a>  </span>
-<span id="cb7-78"><a href="#cb7-78"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> <span class="fu">renderLeaflet</span>({</span>
-<span id="cb7-79"><a href="#cb7-79"></a>    <span class="fu">leaflet</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-80"><a href="#cb7-80"></a>      <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>CartoDB.Positron) <span class="sc">|&gt;</span></span>
-<span id="cb7-81"><a href="#cb7-81"></a>      <span class="fu">setView</span>(<span class="at">lng =</span> <span class="sc">-</span><span class="fl">98.58</span>, <span class="at">lat =</span> <span class="fl">39.82</span>, <span class="at">zoom =</span> <span class="dv">4</span>)</span>
-<span id="cb7-82"><a href="#cb7-82"></a>  })</span>
-<span id="cb7-83"><a href="#cb7-83"></a>  </span>
-<span id="cb7-84"><a href="#cb7-84"></a>  <span class="fu">observe</span>({</span>
-<span id="cb7-85"><a href="#cb7-85"></a>    data <span class="ot">&lt;-</span> <span class="fu">filtered_data</span>()</span>
-<span id="cb7-86"><a href="#cb7-86"></a>    <span class="fu">req</span>(<span class="fu">nrow</span>(data) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb7-87"><a href="#cb7-87"></a>    </span>
-<span id="cb7-88"><a href="#cb7-88"></a>    pal <span class="ot">&lt;-</span> <span class="fu">colorNumeric</span>(<span class="st">"YlOrRd"</span>, </span>
-<span id="cb7-89"><a href="#cb7-89"></a>                        <span class="at">domain =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(data<span class="sc">$</span>ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), </span>
-<span id="cb7-90"><a href="#cb7-90"></a>                        <span class="at">na.color =</span> <span class="st">"#D3D3D3"</span>)</span>
-<span id="cb7-91"><a href="#cb7-91"></a>    </span>
-<span id="cb7-92"><a href="#cb7-92"></a>    labels <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(</span>
-<span id="cb7-93"><a href="#cb7-93"></a>      <span class="st">"&lt;strong&gt;%s&lt;/strong&gt;&lt;br/&gt;</span></span>
-<span id="cb7-94"><a href="#cb7-94"></a><span class="st">       Sector: %s&lt;br/&gt;</span></span>
-<span id="cb7-95"><a href="#cb7-95"></a><span class="st">       AI Adoption: &lt;b&gt;%s&lt;/b&gt;&lt;br/&gt;</span></span>
-<span id="cb7-96"><a href="#cb7-96"></a><span class="st">       Payroll/Emp: &lt;b&gt;%s&lt;/b&gt;"</span>,</span>
-<span id="cb7-97"><a href="#cb7-97"></a>      data<span class="sc">$</span>state_name, </span>
-<span id="cb7-98"><a href="#cb7-98"></a>      data<span class="sc">$</span>naics_sector, </span>
-<span id="cb7-99"><a href="#cb7-99"></a>      <span class="fu">ifelse</span>(<span class="fu">is.na</span>(data<span class="sc">$</span>ai_adoption_rate), </span>
-<span id="cb7-100"><a href="#cb7-100"></a>             <span class="st">"Insufficient Data"</span>, </span>
-<span id="cb7-101"><a href="#cb7-101"></a>             <span class="fu">paste0</span>(<span class="fu">round</span>(data<span class="sc">$</span>ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%"</span>)),</span>
-<span id="cb7-102"><a href="#cb7-102"></a>      <span class="co"># Applied / 1000 fix here for raw USD to 'k' display</span></span>
-<span id="cb7-103"><a href="#cb7-103"></a>      <span class="fu">ifelse</span>(<span class="fu">is.na</span>(data<span class="sc">$</span>mean_payroll_per_emp), </span>
-<span id="cb7-104"><a href="#cb7-104"></a>             <span class="st">"N/A"</span>, </span>
-<span id="cb7-105"><a href="#cb7-105"></a>             <span class="fu">paste0</span>(<span class="st">"$"</span>, <span class="fu">formatC</span>(data<span class="sc">$</span>mean_payroll_per_emp <span class="sc">/</span> <span class="dv">1000</span>, <span class="at">format=</span><span class="st">"f"</span>, <span class="at">digits=</span><span class="dv">1</span>, <span class="at">big.mark=</span><span class="st">","</span>), <span class="st">"k"</span>))</span>
-<span id="cb7-106"><a href="#cb7-106"></a>    ) <span class="sc">|&gt;</span> <span class="fu">lapply</span>(htmltools<span class="sc">::</span>HTML)</span>
-<span id="cb7-107"><a href="#cb7-107"></a>    </span>
-<span id="cb7-108"><a href="#cb7-108"></a>    <span class="fu">leafletProxy</span>(<span class="st">"map"</span>, <span class="at">data =</span> data) <span class="sc">|&gt;</span></span>
-<span id="cb7-109"><a href="#cb7-109"></a>      <span class="fu">clearShapes</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-110"><a href="#cb7-110"></a>      <span class="fu">addPolygons</span>(</span>
-<span id="cb7-111"><a href="#cb7-111"></a>        <span class="at">fillColor =</span> <span class="sc">~</span><span class="fu">pal</span>(ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>),</span>
-<span id="cb7-112"><a href="#cb7-112"></a>        <span class="at">fillOpacity =</span> <span class="fl">0.8</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">weight =</span> <span class="dv">1</span>,</span>
-<span id="cb7-113"><a href="#cb7-113"></a>        <span class="at">highlightOptions =</span> <span class="fu">highlightOptions</span>(<span class="at">weight =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"#666"</span>, <span class="at">bringToFront =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb7-114"><a href="#cb7-114"></a>        <span class="at">label =</span> labels</span>
-<span id="cb7-115"><a href="#cb7-115"></a>      ) <span class="sc">|&gt;</span></span>
-<span id="cb7-116"><a href="#cb7-116"></a>      <span class="fu">clearControls</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-117"><a href="#cb7-117"></a>      <span class="fu">addLegend</span>(<span class="st">"bottomright"</span>, <span class="at">pal =</span> pal, <span class="at">values =</span> <span class="sc">~</span>ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb7-118"><a href="#cb7-118"></a>                <span class="at">title =</span> <span class="st">"AI Adoption (%)"</span>, <span class="at">labFormat =</span> <span class="fu">labelFormat</span>(<span class="at">suffix =</span> <span class="st">"%"</span>),</span>
-<span id="cb7-119"><a href="#cb7-119"></a>                <span class="at">na.label =</span> <span class="st">"No Data"</span>)</span>
-<span id="cb7-120"><a href="#cb7-120"></a>  })</span>
-<span id="cb7-121"><a href="#cb7-121"></a>}</span>
-<span id="cb7-122"><a href="#cb7-122"></a></span>
-<span id="cb7-123"><a href="#cb7-123"></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># --- PREPARATION: State Lookups ---</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>fips_to_name <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="at">state_fips =</span> <span class="fu">c</span>(<span class="st">"01"</span>, <span class="st">"02"</span>, <span class="st">"04"</span>, <span class="st">"05"</span>, <span class="st">"06"</span>, <span class="st">"08"</span>, <span class="st">"09"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span>, <span class="st">"13"</span>, <span class="st">"15"</span>, <span class="st">"16"</span>, <span class="st">"17"</span>, <span class="st">"18"</span>, <span class="st">"19"</span>, <span class="st">"20"</span>, <span class="st">"21"</span>, <span class="st">"22"</span>, <span class="st">"23"</span>, <span class="st">"24"</span>, <span class="st">"25"</span>, <span class="st">"26"</span>, <span class="st">"27"</span>, <span class="st">"28"</span>, <span class="st">"29"</span>, <span class="st">"30"</span>, <span class="st">"31"</span>, <span class="st">"32"</span>, <span class="st">"33"</span>, <span class="st">"34"</span>, <span class="st">"35"</span>, <span class="st">"36"</span>, <span class="st">"37"</span>, <span class="st">"38"</span>, <span class="st">"39"</span>, <span class="st">"40"</span>, <span class="st">"41"</span>, <span class="st">"42"</span>, <span class="st">"44"</span>, <span class="st">"45"</span>, <span class="st">"46"</span>, <span class="st">"47"</span>, <span class="st">"48"</span>, <span class="st">"49"</span>, <span class="st">"50"</span>, <span class="st">"51"</span>, <span class="st">"53"</span>, <span class="st">"54"</span>, <span class="st">"55"</span>, <span class="st">"56"</span>),</span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="at">state_name =</span> <span class="fu">c</span>(<span class="st">"Alabama"</span>, <span class="st">"Alaska"</span>, <span class="st">"Arizona"</span>, <span class="st">"Arkansas"</span>, <span class="st">"California"</span>, <span class="st">"Colorado"</span>, <span class="st">"Connecticut"</span>, <span class="st">"Delaware"</span>, <span class="st">"District of Columbia"</span>, <span class="st">"Florida"</span>, <span class="st">"Georgia"</span>, <span class="st">"Hawaii"</span>, <span class="st">"Idaho"</span>, <span class="st">"Illinois"</span>, <span class="st">"Indiana"</span>, <span class="st">"Iowa"</span>, <span class="st">"Kansas"</span>, <span class="st">"Kentucky"</span>, <span class="st">"Louisiana"</span>, <span class="st">"Maine"</span>, <span class="st">"Maryland"</span>, <span class="st">"Massachusetts"</span>, <span class="st">"Michigan"</span>, <span class="st">"Minnesota"</span>, <span class="st">"Mississippi"</span>, <span class="st">"Missouri"</span>, <span class="st">"Montana"</span>, <span class="st">"Nebraska"</span>, <span class="st">"Nevada"</span>, <span class="st">"New Hampshire"</span>, <span class="st">"New Jersey"</span>, <span class="st">"New Mexico"</span>, <span class="st">"New York"</span>, <span class="st">"North Carolina"</span>, <span class="st">"North Dakota"</span>, <span class="st">"Ohio"</span>, <span class="st">"Oklahoma"</span>, <span class="st">"Oregon"</span>, <span class="st">"Pennsylvania"</span>, <span class="st">"Rhode Island"</span>, <span class="st">"South Carolina"</span>, <span class="st">"South Dakota"</span>, <span class="st">"Tennessee"</span>, <span class="st">"Texas"</span>, <span class="st">"Utah"</span>, <span class="st">"Vermont"</span>, <span class="st">"Virginia"</span>, <span class="st">"Washington"</span>, <span class="st">"West Virginia"</span>, <span class="st">"Wisconsin"</span>, <span class="st">"Wyoming"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5"></a>)</span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co"># --- STEP 1: Geometry (Silent &amp; Clean) ---</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="fu">sf_use_s2</span>(<span class="cn">FALSE</span>)</span>
+<span id="cb6-9"><a href="#cb6-9"></a>states_sf <span class="ot">&lt;-</span> <span class="fu">suppressMessages</span>(<span class="fu">suppressWarnings</span>(</span>
+<span id="cb6-10"><a href="#cb6-10"></a>  <span class="fu">st_as_sf</span>(maps<span class="sc">::</span><span class="fu">map</span>(<span class="st">"state"</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>    <span class="fu">mutate</span>(<span class="at">state_name =</span> <span class="fu">str_to_title</span>(<span class="fu">word</span>(ID, <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">":"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>    <span class="fu">st_make_valid</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb6-13"><a href="#cb6-13"></a>    <span class="fu">group_by</span>(state_name) <span class="sc">|&gt;</span> </span>
+<span id="cb6-14"><a href="#cb6-14"></a>    <span class="fu">summarise</span>(<span class="at">geometry =</span> <span class="fu">st_union</span>(geom), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>    <span class="fu">st_transform</span>(<span class="dv">4326</span>)</span>
+<span id="cb6-16"><a href="#cb6-16"></a>))</span>
+<span id="cb6-17"><a href="#cb6-17"></a></span>
+<span id="cb6-18"><a href="#cb6-18"></a><span class="co"># --- STEP 2: AI Rates (Summarized &amp; Defensive) ---</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a>ai_rates <span class="ot">&lt;-</span> tech_2018_clean <span class="sc">|&gt;</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb6-21"><a href="#cb6-21"></a>  <span class="fu">filter</span>(tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a>  <span class="fu">mutate</span>(<span class="at">naics_sector =</span> <span class="fu">as.character</span>(naics_sector)) <span class="sc">|&gt;</span></span>
+<span id="cb6-23"><a href="#cb6-23"></a>  <span class="fu">group_by</span>(state, naics_sector) <span class="sc">|&gt;</span></span>
+<span id="cb6-24"><a href="#cb6-24"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb6-25"><a href="#cb6-25"></a>    <span class="at">ai_adoption_rate =</span> <span class="fu">sum</span>(n_firms[used_tech <span class="sc">==</span> <span class="st">"Used"</span>], <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> </span>
+<span id="cb6-26"><a href="#cb6-26"></a>      <span class="fu">sum</span>(n_firms, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-27"><a href="#cb6-27"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb6-28"><a href="#cb6-28"></a>  )</span>
+<span id="cb6-29"><a href="#cb6-29"></a></span>
+<span id="cb6-30"><a href="#cb6-30"></a><span class="co"># --- STEP 3: Payroll (Matching by Cleaned Sector Names) ---</span></span>
+<span id="cb6-31"><a href="#cb6-31"></a>payroll_stats <span class="ot">&lt;-</span> cs_panel_clean <span class="sc">|&gt;</span></span>
+<span id="cb6-32"><a href="#cb6-32"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb6-33"><a href="#cb6-33"></a>  <span class="fu">group_by</span>(state, naics_sector) <span class="sc">|&gt;</span></span>
+<span id="cb6-34"><a href="#cb6-34"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb6-35"><a href="#cb6-35"></a>    <span class="at">mean_payroll_per_emp =</span> <span class="fu">mean</span>(payroll_per_emp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co"># Raw USD</span></span>
+<span id="cb6-36"><a href="#cb6-36"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb6-37"><a href="#cb6-37"></a>  )</span>
+<span id="cb6-38"><a href="#cb6-38"></a></span>
+<span id="cb6-39"><a href="#cb6-39"></a><span class="co"># --- STEP 4: Final Merge &amp; Industry Filter ---</span></span>
+<span id="cb6-40"><a href="#cb6-40"></a>state_ai_spatial <span class="ot">&lt;-</span> ai_rates <span class="sc">|&gt;</span></span>
+<span id="cb6-41"><a href="#cb6-41"></a>  <span class="fu">left_join</span>(payroll_stats, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"state"</span>, <span class="st">"naics_sector"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-42"><a href="#cb6-42"></a>  <span class="fu">left_join</span>(fips_to_name, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"state"</span> <span class="ot">=</span> <span class="st">"state_fips"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-43"><a href="#cb6-43"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(state_name))</span>
+<span id="cb6-44"><a href="#cb6-44"></a></span>
+<span id="cb6-45"><a href="#cb6-45"></a><span class="co"># Identify industries with enough data to show in the dropdown</span></span>
+<span id="cb6-46"><a href="#cb6-46"></a>valid_industries <span class="ot">&lt;-</span> state_ai_spatial <span class="sc">|&gt;</span></span>
+<span id="cb6-47"><a href="#cb6-47"></a>  <span class="fu">group_by</span>(naics_sector) <span class="sc">|&gt;</span></span>
+<span id="cb6-48"><a href="#cb6-48"></a>  <span class="fu">summarise</span>(<span class="at">missing =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(ai_adoption_rate)), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-49"><a href="#cb6-49"></a>  <span class="fu">filter</span>(missing <span class="sc">&lt;=</span> <span class="dv">10</span>, <span class="sc">!</span>naics_sector <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Unknown"</span>, <span class="st">"Total"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-50"><a href="#cb6-50"></a>  <span class="fu">pull</span>(naics_sector)</span>
+<span id="cb6-51"><a href="#cb6-51"></a></span>
+<span id="cb6-52"><a href="#cb6-52"></a><span class="co"># --- STEP 5: Shiny App ---</span></span>
+<span id="cb6-53"><a href="#cb6-53"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb6-54"><a href="#cb6-54"></a>  <span class="fu">titlePanel</span>(<span class="st">"US AI Adoption &amp; Payroll by Sector (2018)"</span>),</span>
+<span id="cb6-55"><a href="#cb6-55"></a>  <span class="fu">sidebarLayout</span>(</span>
+<span id="cb6-56"><a href="#cb6-56"></a>    <span class="fu">sidebarPanel</span>(</span>
+<span id="cb6-57"><a href="#cb6-57"></a>      <span class="fu">selectInput</span>(<span class="st">"industry_choice"</span>, <span class="st">"Select Industry Sector:"</span>, </span>
+<span id="cb6-58"><a href="#cb6-58"></a>                  <span class="at">choices =</span> <span class="fu">sort</span>(valid_industries),</span>
+<span id="cb6-59"><a href="#cb6-59"></a>                  <span class="at">selected =</span> <span class="st">"Professional Services"</span>),</span>
+<span id="cb6-60"><a href="#cb6-60"></a>      <span class="fu">hr</span>(),</span>
+<span id="cb6-61"><a href="#cb6-61"></a>      <span class="fu">helpText</span>(<span class="st">"Hover over states for metrics. Grey indicates insufficient data."</span>)</span>
+<span id="cb6-62"><a href="#cb6-62"></a>    ),</span>
+<span id="cb6-63"><a href="#cb6-63"></a>    <span class="fu">mainPanel</span>(<span class="fu">leafletOutput</span>(<span class="st">"map"</span>, <span class="at">height =</span> <span class="st">"750px"</span>))</span>
+<span id="cb6-64"><a href="#cb6-64"></a>  )</span>
+<span id="cb6-65"><a href="#cb6-65"></a>)</span>
+<span id="cb6-66"><a href="#cb6-66"></a></span>
+<span id="cb6-67"><a href="#cb6-67"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb6-68"><a href="#cb6-68"></a>  </span>
+<span id="cb6-69"><a href="#cb6-69"></a>  filtered_data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb6-70"><a href="#cb6-70"></a>    <span class="fu">req</span>(input<span class="sc">$</span>industry_choice)</span>
+<span id="cb6-71"><a href="#cb6-71"></a>    state_ai_spatial <span class="sc">|&gt;</span></span>
+<span id="cb6-72"><a href="#cb6-72"></a>      <span class="fu">filter</span>(naics_sector <span class="sc">==</span> input<span class="sc">$</span>industry_choice) <span class="sc">|&gt;</span></span>
+<span id="cb6-73"><a href="#cb6-73"></a>      <span class="fu">left_join</span>(states_sf, <span class="at">by =</span> <span class="st">"state_name"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-74"><a href="#cb6-74"></a>      <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-75"><a href="#cb6-75"></a>      <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">st_is_empty</span>(geometry))</span>
+<span id="cb6-76"><a href="#cb6-76"></a>  })</span>
+<span id="cb6-77"><a href="#cb6-77"></a>  </span>
+<span id="cb6-78"><a href="#cb6-78"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> <span class="fu">renderLeaflet</span>({</span>
+<span id="cb6-79"><a href="#cb6-79"></a>    <span class="fu">leaflet</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-80"><a href="#cb6-80"></a>      <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>CartoDB.Positron) <span class="sc">|&gt;</span></span>
+<span id="cb6-81"><a href="#cb6-81"></a>      <span class="fu">setView</span>(<span class="at">lng =</span> <span class="sc">-</span><span class="fl">98.58</span>, <span class="at">lat =</span> <span class="fl">39.82</span>, <span class="at">zoom =</span> <span class="dv">4</span>)</span>
+<span id="cb6-82"><a href="#cb6-82"></a>  })</span>
+<span id="cb6-83"><a href="#cb6-83"></a>  </span>
+<span id="cb6-84"><a href="#cb6-84"></a>  <span class="fu">observe</span>({</span>
+<span id="cb6-85"><a href="#cb6-85"></a>    data <span class="ot">&lt;-</span> <span class="fu">filtered_data</span>()</span>
+<span id="cb6-86"><a href="#cb6-86"></a>    <span class="fu">req</span>(<span class="fu">nrow</span>(data) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb6-87"><a href="#cb6-87"></a>    </span>
+<span id="cb6-88"><a href="#cb6-88"></a>    pal <span class="ot">&lt;-</span> <span class="fu">colorNumeric</span>(<span class="st">"YlOrRd"</span>, </span>
+<span id="cb6-89"><a href="#cb6-89"></a>                        <span class="at">domain =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(data<span class="sc">$</span>ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), </span>
+<span id="cb6-90"><a href="#cb6-90"></a>                        <span class="at">na.color =</span> <span class="st">"#D3D3D3"</span>)</span>
+<span id="cb6-91"><a href="#cb6-91"></a>    </span>
+<span id="cb6-92"><a href="#cb6-92"></a>    labels <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(</span>
+<span id="cb6-93"><a href="#cb6-93"></a>      <span class="st">"&lt;strong&gt;%s&lt;/strong&gt;&lt;br/&gt;</span></span>
+<span id="cb6-94"><a href="#cb6-94"></a><span class="st">       Sector: %s&lt;br/&gt;</span></span>
+<span id="cb6-95"><a href="#cb6-95"></a><span class="st">       AI Adoption: &lt;b&gt;%s&lt;/b&gt;&lt;br/&gt;</span></span>
+<span id="cb6-96"><a href="#cb6-96"></a><span class="st">       Payroll/Emp: &lt;b&gt;%s&lt;/b&gt;"</span>,</span>
+<span id="cb6-97"><a href="#cb6-97"></a>      data<span class="sc">$</span>state_name, </span>
+<span id="cb6-98"><a href="#cb6-98"></a>      data<span class="sc">$</span>naics_sector, </span>
+<span id="cb6-99"><a href="#cb6-99"></a>      <span class="fu">ifelse</span>(<span class="fu">is.na</span>(data<span class="sc">$</span>ai_adoption_rate), </span>
+<span id="cb6-100"><a href="#cb6-100"></a>             <span class="st">"Insufficient Data"</span>, </span>
+<span id="cb6-101"><a href="#cb6-101"></a>             <span class="fu">paste0</span>(<span class="fu">round</span>(data<span class="sc">$</span>ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%"</span>)),</span>
+<span id="cb6-102"><a href="#cb6-102"></a>      <span class="co"># Applied / 1000 fix here for raw USD to 'k' display</span></span>
+<span id="cb6-103"><a href="#cb6-103"></a>      <span class="fu">ifelse</span>(<span class="fu">is.na</span>(data<span class="sc">$</span>mean_payroll_per_emp), </span>
+<span id="cb6-104"><a href="#cb6-104"></a>             <span class="st">"N/A"</span>, </span>
+<span id="cb6-105"><a href="#cb6-105"></a>             <span class="fu">paste0</span>(<span class="st">"$"</span>, <span class="fu">formatC</span>(data<span class="sc">$</span>mean_payroll_per_emp <span class="sc">/</span> <span class="dv">1000</span>, <span class="at">format=</span><span class="st">"f"</span>, <span class="at">digits=</span><span class="dv">1</span>, <span class="at">big.mark=</span><span class="st">","</span>), <span class="st">"k"</span>))</span>
+<span id="cb6-106"><a href="#cb6-106"></a>    ) <span class="sc">|&gt;</span> <span class="fu">lapply</span>(htmltools<span class="sc">::</span>HTML)</span>
+<span id="cb6-107"><a href="#cb6-107"></a>    </span>
+<span id="cb6-108"><a href="#cb6-108"></a>    <span class="fu">leafletProxy</span>(<span class="st">"map"</span>, <span class="at">data =</span> data) <span class="sc">|&gt;</span></span>
+<span id="cb6-109"><a href="#cb6-109"></a>      <span class="fu">clearShapes</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-110"><a href="#cb6-110"></a>      <span class="fu">addPolygons</span>(</span>
+<span id="cb6-111"><a href="#cb6-111"></a>        <span class="at">fillColor =</span> <span class="sc">~</span><span class="fu">pal</span>(ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>),</span>
+<span id="cb6-112"><a href="#cb6-112"></a>        <span class="at">fillOpacity =</span> <span class="fl">0.8</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">weight =</span> <span class="dv">1</span>,</span>
+<span id="cb6-113"><a href="#cb6-113"></a>        <span class="at">highlightOptions =</span> <span class="fu">highlightOptions</span>(<span class="at">weight =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"#666"</span>, <span class="at">bringToFront =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-114"><a href="#cb6-114"></a>        <span class="at">label =</span> labels</span>
+<span id="cb6-115"><a href="#cb6-115"></a>      ) <span class="sc">|&gt;</span></span>
+<span id="cb6-116"><a href="#cb6-116"></a>      <span class="fu">clearControls</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-117"><a href="#cb6-117"></a>      <span class="fu">addLegend</span>(<span class="st">"bottomright"</span>, <span class="at">pal =</span> pal, <span class="at">values =</span> <span class="sc">~</span>ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb6-118"><a href="#cb6-118"></a>                <span class="at">title =</span> <span class="st">"AI Adoption (%)"</span>, <span class="at">labFormat =</span> <span class="fu">labelFormat</span>(<span class="at">suffix =</span> <span class="st">"%"</span>),</span>
+<span id="cb6-119"><a href="#cb6-119"></a>                <span class="at">na.label =</span> <span class="st">"No Data"</span>)</span>
+<span id="cb6-120"><a href="#cb6-120"></a>  })</span>
+<span id="cb6-121"><a href="#cb6-121"></a>}</span>
+<span id="cb6-122"><a href="#cb6-122"></a></span>
+<span id="cb6-123"><a href="#cb6-123"></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output-display">
 <p></p>
 <div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div>
@@ -1229,321 +1198,290 @@ cookieconsent.run({
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">---</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="an">title:</span><span class="co"> "David's EDA"</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="an">format:</span><span class="co"> </span></span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="co">  html:</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="co">    toc: true</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="co">    code-fold: true</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="co">---</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a></span>
-<span id="cb8-9"><a href="#cb8-9"></a></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="fu">## Introduction</span></span>
-<span id="cb8-11"><a href="#cb8-11"></a></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="in">```{r, setup, message=FALSE, warning=FALSE}</span></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="fu">library</span>(here)</span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb8-15"><a href="#cb8-15"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb8-16"><a href="#cb8-16"></a><span class="fu">library</span>(plotly)</span>
-<span id="cb8-17"><a href="#cb8-17"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb8-18"><a href="#cb8-18"></a><span class="fu">library</span>(tigris)</span>
-<span id="cb8-19"><a href="#cb8-19"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb8-20"><a href="#cb8-20"></a><span class="fu">library</span>(leaflet)</span>
-<span id="cb8-21"><a href="#cb8-21"></a><span class="fu">library</span>(sf)</span>
-<span id="cb8-22"><a href="#cb8-22"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb8-23"><a href="#cb8-23"></a></span>
-<span id="cb8-24"><a href="#cb8-24"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"data_cleaning.R"</span>))</span>
-<span id="cb8-25"><a href="#cb8-25"></a></span>
-<span id="cb8-26"><a href="#cb8-26"></a><span class="do">## Theme Settings</span></span>
-<span id="cb8-27"><a href="#cb8-27"></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>))</span>
-<span id="cb8-28"><a href="#cb8-28"></a></span>
-<span id="cb8-29"><a href="#cb8-29"></a>scale_use_level <span class="ot">&lt;-</span> <span class="cf">function</span>(...) {</span>
-<span id="cb8-30"><a href="#cb8-30"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>, <span class="at">name =</span> <span class="cn">NULL</span>, ...)</span>
-<span id="cb8-31"><a href="#cb8-31"></a>}</span>
-<span id="cb8-32"><a href="#cb8-32"></a></span>
-<span id="cb8-33"><a href="#cb8-33"></a>scale_use_level_fill <span class="ot">&lt;-</span> <span class="cf">function</span>(...) {</span>
-<span id="cb8-34"><a href="#cb8-34"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>, <span class="at">name =</span> <span class="cn">NULL</span>, ...)</span>
-<span id="cb8-35"><a href="#cb8-35"></a>}</span>
-<span id="cb8-36"><a href="#cb8-36"></a><span class="in">```</span></span>
-<span id="cb8-37"><a href="#cb8-37"></a></span>
-<span id="cb8-38"><a href="#cb8-38"></a></span>
-<span id="cb8-39"><a href="#cb8-39"></a></span>
-<span id="cb8-40"><a href="#cb8-40"></a><span class="fu">## Cleaning</span></span>
-<span id="cb8-41"><a href="#cb8-41"></a></span>
-<span id="cb8-42"><a href="#cb8-42"></a><span class="in">```{r cleaning}</span></span>
-<span id="cb8-43"><a href="#cb8-43"></a><span class="co"># Map NAICS codes to friendly names for readability</span></span>
-<span id="cb8-44"><a href="#cb8-44"></a>tech_2018_clean <span class="ot">&lt;-</span> tech_2018_clean <span class="sc">|&gt;</span> </span>
-<span id="cb8-45"><a href="#cb8-45"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb8-46"><a href="#cb8-46"></a>    <span class="at">naics_sector =</span> <span class="fu">fct_recode</span>(<span class="fu">as.factor</span>(naics_sector),</span>
-<span id="cb8-47"><a href="#cb8-47"></a>                              <span class="st">"Total"</span>                   <span class="ot">=</span> <span class="st">"00"</span>,</span>
-<span id="cb8-48"><a href="#cb8-48"></a>                              <span class="st">"Agriculture"</span>             <span class="ot">=</span> <span class="st">"11"</span>,</span>
-<span id="cb8-49"><a href="#cb8-49"></a>                              <span class="st">"Mining"</span>                  <span class="ot">=</span> <span class="st">"21"</span>,</span>
-<span id="cb8-50"><a href="#cb8-50"></a>                              <span class="st">"Utilities"</span>               <span class="ot">=</span> <span class="st">"22"</span>,</span>
-<span id="cb8-51"><a href="#cb8-51"></a>                              <span class="st">"Construction"</span>            <span class="ot">=</span> <span class="st">"23"</span>,</span>
-<span id="cb8-52"><a href="#cb8-52"></a>                              <span class="st">"Manufacturing"</span>           <span class="ot">=</span> <span class="st">"31-33"</span>,  </span>
-<span id="cb8-53"><a href="#cb8-53"></a>                              <span class="st">"Wholesale Trade"</span>         <span class="ot">=</span> <span class="st">"42"</span>,</span>
-<span id="cb8-54"><a href="#cb8-54"></a>                              <span class="st">"Retail Trade"</span>            <span class="ot">=</span> <span class="st">"44-45"</span>,  </span>
-<span id="cb8-55"><a href="#cb8-55"></a>                              <span class="st">"Transportation"</span>          <span class="ot">=</span> <span class="st">"48-49"</span>,  </span>
-<span id="cb8-56"><a href="#cb8-56"></a>                              <span class="st">"Information"</span>             <span class="ot">=</span> <span class="st">"51"</span>,</span>
-<span id="cb8-57"><a href="#cb8-57"></a>                              <span class="st">"Finance and Insurance"</span>   <span class="ot">=</span> <span class="st">"52"</span>,</span>
-<span id="cb8-58"><a href="#cb8-58"></a>                              <span class="st">"Real Estate"</span>             <span class="ot">=</span> <span class="st">"53"</span>,</span>
-<span id="cb8-59"><a href="#cb8-59"></a>                              <span class="st">"Professional Services"</span>   <span class="ot">=</span> <span class="st">"54"</span>,</span>
-<span id="cb8-60"><a href="#cb8-60"></a>                              <span class="st">"Management"</span>              <span class="ot">=</span> <span class="st">"55"</span>,</span>
-<span id="cb8-61"><a href="#cb8-61"></a>                              <span class="st">"Administrative Services"</span> <span class="ot">=</span> <span class="st">"56"</span>,</span>
-<span id="cb8-62"><a href="#cb8-62"></a>                              <span class="st">"Educational Services"</span>    <span class="ot">=</span> <span class="st">"61"</span>,</span>
-<span id="cb8-63"><a href="#cb8-63"></a>                              <span class="st">"Health Care"</span>             <span class="ot">=</span> <span class="st">"62"</span>,</span>
-<span id="cb8-64"><a href="#cb8-64"></a>                              <span class="st">"Arts and Recreation"</span>     <span class="ot">=</span> <span class="st">"71"</span>,</span>
-<span id="cb8-65"><a href="#cb8-65"></a>                              <span class="st">"Food Services"</span>           <span class="ot">=</span> <span class="st">"72"</span>,</span>
-<span id="cb8-66"><a href="#cb8-66"></a>                              <span class="st">"Other Services"</span>          <span class="ot">=</span> <span class="st">"81"</span>,</span>
-<span id="cb8-67"><a href="#cb8-67"></a>                              <span class="st">"Unknown"</span>                 <span class="ot">=</span> <span class="st">"99"</span>)</span>
-<span id="cb8-68"><a href="#cb8-68"></a>  )</span>
-<span id="cb8-69"><a href="#cb8-69"></a></span>
-<span id="cb8-70"><a href="#cb8-70"></a><span class="in">```</span></span>
-<span id="cb8-71"><a href="#cb8-71"></a></span>
-<span id="cb8-72"><a href="#cb8-72"></a></span>
-<span id="cb8-73"><a href="#cb8-73"></a><span class="at">&gt; Based on the payroll/n_emp and ai usage, how much is the revenue changing? Are those firms who are paying their employee more seeing more gains? Or is it a matter of company size?</span></span>
-<span id="cb8-74"><a href="#cb8-74"></a></span>
-<span id="cb8-75"><a href="#cb8-75"></a></span>
-<span id="cb8-76"><a href="#cb8-76"></a><span class="fu">## The AI Wage Premium</span></span>
-<span id="cb8-77"><a href="#cb8-77"></a></span>
-<span id="cb8-78"><a href="#cb8-78"></a>Does the AI wage premium holds constant as firms grow in size?</span>
-<span id="cb8-79"><a href="#cb8-79"></a></span>
-<span id="cb8-82"><a href="#cb8-82"></a><span class="in">```{r}</span></span>
-<span id="cb8-83"><a href="#cb8-83"></a><span class="do">## wage premium story</span></span>
-<span id="cb8-84"><a href="#cb8-84"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
-<span id="cb8-85"><a href="#cb8-85"></a>  <span class="fu">filter</span>(tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>,</span>
-<span id="cb8-86"><a href="#cb8-86"></a>         used_tech <span class="sc">!=</span> <span class="st">"Unknown"</span>,</span>
-<span id="cb8-87"><a href="#cb8-87"></a>         naics_sector <span class="sc">!=</span> <span class="st">"Total"</span>, </span>
-<span id="cb8-88"><a href="#cb8-88"></a>         payroll <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
-<span id="cb8-89"><a href="#cb8-89"></a>         n_emp <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-90"><a href="#cb8-90"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb8-91"><a href="#cb8-91"></a>    <span class="at">ai_used =</span> <span class="fu">if_else</span>(used_tech <span class="sc">==</span> <span class="st">"Used"</span>, <span class="st">"AI Adopters"</span>, <span class="st">"Non-Adopters"</span>),</span>
-<span id="cb8-92"><a href="#cb8-92"></a>    <span class="at">payroll_per_emp =</span> payroll <span class="sc">/</span> n_emp) <span class="sc">|&gt;</span> </span>
-<span id="cb8-93"><a href="#cb8-93"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n_emp, <span class="at">y =</span> payroll_per_emp, <span class="at">color =</span> ai_used)) <span class="sc">+</span></span>
-<span id="cb8-94"><a href="#cb8-94"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
-<span id="cb8-95"><a href="#cb8-95"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span> </span>
-<span id="cb8-96"><a href="#cb8-96"></a>  <span class="fu">scale_x_log10</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
-<span id="cb8-97"><a href="#cb8-97"></a>  <span class="fu">scale_y_continuous</span>(</span>
-<span id="cb8-98"><a href="#cb8-98"></a>    <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_dollar</span>(<span class="at">suffix =</span> <span class="st">"K"</span>), </span>
-<span id="cb8-99"><a href="#cb8-99"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">300</span>, <span class="at">by =</span> <span class="dv">50</span>)</span>
-<span id="cb8-100"><a href="#cb8-100"></a>  ) <span class="sc">+</span>  </span>
-<span id="cb8-101"><a href="#cb8-101"></a>  <span class="fu">scale_use_level</span>() <span class="sc">+</span></span>
-<span id="cb8-102"><a href="#cb8-102"></a>  <span class="fu">labs</span>(</span>
-<span id="cb8-103"><a href="#cb8-103"></a>    <span class="at">title =</span> <span class="st">"Does AI Pay?"</span>,</span>
-<span id="cb8-104"><a href="#cb8-104"></a>    <span class="at">subtitle =</span> <span class="st">"Evidence of higher payroll standards among technology adopters across firm scales"</span>,</span>
-<span id="cb8-105"><a href="#cb8-105"></a>    <span class="at">x =</span> <span class="st">"Number of Employees (Log Scale)"</span>,</span>
-<span id="cb8-106"><a href="#cb8-106"></a>    <span class="at">y =</span> <span class="st">"Avg. Payroll per Employee (USD)"</span>,</span>
-<span id="cb8-107"><a href="#cb8-107"></a>    <span class="at">color =</span> <span class="st">"Adoption Status"</span>,</span>
-<span id="cb8-108"><a href="#cb8-108"></a>    <span class="at">caption =</span> <span class="st">"Source: 2018 Annual Business Survey (ABS) | Author: David Rios</span><span class="sc">\n</span><span class="st">Note: Payroll standardized to thousands of dollars per employee. Trend lines calculated via local regression (LOESS)."</span></span>
-<span id="cb8-109"><a href="#cb8-109"></a>  ) <span class="sc">+</span></span>
-<span id="cb8-110"><a href="#cb8-110"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb8-111"><a href="#cb8-111"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
-<span id="cb8-112"><a href="#cb8-112"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
-<span id="cb8-113"><a href="#cb8-113"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"grey30"</span>),</span>
-<span id="cb8-114"><a href="#cb8-114"></a>        <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"grey40"</span>, <span class="at">size =</span> <span class="dv">8</span>))</span>
-<span id="cb8-115"><a href="#cb8-115"></a><span class="in">```</span></span>
-<span id="cb8-116"><a href="#cb8-116"></a><span class="fu">## Patterns within Industries</span></span>
-<span id="cb8-117"><a href="#cb8-117"></a></span>
-<span id="cb8-118"><a href="#cb8-118"></a></span>
-<span id="cb8-119"><a href="#cb8-119"></a><span class="fu">### Company Size Panel Clean (2017-2021)</span></span>
-<span id="cb8-120"><a href="#cb8-120"></a></span>
-<span id="cb8-121"><a href="#cb8-121"></a><span class="at">&gt; While adoption alone signals a premium, intensity is the true driver. In sectors like Finance and Information, high implementation leads to the most significant wage increases.</span></span>
-<span id="cb8-122"><a href="#cb8-122"></a></span>
-<span id="cb8-123"><a href="#cb8-123"></a><span class="in">```{r explo}</span></span>
-<span id="cb8-124"><a href="#cb8-124"></a><span class="co"># Management sector</span></span>
-<span id="cb8-125"><a href="#cb8-125"></a>tech_2018_clean <span class="sc">|&gt;</span> </span>
-<span id="cb8-126"><a href="#cb8-126"></a>  <span class="fu">filter</span>(naics_sector <span class="sc">==</span> <span class="st">"Management"</span>, tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb8-127"><a href="#cb8-127"></a>  <span class="fu">group_by</span>(use_level) <span class="sc">|&gt;</span> </span>
-<span id="cb8-128"><a href="#cb8-128"></a>  <span class="fu">summarise</span>(<span class="at">firm_count =</span> <span class="fu">sum</span>(n_firms, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb8-129"><a href="#cb8-129"></a>  <span class="fu">arrange</span>(use_level)</span>
-<span id="cb8-130"><a href="#cb8-130"></a></span>
-<span id="cb8-131"><a href="#cb8-131"></a><span class="in">```</span></span>
-<span id="cb8-132"><a href="#cb8-132"></a></span>
-<span id="cb8-133"><a href="#cb8-133"></a><span class="fu">## Patterns within Industries</span></span>
-<span id="cb8-134"><a href="#cb8-134"></a></span>
-<span id="cb8-135"><a href="#cb8-135"></a><span class="in">```{r industry_patterns, message=FALSE, warning=FALSE}</span></span>
-<span id="cb8-136"><a href="#cb8-136"></a><span class="co"># Ensure the scaling matches your data source</span></span>
-<span id="cb8-137"><a href="#cb8-137"></a><span class="co"># If payroll is $80,000, scale = 0.001 makes it $80K</span></span>
-<span id="cb8-138"><a href="#cb8-138"></a><span class="co"># If payroll is already 80, scale = 0.001 makes it $0.08K (incorrect)</span></span>
-<span id="cb8-139"><a href="#cb8-139"></a></span>
-<span id="cb8-140"><a href="#cb8-140"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
-<span id="cb8-141"><a href="#cb8-141"></a>  <span class="fu">filter</span>(</span>
-<span id="cb8-142"><a href="#cb8-142"></a>    tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>,</span>
-<span id="cb8-143"><a href="#cb8-143"></a>    naics_sector <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Information"</span>, <span class="st">"Finance and Insurance"</span>, </span>
-<span id="cb8-144"><a href="#cb8-144"></a>                        <span class="st">"Professional Services"</span>, <span class="st">"Management"</span>),</span>
-<span id="cb8-145"><a href="#cb8-145"></a>    use_level <span class="sc">!=</span> <span class="st">"Don't know"</span>,</span>
-<span id="cb8-146"><a href="#cb8-146"></a>    n_emp <span class="sc">&gt;</span> <span class="dv">0</span>, </span>
-<span id="cb8-147"><a href="#cb8-147"></a>    payroll <span class="sc">&gt;</span> <span class="dv">0</span></span>
-<span id="cb8-148"><a href="#cb8-148"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb8-149"><a href="#cb8-149"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb8-150"><a href="#cb8-150"></a>    <span class="at">payroll_per_emp =</span> payroll <span class="sc">/</span> n_emp,</span>
-<span id="cb8-151"><a href="#cb8-151"></a>    <span class="at">use_level =</span> <span class="fu">fct_relevel</span>(use_level,</span>
-<span id="cb8-152"><a href="#cb8-152"></a>                            <span class="st">"Did not use"</span>,</span>
-<span id="cb8-153"><a href="#cb8-153"></a>                            <span class="st">"Tested, but did not use in production or service"</span>,</span>
-<span id="cb8-154"><a href="#cb8-154"></a>                            <span class="st">"Low use"</span>, <span class="st">"Moderate use"</span>, <span class="st">"High use"</span>)</span>
-<span id="cb8-155"><a href="#cb8-155"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb8-156"><a href="#cb8-156"></a>  <span class="fu">group_by</span>(naics_sector, use_level) <span class="sc">|&gt;</span> </span>
-<span id="cb8-157"><a href="#cb8-157"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb8-158"><a href="#cb8-158"></a>    <span class="at">wpay =</span> <span class="fu">weighted.mean</span>(payroll_per_emp, <span class="at">w =</span> n_emp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-159"><a href="#cb8-159"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb8-160"><a href="#cb8-160"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb8-161"><a href="#cb8-161"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> use_level, <span class="at">y =</span> wpay, <span class="at">fill =</span> use_level)) <span class="sc">+</span></span>
-<span id="cb8-162"><a href="#cb8-162"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb8-163"><a href="#cb8-163"></a>  <span class="fu">scale_use_level_fill</span>() <span class="sc">+</span></span>
-<span id="cb8-164"><a href="#cb8-164"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(</span>
-<span id="cb8-165"><a href="#cb8-165"></a>    <span class="st">"Did not use"</span> <span class="ot">=</span> <span class="st">"None"</span>,</span>
-<span id="cb8-166"><a href="#cb8-166"></a>    <span class="st">"Tested, but did not use in production or service"</span> <span class="ot">=</span> <span class="st">"Tested"</span>,</span>
-<span id="cb8-167"><a href="#cb8-167"></a>    <span class="st">"Low use"</span> <span class="ot">=</span> <span class="st">"Low"</span>, <span class="st">"Moderate use"</span> <span class="ot">=</span> <span class="st">"Moderate"</span>, <span class="st">"High use"</span> <span class="ot">=</span> <span class="st">"High"</span></span>
-<span id="cb8-168"><a href="#cb8-168"></a>  )) <span class="sc">+</span></span>
-<span id="cb8-169"><a href="#cb8-169"></a>  <span class="co"># This line is the most common point of failure:</span></span>
-<span id="cb8-170"><a href="#cb8-170"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_dollar</span>( <span class="at">suffix =</span> <span class="st">"K"</span>)) <span class="sc">+</span></span>
-<span id="cb8-171"><a href="#cb8-171"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>naics_sector, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span> </span>
-<span id="cb8-172"><a href="#cb8-172"></a>  <span class="fu">labs</span>(</span>
-<span id="cb8-173"><a href="#cb8-173"></a>    <span class="at">title =</span> <span class="st">"AI Intensity and Payroll"</span>,</span>
-<span id="cb8-174"><a href="#cb8-174"></a>    <span class="at">subtitle =</span> <span class="st">"Higher levels of AI implementation correlate with significant wage premiums"</span>,</span>
-<span id="cb8-175"><a href="#cb8-175"></a>    <span class="at">x =</span> <span class="cn">NULL</span>, </span>
-<span id="cb8-176"><a href="#cb8-176"></a>    <span class="at">y =</span> <span class="st">"Avg. Payroll per Employee"</span>,</span>
-<span id="cb8-177"><a href="#cb8-177"></a>    <span class="at">caption =</span> <span class="st">"Source: 2018 ABS. Note: 'High Use' category for Management contains zero or suppressed reporting firms."</span></span>
-<span id="cb8-178"><a href="#cb8-178"></a>  ) <span class="sc">+</span></span>
-<span id="cb8-179"><a href="#cb8-179"></a>  <span class="fu">theme</span>(</span>
-<span id="cb8-180"><a href="#cb8-180"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
-<span id="cb8-181"><a href="#cb8-181"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
-<span id="cb8-182"><a href="#cb8-182"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)</span>
-<span id="cb8-183"><a href="#cb8-183"></a>  )</span>
-<span id="cb8-184"><a href="#cb8-184"></a><span class="in">```</span></span>
-<span id="cb8-185"><a href="#cb8-185"></a></span>
-<span id="cb8-186"><a href="#cb8-186"></a></span>
-<span id="cb8-187"><a href="#cb8-187"></a><span class="fu">## AI Adoption Spatial</span></span>
-<span id="cb8-188"><a href="#cb8-188"></a></span>
-<span id="cb8-189"><a href="#cb8-189"></a><span class="at">&gt; Note: industry sectors with more than 10 missing states were excluded from this analysis. These sectors are Agriculture, Mining, and Utilities. The remaining sectors provide a more reliable look at AI adoption trends. AI adoption rates are rendered to two decimal places to capture variations in sectors where adoption is emerging but still below 1%.</span></span>
-<span id="cb8-190"><a href="#cb8-190"></a></span>
-<span id="cb8-191"><a href="#cb8-191"></a><span class="fu">## AI Adoption Spatial</span></span>
-<span id="cb8-192"><a href="#cb8-192"></a></span>
-<span id="cb8-193"><a href="#cb8-193"></a><span class="in">```{r maps}</span></span>
-<span id="cb8-194"><a href="#cb8-194"></a><span class="co"># --- PREPARATION: State Lookups ---</span></span>
-<span id="cb8-195"><a href="#cb8-195"></a>fips_to_name <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb8-196"><a href="#cb8-196"></a>  <span class="at">state_fips =</span> <span class="fu">c</span>(<span class="st">"01"</span>, <span class="st">"02"</span>, <span class="st">"04"</span>, <span class="st">"05"</span>, <span class="st">"06"</span>, <span class="st">"08"</span>, <span class="st">"09"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span>, <span class="st">"13"</span>, <span class="st">"15"</span>, <span class="st">"16"</span>, <span class="st">"17"</span>, <span class="st">"18"</span>, <span class="st">"19"</span>, <span class="st">"20"</span>, <span class="st">"21"</span>, <span class="st">"22"</span>, <span class="st">"23"</span>, <span class="st">"24"</span>, <span class="st">"25"</span>, <span class="st">"26"</span>, <span class="st">"27"</span>, <span class="st">"28"</span>, <span class="st">"29"</span>, <span class="st">"30"</span>, <span class="st">"31"</span>, <span class="st">"32"</span>, <span class="st">"33"</span>, <span class="st">"34"</span>, <span class="st">"35"</span>, <span class="st">"36"</span>, <span class="st">"37"</span>, <span class="st">"38"</span>, <span class="st">"39"</span>, <span class="st">"40"</span>, <span class="st">"41"</span>, <span class="st">"42"</span>, <span class="st">"44"</span>, <span class="st">"45"</span>, <span class="st">"46"</span>, <span class="st">"47"</span>, <span class="st">"48"</span>, <span class="st">"49"</span>, <span class="st">"50"</span>, <span class="st">"51"</span>, <span class="st">"53"</span>, <span class="st">"54"</span>, <span class="st">"55"</span>, <span class="st">"56"</span>),</span>
-<span id="cb8-197"><a href="#cb8-197"></a>  <span class="at">state_name =</span> <span class="fu">c</span>(<span class="st">"Alabama"</span>, <span class="st">"Alaska"</span>, <span class="st">"Arizona"</span>, <span class="st">"Arkansas"</span>, <span class="st">"California"</span>, <span class="st">"Colorado"</span>, <span class="st">"Connecticut"</span>, <span class="st">"Delaware"</span>, <span class="st">"District of Columbia"</span>, <span class="st">"Florida"</span>, <span class="st">"Georgia"</span>, <span class="st">"Hawaii"</span>, <span class="st">"Idaho"</span>, <span class="st">"Illinois"</span>, <span class="st">"Indiana"</span>, <span class="st">"Iowa"</span>, <span class="st">"Kansas"</span>, <span class="st">"Kentucky"</span>, <span class="st">"Louisiana"</span>, <span class="st">"Maine"</span>, <span class="st">"Maryland"</span>, <span class="st">"Massachusetts"</span>, <span class="st">"Michigan"</span>, <span class="st">"Minnesota"</span>, <span class="st">"Mississippi"</span>, <span class="st">"Missouri"</span>, <span class="st">"Montana"</span>, <span class="st">"Nebraska"</span>, <span class="st">"Nevada"</span>, <span class="st">"New Hampshire"</span>, <span class="st">"New Jersey"</span>, <span class="st">"New Mexico"</span>, <span class="st">"New York"</span>, <span class="st">"North Carolina"</span>, <span class="st">"North Dakota"</span>, <span class="st">"Ohio"</span>, <span class="st">"Oklahoma"</span>, <span class="st">"Oregon"</span>, <span class="st">"Pennsylvania"</span>, <span class="st">"Rhode Island"</span>, <span class="st">"South Carolina"</span>, <span class="st">"South Dakota"</span>, <span class="st">"Tennessee"</span>, <span class="st">"Texas"</span>, <span class="st">"Utah"</span>, <span class="st">"Vermont"</span>, <span class="st">"Virginia"</span>, <span class="st">"Washington"</span>, <span class="st">"West Virginia"</span>, <span class="st">"Wisconsin"</span>, <span class="st">"Wyoming"</span>)</span>
-<span id="cb8-198"><a href="#cb8-198"></a>)</span>
-<span id="cb8-199"><a href="#cb8-199"></a></span>
-<span id="cb8-200"><a href="#cb8-200"></a><span class="co"># --- STEP 1: Geometry (Silent &amp; Clean) ---</span></span>
-<span id="cb8-201"><a href="#cb8-201"></a><span class="fu">sf_use_s2</span>(<span class="cn">FALSE</span>)</span>
-<span id="cb8-202"><a href="#cb8-202"></a>states_sf <span class="ot">&lt;-</span> <span class="fu">suppressMessages</span>(<span class="fu">suppressWarnings</span>(</span>
-<span id="cb8-203"><a href="#cb8-203"></a>  <span class="fu">st_as_sf</span>(maps<span class="sc">::</span><span class="fu">map</span>(<span class="st">"state"</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb8-204"><a href="#cb8-204"></a>    <span class="fu">mutate</span>(<span class="at">state_name =</span> <span class="fu">str_to_title</span>(<span class="fu">word</span>(ID, <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">":"</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb8-205"><a href="#cb8-205"></a>    <span class="fu">st_make_valid</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb8-206"><a href="#cb8-206"></a>    <span class="fu">group_by</span>(state_name) <span class="sc">|&gt;</span> </span>
-<span id="cb8-207"><a href="#cb8-207"></a>    <span class="fu">summarise</span>(<span class="at">geometry =</span> <span class="fu">st_union</span>(geom), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-208"><a href="#cb8-208"></a>    <span class="fu">st_transform</span>(<span class="dv">4326</span>)</span>
-<span id="cb8-209"><a href="#cb8-209"></a>))</span>
-<span id="cb8-210"><a href="#cb8-210"></a></span>
-<span id="cb8-211"><a href="#cb8-211"></a><span class="co"># --- STEP 2: AI Rates (Summarized &amp; Defensive) ---</span></span>
-<span id="cb8-212"><a href="#cb8-212"></a>ai_rates <span class="ot">&lt;-</span> tech_2018_clean <span class="sc">|&gt;</span></span>
-<span id="cb8-213"><a href="#cb8-213"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb8-214"><a href="#cb8-214"></a>  <span class="fu">filter</span>(tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-215"><a href="#cb8-215"></a>  <span class="fu">mutate</span>(<span class="at">naics_sector =</span> <span class="fu">as.character</span>(naics_sector)) <span class="sc">|&gt;</span></span>
-<span id="cb8-216"><a href="#cb8-216"></a>  <span class="fu">group_by</span>(state, naics_sector) <span class="sc">|&gt;</span></span>
-<span id="cb8-217"><a href="#cb8-217"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb8-218"><a href="#cb8-218"></a>    <span class="at">ai_adoption_rate =</span> <span class="fu">sum</span>(n_firms[used_tech <span class="sc">==</span> <span class="st">"Used"</span>], <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> </span>
-<span id="cb8-219"><a href="#cb8-219"></a>      <span class="fu">sum</span>(n_firms, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-220"><a href="#cb8-220"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb8-221"><a href="#cb8-221"></a>  )</span>
-<span id="cb8-222"><a href="#cb8-222"></a></span>
-<span id="cb8-223"><a href="#cb8-223"></a><span class="co"># --- STEP 3: Payroll (Matching by Cleaned Sector Names) ---</span></span>
-<span id="cb8-224"><a href="#cb8-224"></a>payroll_stats <span class="ot">&lt;-</span> cs_panel_clean <span class="sc">|&gt;</span></span>
-<span id="cb8-225"><a href="#cb8-225"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb8-226"><a href="#cb8-226"></a>  <span class="fu">group_by</span>(state, naics_sector) <span class="sc">|&gt;</span></span>
-<span id="cb8-227"><a href="#cb8-227"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb8-228"><a href="#cb8-228"></a>    <span class="at">mean_payroll_per_emp =</span> <span class="fu">mean</span>(payroll_per_emp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co"># Raw USD</span></span>
-<span id="cb8-229"><a href="#cb8-229"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb8-230"><a href="#cb8-230"></a>  )</span>
-<span id="cb8-231"><a href="#cb8-231"></a></span>
-<span id="cb8-232"><a href="#cb8-232"></a><span class="co"># --- STEP 4: Final Merge &amp; Industry Filter ---</span></span>
-<span id="cb8-233"><a href="#cb8-233"></a>state_ai_spatial <span class="ot">&lt;-</span> ai_rates <span class="sc">|&gt;</span></span>
-<span id="cb8-234"><a href="#cb8-234"></a>  <span class="fu">left_join</span>(payroll_stats, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"state"</span>, <span class="st">"naics_sector"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb8-235"><a href="#cb8-235"></a>  <span class="fu">left_join</span>(fips_to_name, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"state"</span> <span class="ot">=</span> <span class="st">"state_fips"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb8-236"><a href="#cb8-236"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(state_name))</span>
-<span id="cb8-237"><a href="#cb8-237"></a></span>
-<span id="cb8-238"><a href="#cb8-238"></a><span class="co"># Identify industries with enough data to show in the dropdown</span></span>
-<span id="cb8-239"><a href="#cb8-239"></a>valid_industries <span class="ot">&lt;-</span> state_ai_spatial <span class="sc">|&gt;</span></span>
-<span id="cb8-240"><a href="#cb8-240"></a>  <span class="fu">group_by</span>(naics_sector) <span class="sc">|&gt;</span></span>
-<span id="cb8-241"><a href="#cb8-241"></a>  <span class="fu">summarise</span>(<span class="at">missing =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(ai_adoption_rate)), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-242"><a href="#cb8-242"></a>  <span class="fu">filter</span>(missing <span class="sc">&lt;=</span> <span class="dv">10</span>, <span class="sc">!</span>naics_sector <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Unknown"</span>, <span class="st">"Total"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb8-243"><a href="#cb8-243"></a>  <span class="fu">pull</span>(naics_sector)</span>
-<span id="cb8-244"><a href="#cb8-244"></a></span>
-<span id="cb8-245"><a href="#cb8-245"></a><span class="co"># --- STEP 5: Shiny App ---</span></span>
-<span id="cb8-246"><a href="#cb8-246"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
-<span id="cb8-247"><a href="#cb8-247"></a>  <span class="fu">titlePanel</span>(<span class="st">"US AI Adoption &amp; Payroll by Sector (2018)"</span>),</span>
-<span id="cb8-248"><a href="#cb8-248"></a>  <span class="fu">sidebarLayout</span>(</span>
-<span id="cb8-249"><a href="#cb8-249"></a>    <span class="fu">sidebarPanel</span>(</span>
-<span id="cb8-250"><a href="#cb8-250"></a>      <span class="fu">selectInput</span>(<span class="st">"industry_choice"</span>, <span class="st">"Select Industry Sector:"</span>, </span>
-<span id="cb8-251"><a href="#cb8-251"></a>                  <span class="at">choices =</span> <span class="fu">sort</span>(valid_industries),</span>
-<span id="cb8-252"><a href="#cb8-252"></a>                  <span class="at">selected =</span> <span class="st">"Professional Services"</span>),</span>
-<span id="cb8-253"><a href="#cb8-253"></a>      <span class="fu">hr</span>(),</span>
-<span id="cb8-254"><a href="#cb8-254"></a>      <span class="fu">helpText</span>(<span class="st">"Hover over states for metrics. Grey indicates insufficient data."</span>)</span>
-<span id="cb8-255"><a href="#cb8-255"></a>    ),</span>
-<span id="cb8-256"><a href="#cb8-256"></a>    <span class="fu">mainPanel</span>(<span class="fu">leafletOutput</span>(<span class="st">"map"</span>, <span class="at">height =</span> <span class="st">"750px"</span>))</span>
-<span id="cb8-257"><a href="#cb8-257"></a>  )</span>
-<span id="cb8-258"><a href="#cb8-258"></a>)</span>
-<span id="cb8-259"><a href="#cb8-259"></a></span>
-<span id="cb8-260"><a href="#cb8-260"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
-<span id="cb8-261"><a href="#cb8-261"></a>  </span>
-<span id="cb8-262"><a href="#cb8-262"></a>  filtered_data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
-<span id="cb8-263"><a href="#cb8-263"></a>    <span class="fu">req</span>(input<span class="sc">$</span>industry_choice)</span>
-<span id="cb8-264"><a href="#cb8-264"></a>    state_ai_spatial <span class="sc">|&gt;</span></span>
-<span id="cb8-265"><a href="#cb8-265"></a>      <span class="fu">filter</span>(naics_sector <span class="sc">==</span> input<span class="sc">$</span>industry_choice) <span class="sc">|&gt;</span></span>
-<span id="cb8-266"><a href="#cb8-266"></a>      <span class="fu">left_join</span>(states_sf, <span class="at">by =</span> <span class="st">"state_name"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-267"><a href="#cb8-267"></a>      <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
-<span id="cb8-268"><a href="#cb8-268"></a>      <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">st_is_empty</span>(geometry))</span>
-<span id="cb8-269"><a href="#cb8-269"></a>  })</span>
-<span id="cb8-270"><a href="#cb8-270"></a>  </span>
-<span id="cb8-271"><a href="#cb8-271"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> <span class="fu">renderLeaflet</span>({</span>
-<span id="cb8-272"><a href="#cb8-272"></a>    <span class="fu">leaflet</span>() <span class="sc">|&gt;</span></span>
-<span id="cb8-273"><a href="#cb8-273"></a>      <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>CartoDB.Positron) <span class="sc">|&gt;</span></span>
-<span id="cb8-274"><a href="#cb8-274"></a>      <span class="fu">setView</span>(<span class="at">lng =</span> <span class="sc">-</span><span class="fl">98.58</span>, <span class="at">lat =</span> <span class="fl">39.82</span>, <span class="at">zoom =</span> <span class="dv">4</span>)</span>
-<span id="cb8-275"><a href="#cb8-275"></a>  })</span>
-<span id="cb8-276"><a href="#cb8-276"></a>  </span>
-<span id="cb8-277"><a href="#cb8-277"></a>  <span class="fu">observe</span>({</span>
-<span id="cb8-278"><a href="#cb8-278"></a>    data <span class="ot">&lt;-</span> <span class="fu">filtered_data</span>()</span>
-<span id="cb8-279"><a href="#cb8-279"></a>    <span class="fu">req</span>(<span class="fu">nrow</span>(data) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb8-280"><a href="#cb8-280"></a>    </span>
-<span id="cb8-281"><a href="#cb8-281"></a>    pal <span class="ot">&lt;-</span> <span class="fu">colorNumeric</span>(<span class="st">"YlOrRd"</span>, </span>
-<span id="cb8-282"><a href="#cb8-282"></a>                        <span class="at">domain =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(data<span class="sc">$</span>ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), </span>
-<span id="cb8-283"><a href="#cb8-283"></a>                        <span class="at">na.color =</span> <span class="st">"#D3D3D3"</span>)</span>
-<span id="cb8-284"><a href="#cb8-284"></a>    </span>
-<span id="cb8-285"><a href="#cb8-285"></a>    labels <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(</span>
-<span id="cb8-286"><a href="#cb8-286"></a>      <span class="st">"&lt;strong&gt;%s&lt;/strong&gt;&lt;br/&gt;</span></span>
-<span id="cb8-287"><a href="#cb8-287"></a><span class="st">       Sector: %s&lt;br/&gt;</span></span>
-<span id="cb8-288"><a href="#cb8-288"></a><span class="st">       AI Adoption: &lt;b&gt;%s&lt;/b&gt;&lt;br/&gt;</span></span>
-<span id="cb8-289"><a href="#cb8-289"></a><span class="st">       Payroll/Emp: &lt;b&gt;%s&lt;/b&gt;"</span>,</span>
-<span id="cb8-290"><a href="#cb8-290"></a>      data<span class="sc">$</span>state_name, </span>
-<span id="cb8-291"><a href="#cb8-291"></a>      data<span class="sc">$</span>naics_sector, </span>
-<span id="cb8-292"><a href="#cb8-292"></a>      <span class="fu">ifelse</span>(<span class="fu">is.na</span>(data<span class="sc">$</span>ai_adoption_rate), </span>
-<span id="cb8-293"><a href="#cb8-293"></a>             <span class="st">"Insufficient Data"</span>, </span>
-<span id="cb8-294"><a href="#cb8-294"></a>             <span class="fu">paste0</span>(<span class="fu">round</span>(data<span class="sc">$</span>ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%"</span>)),</span>
-<span id="cb8-295"><a href="#cb8-295"></a>      <span class="co"># Applied / 1000 fix here for raw USD to 'k' display</span></span>
-<span id="cb8-296"><a href="#cb8-296"></a>      <span class="fu">ifelse</span>(<span class="fu">is.na</span>(data<span class="sc">$</span>mean_payroll_per_emp), </span>
-<span id="cb8-297"><a href="#cb8-297"></a>             <span class="st">"N/A"</span>, </span>
-<span id="cb8-298"><a href="#cb8-298"></a>             <span class="fu">paste0</span>(<span class="st">"$"</span>, <span class="fu">formatC</span>(data<span class="sc">$</span>mean_payroll_per_emp <span class="sc">/</span> <span class="dv">1000</span>, <span class="at">format=</span><span class="st">"f"</span>, <span class="at">digits=</span><span class="dv">1</span>, <span class="at">big.mark=</span><span class="st">","</span>), <span class="st">"k"</span>))</span>
-<span id="cb8-299"><a href="#cb8-299"></a>    ) <span class="sc">|&gt;</span> <span class="fu">lapply</span>(htmltools<span class="sc">::</span>HTML)</span>
-<span id="cb8-300"><a href="#cb8-300"></a>    </span>
-<span id="cb8-301"><a href="#cb8-301"></a>    <span class="fu">leafletProxy</span>(<span class="st">"map"</span>, <span class="at">data =</span> data) <span class="sc">|&gt;</span></span>
-<span id="cb8-302"><a href="#cb8-302"></a>      <span class="fu">clearShapes</span>() <span class="sc">|&gt;</span></span>
-<span id="cb8-303"><a href="#cb8-303"></a>      <span class="fu">addPolygons</span>(</span>
-<span id="cb8-304"><a href="#cb8-304"></a>        <span class="at">fillColor =</span> <span class="sc">~</span><span class="fu">pal</span>(ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>),</span>
-<span id="cb8-305"><a href="#cb8-305"></a>        <span class="at">fillOpacity =</span> <span class="fl">0.8</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">weight =</span> <span class="dv">1</span>,</span>
-<span id="cb8-306"><a href="#cb8-306"></a>        <span class="at">highlightOptions =</span> <span class="fu">highlightOptions</span>(<span class="at">weight =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"#666"</span>, <span class="at">bringToFront =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb8-307"><a href="#cb8-307"></a>        <span class="at">label =</span> labels</span>
-<span id="cb8-308"><a href="#cb8-308"></a>      ) <span class="sc">|&gt;</span></span>
-<span id="cb8-309"><a href="#cb8-309"></a>      <span class="fu">clearControls</span>() <span class="sc">|&gt;</span></span>
-<span id="cb8-310"><a href="#cb8-310"></a>      <span class="fu">addLegend</span>(<span class="st">"bottomright"</span>, <span class="at">pal =</span> pal, <span class="at">values =</span> <span class="sc">~</span>ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb8-311"><a href="#cb8-311"></a>                <span class="at">title =</span> <span class="st">"AI Adoption (%)"</span>, <span class="at">labFormat =</span> <span class="fu">labelFormat</span>(<span class="at">suffix =</span> <span class="st">"%"</span>),</span>
-<span id="cb8-312"><a href="#cb8-312"></a>                <span class="at">na.label =</span> <span class="st">"No Data"</span>)</span>
-<span id="cb8-313"><a href="#cb8-313"></a>  })</span>
-<span id="cb8-314"><a href="#cb8-314"></a>}</span>
-<span id="cb8-315"><a href="#cb8-315"></a></span>
-<span id="cb8-316"><a href="#cb8-316"></a><span class="fu">shinyApp</span>(ui, server)</span>
-<span id="cb8-317"><a href="#cb8-317"></a><span class="in">```</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">---</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="an">title:</span><span class="co"> "David's EDA"</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="an">format:</span><span class="co"> </span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co">  html:</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="co">    toc: true</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="co">    code-fold: true</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="co">---</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a></span>
+<span id="cb7-9"><a href="#cb7-9"></a></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="fu">## Introduction</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="in">```{r, setup, message=FALSE, warning=FALSE}</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="fu">library</span>(here)</span>
+<span id="cb7-14"><a href="#cb7-14"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb7-15"><a href="#cb7-15"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-16"><a href="#cb7-16"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb7-17"><a href="#cb7-17"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb7-18"><a href="#cb7-18"></a><span class="fu">library</span>(tigris)</span>
+<span id="cb7-19"><a href="#cb7-19"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb7-20"><a href="#cb7-20"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb7-21"><a href="#cb7-21"></a><span class="fu">library</span>(sf)</span>
+<span id="cb7-22"><a href="#cb7-22"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb7-23"><a href="#cb7-23"></a></span>
+<span id="cb7-24"><a href="#cb7-24"></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"data_cleaning.R"</span>))</span>
+<span id="cb7-25"><a href="#cb7-25"></a></span>
+<span id="cb7-26"><a href="#cb7-26"></a><span class="do">## Theme Settings</span></span>
+<span id="cb7-27"><a href="#cb7-27"></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>))</span>
+<span id="cb7-28"><a href="#cb7-28"></a></span>
+<span id="cb7-29"><a href="#cb7-29"></a>scale_use_level <span class="ot">&lt;-</span> <span class="cf">function</span>(...) {</span>
+<span id="cb7-30"><a href="#cb7-30"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>, <span class="at">name =</span> <span class="cn">NULL</span>, ...)</span>
+<span id="cb7-31"><a href="#cb7-31"></a>}</span>
+<span id="cb7-32"><a href="#cb7-32"></a></span>
+<span id="cb7-33"><a href="#cb7-33"></a>scale_use_level_fill <span class="ot">&lt;-</span> <span class="cf">function</span>(...) {</span>
+<span id="cb7-34"><a href="#cb7-34"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>, <span class="at">name =</span> <span class="cn">NULL</span>, ...)</span>
+<span id="cb7-35"><a href="#cb7-35"></a>}</span>
+<span id="cb7-36"><a href="#cb7-36"></a><span class="in">```</span></span>
+<span id="cb7-37"><a href="#cb7-37"></a></span>
+<span id="cb7-38"><a href="#cb7-38"></a></span>
+<span id="cb7-39"><a href="#cb7-39"></a></span>
+<span id="cb7-40"><a href="#cb7-40"></a></span>
+<span id="cb7-41"><a href="#cb7-41"></a></span>
+<span id="cb7-42"><a href="#cb7-42"></a><span class="at">&gt; Based on the payroll/n_emp and ai usage, how much is the revenue changing? Are those firms who are paying their employee more seeing more gains? Or is it a matter of company size?</span></span>
+<span id="cb7-43"><a href="#cb7-43"></a></span>
+<span id="cb7-44"><a href="#cb7-44"></a></span>
+<span id="cb7-45"><a href="#cb7-45"></a><span class="fu">## The AI Wage Premium</span></span>
+<span id="cb7-46"><a href="#cb7-46"></a></span>
+<span id="cb7-47"><a href="#cb7-47"></a>Does the AI wage premium holds constant as firms grow in size?</span>
+<span id="cb7-48"><a href="#cb7-48"></a></span>
+<span id="cb7-51"><a href="#cb7-51"></a><span class="in">```{r}</span></span>
+<span id="cb7-52"><a href="#cb7-52"></a><span class="do">## wage premium story</span></span>
+<span id="cb7-53"><a href="#cb7-53"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
+<span id="cb7-54"><a href="#cb7-54"></a>  <span class="fu">filter</span>(tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>,</span>
+<span id="cb7-55"><a href="#cb7-55"></a>         used_tech <span class="sc">!=</span> <span class="st">"Unknown"</span>,</span>
+<span id="cb7-56"><a href="#cb7-56"></a>         naics_sector <span class="sc">!=</span> <span class="st">"Total"</span>, </span>
+<span id="cb7-57"><a href="#cb7-57"></a>         payroll <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
+<span id="cb7-58"><a href="#cb7-58"></a>         n_emp <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-59"><a href="#cb7-59"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-60"><a href="#cb7-60"></a>    <span class="at">ai_used =</span> <span class="fu">if_else</span>(used_tech <span class="sc">==</span> <span class="st">"Used"</span>, <span class="st">"AI Adopters"</span>, <span class="st">"Non-Adopters"</span>),</span>
+<span id="cb7-61"><a href="#cb7-61"></a>    <span class="at">payroll_per_emp =</span> payroll <span class="sc">/</span> n_emp) <span class="sc">|&gt;</span> </span>
+<span id="cb7-62"><a href="#cb7-62"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n_emp, <span class="at">y =</span> payroll_per_emp, <span class="at">color =</span> ai_used)) <span class="sc">+</span></span>
+<span id="cb7-63"><a href="#cb7-63"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb7-64"><a href="#cb7-64"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span> </span>
+<span id="cb7-65"><a href="#cb7-65"></a>  <span class="fu">scale_x_log10</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
+<span id="cb7-66"><a href="#cb7-66"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb7-67"><a href="#cb7-67"></a>    <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_dollar</span>(<span class="at">suffix =</span> <span class="st">"K"</span>), </span>
+<span id="cb7-68"><a href="#cb7-68"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">300</span>, <span class="at">by =</span> <span class="dv">50</span>)</span>
+<span id="cb7-69"><a href="#cb7-69"></a>  ) <span class="sc">+</span>  </span>
+<span id="cb7-70"><a href="#cb7-70"></a>  <span class="fu">scale_use_level</span>() <span class="sc">+</span></span>
+<span id="cb7-71"><a href="#cb7-71"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-72"><a href="#cb7-72"></a>    <span class="at">title =</span> <span class="st">"Does AI Pay?"</span>,</span>
+<span id="cb7-73"><a href="#cb7-73"></a>    <span class="at">subtitle =</span> <span class="st">"Evidence of higher payroll standards among technology adopters across firm scales"</span>,</span>
+<span id="cb7-74"><a href="#cb7-74"></a>    <span class="at">x =</span> <span class="st">"Number of Employees (Log Scale)"</span>,</span>
+<span id="cb7-75"><a href="#cb7-75"></a>    <span class="at">y =</span> <span class="st">"Avg. Payroll per Employee (USD)"</span>,</span>
+<span id="cb7-76"><a href="#cb7-76"></a>    <span class="at">color =</span> <span class="st">"Adoption Status"</span>,</span>
+<span id="cb7-77"><a href="#cb7-77"></a>    <span class="at">caption =</span> <span class="st">"Source: 2018 Annual Business Survey (ABS) | Author: David Rios</span><span class="sc">\n</span><span class="st">Note: Payroll standardized to thousands of dollars per employee. Trend lines calculated via local regression (LOESS)."</span></span>
+<span id="cb7-78"><a href="#cb7-78"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-79"><a href="#cb7-79"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb7-80"><a href="#cb7-80"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
+<span id="cb7-81"><a href="#cb7-81"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb7-82"><a href="#cb7-82"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"grey30"</span>),</span>
+<span id="cb7-83"><a href="#cb7-83"></a>        <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"grey40"</span>, <span class="at">size =</span> <span class="dv">8</span>))</span>
+<span id="cb7-84"><a href="#cb7-84"></a><span class="in">```</span></span>
+<span id="cb7-85"><a href="#cb7-85"></a><span class="fu">## Patterns within Industries</span></span>
+<span id="cb7-86"><a href="#cb7-86"></a></span>
+<span id="cb7-87"><a href="#cb7-87"></a></span>
+<span id="cb7-88"><a href="#cb7-88"></a><span class="fu">### Company Size Panel Clean (2017-2021)</span></span>
+<span id="cb7-89"><a href="#cb7-89"></a></span>
+<span id="cb7-90"><a href="#cb7-90"></a><span class="at">&gt; While adoption alone signals a premium, intensity is the true driver. In sectors like Finance and Information, high implementation leads to the most significant wage increases.</span></span>
+<span id="cb7-91"><a href="#cb7-91"></a></span>
+<span id="cb7-92"><a href="#cb7-92"></a><span class="in">```{r explo}</span></span>
+<span id="cb7-93"><a href="#cb7-93"></a><span class="co"># Management sector</span></span>
+<span id="cb7-94"><a href="#cb7-94"></a>tech_2018_clean <span class="sc">|&gt;</span> </span>
+<span id="cb7-95"><a href="#cb7-95"></a>  <span class="fu">filter</span>(naics_sector <span class="sc">==</span> <span class="st">"Management"</span>, tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb7-96"><a href="#cb7-96"></a>  <span class="fu">group_by</span>(use_level) <span class="sc">|&gt;</span> </span>
+<span id="cb7-97"><a href="#cb7-97"></a>  <span class="fu">summarise</span>(<span class="at">firm_count =</span> <span class="fu">sum</span>(n_firms, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb7-98"><a href="#cb7-98"></a>  <span class="fu">arrange</span>(use_level)</span>
+<span id="cb7-99"><a href="#cb7-99"></a></span>
+<span id="cb7-100"><a href="#cb7-100"></a><span class="in">```</span></span>
+<span id="cb7-101"><a href="#cb7-101"></a></span>
+<span id="cb7-102"><a href="#cb7-102"></a><span class="fu">## Patterns within Industries</span></span>
+<span id="cb7-103"><a href="#cb7-103"></a></span>
+<span id="cb7-104"><a href="#cb7-104"></a><span class="in">```{r industry_patterns, message=FALSE, warning=FALSE}</span></span>
+<span id="cb7-105"><a href="#cb7-105"></a><span class="co"># Ensure the scaling matches your data source</span></span>
+<span id="cb7-106"><a href="#cb7-106"></a><span class="co"># If payroll is $80,000, scale = 0.001 makes it $80K</span></span>
+<span id="cb7-107"><a href="#cb7-107"></a><span class="co"># If payroll is already 80, scale = 0.001 makes it $0.08K (incorrect)</span></span>
+<span id="cb7-108"><a href="#cb7-108"></a></span>
+<span id="cb7-109"><a href="#cb7-109"></a>tech_2018_clean <span class="sc">|&gt;</span></span>
+<span id="cb7-110"><a href="#cb7-110"></a>  <span class="fu">filter</span>(</span>
+<span id="cb7-111"><a href="#cb7-111"></a>    tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>,</span>
+<span id="cb7-112"><a href="#cb7-112"></a>    naics_sector <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Information"</span>, <span class="st">"Finance and Insurance"</span>, </span>
+<span id="cb7-113"><a href="#cb7-113"></a>                        <span class="st">"Professional Services"</span>, <span class="st">"Management"</span>),</span>
+<span id="cb7-114"><a href="#cb7-114"></a>    use_level <span class="sc">!=</span> <span class="st">"Don't know"</span>,</span>
+<span id="cb7-115"><a href="#cb7-115"></a>    n_emp <span class="sc">&gt;</span> <span class="dv">0</span>, </span>
+<span id="cb7-116"><a href="#cb7-116"></a>    payroll <span class="sc">&gt;</span> <span class="dv">0</span></span>
+<span id="cb7-117"><a href="#cb7-117"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb7-118"><a href="#cb7-118"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-119"><a href="#cb7-119"></a>    <span class="at">payroll_per_emp =</span> payroll <span class="sc">/</span> n_emp,</span>
+<span id="cb7-120"><a href="#cb7-120"></a>    <span class="at">use_level =</span> <span class="fu">fct_relevel</span>(use_level,</span>
+<span id="cb7-121"><a href="#cb7-121"></a>                            <span class="st">"Did not use"</span>,</span>
+<span id="cb7-122"><a href="#cb7-122"></a>                            <span class="st">"Tested, but did not use in production or service"</span>,</span>
+<span id="cb7-123"><a href="#cb7-123"></a>                            <span class="st">"Low use"</span>, <span class="st">"Moderate use"</span>, <span class="st">"High use"</span>)</span>
+<span id="cb7-124"><a href="#cb7-124"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb7-125"><a href="#cb7-125"></a>  <span class="fu">group_by</span>(naics_sector, use_level) <span class="sc">|&gt;</span> </span>
+<span id="cb7-126"><a href="#cb7-126"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb7-127"><a href="#cb7-127"></a>    <span class="at">wpay =</span> <span class="fu">weighted.mean</span>(payroll_per_emp, <span class="at">w =</span> n_emp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-128"><a href="#cb7-128"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb7-129"><a href="#cb7-129"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb7-130"><a href="#cb7-130"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> use_level, <span class="at">y =</span> wpay, <span class="at">fill =</span> use_level)) <span class="sc">+</span></span>
+<span id="cb7-131"><a href="#cb7-131"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb7-132"><a href="#cb7-132"></a>  <span class="fu">scale_use_level_fill</span>() <span class="sc">+</span></span>
+<span id="cb7-133"><a href="#cb7-133"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(</span>
+<span id="cb7-134"><a href="#cb7-134"></a>    <span class="st">"Did not use"</span> <span class="ot">=</span> <span class="st">"None"</span>,</span>
+<span id="cb7-135"><a href="#cb7-135"></a>    <span class="st">"Tested, but did not use in production or service"</span> <span class="ot">=</span> <span class="st">"Tested"</span>,</span>
+<span id="cb7-136"><a href="#cb7-136"></a>    <span class="st">"Low use"</span> <span class="ot">=</span> <span class="st">"Low"</span>, <span class="st">"Moderate use"</span> <span class="ot">=</span> <span class="st">"Moderate"</span>, <span class="st">"High use"</span> <span class="ot">=</span> <span class="st">"High"</span></span>
+<span id="cb7-137"><a href="#cb7-137"></a>  )) <span class="sc">+</span></span>
+<span id="cb7-138"><a href="#cb7-138"></a>  <span class="co"># This line is the most common point of failure:</span></span>
+<span id="cb7-139"><a href="#cb7-139"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_dollar</span>( <span class="at">suffix =</span> <span class="st">"K"</span>)) <span class="sc">+</span></span>
+<span id="cb7-140"><a href="#cb7-140"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>naics_sector, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span> </span>
+<span id="cb7-141"><a href="#cb7-141"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-142"><a href="#cb7-142"></a>    <span class="at">title =</span> <span class="st">"AI Intensity and Payroll"</span>,</span>
+<span id="cb7-143"><a href="#cb7-143"></a>    <span class="at">subtitle =</span> <span class="st">"Higher levels of AI implementation correlate with significant wage premiums"</span>,</span>
+<span id="cb7-144"><a href="#cb7-144"></a>    <span class="at">x =</span> <span class="cn">NULL</span>, </span>
+<span id="cb7-145"><a href="#cb7-145"></a>    <span class="at">y =</span> <span class="st">"Avg. Payroll per Employee"</span>,</span>
+<span id="cb7-146"><a href="#cb7-146"></a>    <span class="at">caption =</span> <span class="st">"Source: 2018 ABS. Note: 'High Use' category for Management contains zero or suppressed reporting firms."</span></span>
+<span id="cb7-147"><a href="#cb7-147"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-148"><a href="#cb7-148"></a>  <span class="fu">theme</span>(</span>
+<span id="cb7-149"><a href="#cb7-149"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb7-150"><a href="#cb7-150"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb7-151"><a href="#cb7-151"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb7-152"><a href="#cb7-152"></a>  )</span>
+<span id="cb7-153"><a href="#cb7-153"></a><span class="in">```</span></span>
+<span id="cb7-154"><a href="#cb7-154"></a></span>
+<span id="cb7-155"><a href="#cb7-155"></a></span>
+<span id="cb7-156"><a href="#cb7-156"></a><span class="fu">## AI Adoption Spatial</span></span>
+<span id="cb7-157"><a href="#cb7-157"></a></span>
+<span id="cb7-158"><a href="#cb7-158"></a><span class="at">&gt; Note: industry sectors with more than 10 missing states were excluded from this analysis. These sectors are Agriculture, Mining, and Utilities. The remaining sectors provide a more reliable look at AI adoption trends. AI adoption rates are rendered to two decimal places to capture variations in sectors where adoption is emerging but still below 1%.</span></span>
+<span id="cb7-159"><a href="#cb7-159"></a></span>
+<span id="cb7-160"><a href="#cb7-160"></a><span class="fu">## AI Adoption Spatial</span></span>
+<span id="cb7-161"><a href="#cb7-161"></a></span>
+<span id="cb7-162"><a href="#cb7-162"></a><span class="in">```{r maps}</span></span>
+<span id="cb7-163"><a href="#cb7-163"></a><span class="co"># --- PREPARATION: State Lookups ---</span></span>
+<span id="cb7-164"><a href="#cb7-164"></a>fips_to_name <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb7-165"><a href="#cb7-165"></a>  <span class="at">state_fips =</span> <span class="fu">c</span>(<span class="st">"01"</span>, <span class="st">"02"</span>, <span class="st">"04"</span>, <span class="st">"05"</span>, <span class="st">"06"</span>, <span class="st">"08"</span>, <span class="st">"09"</span>, <span class="st">"10"</span>, <span class="st">"11"</span>, <span class="st">"12"</span>, <span class="st">"13"</span>, <span class="st">"15"</span>, <span class="st">"16"</span>, <span class="st">"17"</span>, <span class="st">"18"</span>, <span class="st">"19"</span>, <span class="st">"20"</span>, <span class="st">"21"</span>, <span class="st">"22"</span>, <span class="st">"23"</span>, <span class="st">"24"</span>, <span class="st">"25"</span>, <span class="st">"26"</span>, <span class="st">"27"</span>, <span class="st">"28"</span>, <span class="st">"29"</span>, <span class="st">"30"</span>, <span class="st">"31"</span>, <span class="st">"32"</span>, <span class="st">"33"</span>, <span class="st">"34"</span>, <span class="st">"35"</span>, <span class="st">"36"</span>, <span class="st">"37"</span>, <span class="st">"38"</span>, <span class="st">"39"</span>, <span class="st">"40"</span>, <span class="st">"41"</span>, <span class="st">"42"</span>, <span class="st">"44"</span>, <span class="st">"45"</span>, <span class="st">"46"</span>, <span class="st">"47"</span>, <span class="st">"48"</span>, <span class="st">"49"</span>, <span class="st">"50"</span>, <span class="st">"51"</span>, <span class="st">"53"</span>, <span class="st">"54"</span>, <span class="st">"55"</span>, <span class="st">"56"</span>),</span>
+<span id="cb7-166"><a href="#cb7-166"></a>  <span class="at">state_name =</span> <span class="fu">c</span>(<span class="st">"Alabama"</span>, <span class="st">"Alaska"</span>, <span class="st">"Arizona"</span>, <span class="st">"Arkansas"</span>, <span class="st">"California"</span>, <span class="st">"Colorado"</span>, <span class="st">"Connecticut"</span>, <span class="st">"Delaware"</span>, <span class="st">"District of Columbia"</span>, <span class="st">"Florida"</span>, <span class="st">"Georgia"</span>, <span class="st">"Hawaii"</span>, <span class="st">"Idaho"</span>, <span class="st">"Illinois"</span>, <span class="st">"Indiana"</span>, <span class="st">"Iowa"</span>, <span class="st">"Kansas"</span>, <span class="st">"Kentucky"</span>, <span class="st">"Louisiana"</span>, <span class="st">"Maine"</span>, <span class="st">"Maryland"</span>, <span class="st">"Massachusetts"</span>, <span class="st">"Michigan"</span>, <span class="st">"Minnesota"</span>, <span class="st">"Mississippi"</span>, <span class="st">"Missouri"</span>, <span class="st">"Montana"</span>, <span class="st">"Nebraska"</span>, <span class="st">"Nevada"</span>, <span class="st">"New Hampshire"</span>, <span class="st">"New Jersey"</span>, <span class="st">"New Mexico"</span>, <span class="st">"New York"</span>, <span class="st">"North Carolina"</span>, <span class="st">"North Dakota"</span>, <span class="st">"Ohio"</span>, <span class="st">"Oklahoma"</span>, <span class="st">"Oregon"</span>, <span class="st">"Pennsylvania"</span>, <span class="st">"Rhode Island"</span>, <span class="st">"South Carolina"</span>, <span class="st">"South Dakota"</span>, <span class="st">"Tennessee"</span>, <span class="st">"Texas"</span>, <span class="st">"Utah"</span>, <span class="st">"Vermont"</span>, <span class="st">"Virginia"</span>, <span class="st">"Washington"</span>, <span class="st">"West Virginia"</span>, <span class="st">"Wisconsin"</span>, <span class="st">"Wyoming"</span>)</span>
+<span id="cb7-167"><a href="#cb7-167"></a>)</span>
+<span id="cb7-168"><a href="#cb7-168"></a></span>
+<span id="cb7-169"><a href="#cb7-169"></a><span class="co"># --- STEP 1: Geometry (Silent &amp; Clean) ---</span></span>
+<span id="cb7-170"><a href="#cb7-170"></a><span class="fu">sf_use_s2</span>(<span class="cn">FALSE</span>)</span>
+<span id="cb7-171"><a href="#cb7-171"></a>states_sf <span class="ot">&lt;-</span> <span class="fu">suppressMessages</span>(<span class="fu">suppressWarnings</span>(</span>
+<span id="cb7-172"><a href="#cb7-172"></a>  <span class="fu">st_as_sf</span>(maps<span class="sc">::</span><span class="fu">map</span>(<span class="st">"state"</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-173"><a href="#cb7-173"></a>    <span class="fu">mutate</span>(<span class="at">state_name =</span> <span class="fu">str_to_title</span>(<span class="fu">word</span>(ID, <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">":"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb7-174"><a href="#cb7-174"></a>    <span class="fu">st_make_valid</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb7-175"><a href="#cb7-175"></a>    <span class="fu">group_by</span>(state_name) <span class="sc">|&gt;</span> </span>
+<span id="cb7-176"><a href="#cb7-176"></a>    <span class="fu">summarise</span>(<span class="at">geometry =</span> <span class="fu">st_union</span>(geom), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-177"><a href="#cb7-177"></a>    <span class="fu">st_transform</span>(<span class="dv">4326</span>)</span>
+<span id="cb7-178"><a href="#cb7-178"></a>))</span>
+<span id="cb7-179"><a href="#cb7-179"></a></span>
+<span id="cb7-180"><a href="#cb7-180"></a><span class="co"># --- STEP 2: AI Rates (Summarized &amp; Defensive) ---</span></span>
+<span id="cb7-181"><a href="#cb7-181"></a>ai_rates <span class="ot">&lt;-</span> tech_2018_clean <span class="sc">|&gt;</span></span>
+<span id="cb7-182"><a href="#cb7-182"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb7-183"><a href="#cb7-183"></a>  <span class="fu">filter</span>(tech_type <span class="sc">==</span> <span class="st">"artificial intelligence"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-184"><a href="#cb7-184"></a>  <span class="fu">mutate</span>(<span class="at">naics_sector =</span> <span class="fu">as.character</span>(naics_sector)) <span class="sc">|&gt;</span></span>
+<span id="cb7-185"><a href="#cb7-185"></a>  <span class="fu">group_by</span>(state, naics_sector) <span class="sc">|&gt;</span></span>
+<span id="cb7-186"><a href="#cb7-186"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb7-187"><a href="#cb7-187"></a>    <span class="at">ai_adoption_rate =</span> <span class="fu">sum</span>(n_firms[used_tech <span class="sc">==</span> <span class="st">"Used"</span>], <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> </span>
+<span id="cb7-188"><a href="#cb7-188"></a>      <span class="fu">sum</span>(n_firms, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-189"><a href="#cb7-189"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb7-190"><a href="#cb7-190"></a>  )</span>
+<span id="cb7-191"><a href="#cb7-191"></a></span>
+<span id="cb7-192"><a href="#cb7-192"></a><span class="co"># --- STEP 3: Payroll (Matching by Cleaned Sector Names) ---</span></span>
+<span id="cb7-193"><a href="#cb7-193"></a>payroll_stats <span class="ot">&lt;-</span> cs_panel_clean <span class="sc">|&gt;</span></span>
+<span id="cb7-194"><a href="#cb7-194"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb7-195"><a href="#cb7-195"></a>  <span class="fu">group_by</span>(state, naics_sector) <span class="sc">|&gt;</span></span>
+<span id="cb7-196"><a href="#cb7-196"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb7-197"><a href="#cb7-197"></a>    <span class="at">mean_payroll_per_emp =</span> <span class="fu">mean</span>(payroll_per_emp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co"># Raw USD</span></span>
+<span id="cb7-198"><a href="#cb7-198"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb7-199"><a href="#cb7-199"></a>  )</span>
+<span id="cb7-200"><a href="#cb7-200"></a></span>
+<span id="cb7-201"><a href="#cb7-201"></a><span class="co"># --- STEP 4: Final Merge &amp; Industry Filter ---</span></span>
+<span id="cb7-202"><a href="#cb7-202"></a>state_ai_spatial <span class="ot">&lt;-</span> ai_rates <span class="sc">|&gt;</span></span>
+<span id="cb7-203"><a href="#cb7-203"></a>  <span class="fu">left_join</span>(payroll_stats, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"state"</span>, <span class="st">"naics_sector"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-204"><a href="#cb7-204"></a>  <span class="fu">left_join</span>(fips_to_name, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"state"</span> <span class="ot">=</span> <span class="st">"state_fips"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-205"><a href="#cb7-205"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(state_name))</span>
+<span id="cb7-206"><a href="#cb7-206"></a></span>
+<span id="cb7-207"><a href="#cb7-207"></a><span class="co"># Identify industries with enough data to show in the dropdown</span></span>
+<span id="cb7-208"><a href="#cb7-208"></a>valid_industries <span class="ot">&lt;-</span> state_ai_spatial <span class="sc">|&gt;</span></span>
+<span id="cb7-209"><a href="#cb7-209"></a>  <span class="fu">group_by</span>(naics_sector) <span class="sc">|&gt;</span></span>
+<span id="cb7-210"><a href="#cb7-210"></a>  <span class="fu">summarise</span>(<span class="at">missing =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(ai_adoption_rate)), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-211"><a href="#cb7-211"></a>  <span class="fu">filter</span>(missing <span class="sc">&lt;=</span> <span class="dv">10</span>, <span class="sc">!</span>naics_sector <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Unknown"</span>, <span class="st">"Total"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-212"><a href="#cb7-212"></a>  <span class="fu">pull</span>(naics_sector)</span>
+<span id="cb7-213"><a href="#cb7-213"></a></span>
+<span id="cb7-214"><a href="#cb7-214"></a><span class="co"># --- STEP 5: Shiny App ---</span></span>
+<span id="cb7-215"><a href="#cb7-215"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb7-216"><a href="#cb7-216"></a>  <span class="fu">titlePanel</span>(<span class="st">"US AI Adoption &amp; Payroll by Sector (2018)"</span>),</span>
+<span id="cb7-217"><a href="#cb7-217"></a>  <span class="fu">sidebarLayout</span>(</span>
+<span id="cb7-218"><a href="#cb7-218"></a>    <span class="fu">sidebarPanel</span>(</span>
+<span id="cb7-219"><a href="#cb7-219"></a>      <span class="fu">selectInput</span>(<span class="st">"industry_choice"</span>, <span class="st">"Select Industry Sector:"</span>, </span>
+<span id="cb7-220"><a href="#cb7-220"></a>                  <span class="at">choices =</span> <span class="fu">sort</span>(valid_industries),</span>
+<span id="cb7-221"><a href="#cb7-221"></a>                  <span class="at">selected =</span> <span class="st">"Professional Services"</span>),</span>
+<span id="cb7-222"><a href="#cb7-222"></a>      <span class="fu">hr</span>(),</span>
+<span id="cb7-223"><a href="#cb7-223"></a>      <span class="fu">helpText</span>(<span class="st">"Hover over states for metrics. Grey indicates insufficient data."</span>)</span>
+<span id="cb7-224"><a href="#cb7-224"></a>    ),</span>
+<span id="cb7-225"><a href="#cb7-225"></a>    <span class="fu">mainPanel</span>(<span class="fu">leafletOutput</span>(<span class="st">"map"</span>, <span class="at">height =</span> <span class="st">"750px"</span>))</span>
+<span id="cb7-226"><a href="#cb7-226"></a>  )</span>
+<span id="cb7-227"><a href="#cb7-227"></a>)</span>
+<span id="cb7-228"><a href="#cb7-228"></a></span>
+<span id="cb7-229"><a href="#cb7-229"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb7-230"><a href="#cb7-230"></a>  </span>
+<span id="cb7-231"><a href="#cb7-231"></a>  filtered_data <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb7-232"><a href="#cb7-232"></a>    <span class="fu">req</span>(input<span class="sc">$</span>industry_choice)</span>
+<span id="cb7-233"><a href="#cb7-233"></a>    state_ai_spatial <span class="sc">|&gt;</span></span>
+<span id="cb7-234"><a href="#cb7-234"></a>      <span class="fu">filter</span>(naics_sector <span class="sc">==</span> input<span class="sc">$</span>industry_choice) <span class="sc">|&gt;</span></span>
+<span id="cb7-235"><a href="#cb7-235"></a>      <span class="fu">left_join</span>(states_sf, <span class="at">by =</span> <span class="st">"state_name"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-236"><a href="#cb7-236"></a>      <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-237"><a href="#cb7-237"></a>      <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">st_is_empty</span>(geometry))</span>
+<span id="cb7-238"><a href="#cb7-238"></a>  })</span>
+<span id="cb7-239"><a href="#cb7-239"></a>  </span>
+<span id="cb7-240"><a href="#cb7-240"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> <span class="fu">renderLeaflet</span>({</span>
+<span id="cb7-241"><a href="#cb7-241"></a>    <span class="fu">leaflet</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-242"><a href="#cb7-242"></a>      <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>CartoDB.Positron) <span class="sc">|&gt;</span></span>
+<span id="cb7-243"><a href="#cb7-243"></a>      <span class="fu">setView</span>(<span class="at">lng =</span> <span class="sc">-</span><span class="fl">98.58</span>, <span class="at">lat =</span> <span class="fl">39.82</span>, <span class="at">zoom =</span> <span class="dv">4</span>)</span>
+<span id="cb7-244"><a href="#cb7-244"></a>  })</span>
+<span id="cb7-245"><a href="#cb7-245"></a>  </span>
+<span id="cb7-246"><a href="#cb7-246"></a>  <span class="fu">observe</span>({</span>
+<span id="cb7-247"><a href="#cb7-247"></a>    data <span class="ot">&lt;-</span> <span class="fu">filtered_data</span>()</span>
+<span id="cb7-248"><a href="#cb7-248"></a>    <span class="fu">req</span>(<span class="fu">nrow</span>(data) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb7-249"><a href="#cb7-249"></a>    </span>
+<span id="cb7-250"><a href="#cb7-250"></a>    pal <span class="ot">&lt;-</span> <span class="fu">colorNumeric</span>(<span class="st">"YlOrRd"</span>, </span>
+<span id="cb7-251"><a href="#cb7-251"></a>                        <span class="at">domain =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(data<span class="sc">$</span>ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), </span>
+<span id="cb7-252"><a href="#cb7-252"></a>                        <span class="at">na.color =</span> <span class="st">"#D3D3D3"</span>)</span>
+<span id="cb7-253"><a href="#cb7-253"></a>    </span>
+<span id="cb7-254"><a href="#cb7-254"></a>    labels <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(</span>
+<span id="cb7-255"><a href="#cb7-255"></a>      <span class="st">"&lt;strong&gt;%s&lt;/strong&gt;&lt;br/&gt;</span></span>
+<span id="cb7-256"><a href="#cb7-256"></a><span class="st">       Sector: %s&lt;br/&gt;</span></span>
+<span id="cb7-257"><a href="#cb7-257"></a><span class="st">       AI Adoption: &lt;b&gt;%s&lt;/b&gt;&lt;br/&gt;</span></span>
+<span id="cb7-258"><a href="#cb7-258"></a><span class="st">       Payroll/Emp: &lt;b&gt;%s&lt;/b&gt;"</span>,</span>
+<span id="cb7-259"><a href="#cb7-259"></a>      data<span class="sc">$</span>state_name, </span>
+<span id="cb7-260"><a href="#cb7-260"></a>      data<span class="sc">$</span>naics_sector, </span>
+<span id="cb7-261"><a href="#cb7-261"></a>      <span class="fu">ifelse</span>(<span class="fu">is.na</span>(data<span class="sc">$</span>ai_adoption_rate), </span>
+<span id="cb7-262"><a href="#cb7-262"></a>             <span class="st">"Insufficient Data"</span>, </span>
+<span id="cb7-263"><a href="#cb7-263"></a>             <span class="fu">paste0</span>(<span class="fu">round</span>(data<span class="sc">$</span>ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>), <span class="st">"%"</span>)),</span>
+<span id="cb7-264"><a href="#cb7-264"></a>      <span class="co"># Applied / 1000 fix here for raw USD to 'k' display</span></span>
+<span id="cb7-265"><a href="#cb7-265"></a>      <span class="fu">ifelse</span>(<span class="fu">is.na</span>(data<span class="sc">$</span>mean_payroll_per_emp), </span>
+<span id="cb7-266"><a href="#cb7-266"></a>             <span class="st">"N/A"</span>, </span>
+<span id="cb7-267"><a href="#cb7-267"></a>             <span class="fu">paste0</span>(<span class="st">"$"</span>, <span class="fu">formatC</span>(data<span class="sc">$</span>mean_payroll_per_emp <span class="sc">/</span> <span class="dv">1000</span>, <span class="at">format=</span><span class="st">"f"</span>, <span class="at">digits=</span><span class="dv">1</span>, <span class="at">big.mark=</span><span class="st">","</span>), <span class="st">"k"</span>))</span>
+<span id="cb7-268"><a href="#cb7-268"></a>    ) <span class="sc">|&gt;</span> <span class="fu">lapply</span>(htmltools<span class="sc">::</span>HTML)</span>
+<span id="cb7-269"><a href="#cb7-269"></a>    </span>
+<span id="cb7-270"><a href="#cb7-270"></a>    <span class="fu">leafletProxy</span>(<span class="st">"map"</span>, <span class="at">data =</span> data) <span class="sc">|&gt;</span></span>
+<span id="cb7-271"><a href="#cb7-271"></a>      <span class="fu">clearShapes</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-272"><a href="#cb7-272"></a>      <span class="fu">addPolygons</span>(</span>
+<span id="cb7-273"><a href="#cb7-273"></a>        <span class="at">fillColor =</span> <span class="sc">~</span><span class="fu">pal</span>(ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>),</span>
+<span id="cb7-274"><a href="#cb7-274"></a>        <span class="at">fillOpacity =</span> <span class="fl">0.8</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">weight =</span> <span class="dv">1</span>,</span>
+<span id="cb7-275"><a href="#cb7-275"></a>        <span class="at">highlightOptions =</span> <span class="fu">highlightOptions</span>(<span class="at">weight =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"#666"</span>, <span class="at">bringToFront =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-276"><a href="#cb7-276"></a>        <span class="at">label =</span> labels</span>
+<span id="cb7-277"><a href="#cb7-277"></a>      ) <span class="sc">|&gt;</span></span>
+<span id="cb7-278"><a href="#cb7-278"></a>      <span class="fu">clearControls</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-279"><a href="#cb7-279"></a>      <span class="fu">addLegend</span>(<span class="st">"bottomright"</span>, <span class="at">pal =</span> pal, <span class="at">values =</span> <span class="sc">~</span>ai_adoption_rate <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb7-280"><a href="#cb7-280"></a>                <span class="at">title =</span> <span class="st">"AI Adoption (%)"</span>, <span class="at">labFormat =</span> <span class="fu">labelFormat</span>(<span class="at">suffix =</span> <span class="st">"%"</span>),</span>
+<span id="cb7-281"><a href="#cb7-281"></a>                <span class="at">na.label =</span> <span class="st">"No Data"</span>)</span>
+<span id="cb7-282"><a href="#cb7-282"></a>  })</span>
+<span id="cb7-283"><a href="#cb7-283"></a>}</span>
+<span id="cb7-284"><a href="#cb7-284"></a></span>
+<span id="cb7-285"><a href="#cb7-285"></a><span class="fu">shinyApp</span>(ui, server)</span>
+<span id="cb7-286"><a href="#cb7-286"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
