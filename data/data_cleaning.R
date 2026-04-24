@@ -48,29 +48,30 @@ tech_2018_clean <- tech_2018_raw |>
 # cleaning industries
 tech_2018_clean <- tech_2018_clean |>
   mutate(
-    naics_sector = fct_recode(as.factor(naics_sector),
-                              "Total"                   = "00",
-                              "Agriculture"             = "11",
-                              "Mining"                  = "21",
-                              "Utilities"               = "22",
-                              "Construction"            = "23",
-                              "Manufacturing"           = "31-33",
-                              "Wholesale Trade"         = "42",
-                              "Retail Trade"            = "44-45",
-                              "Transportation"          = "48-49",
-                              "Information"             = "51",
-                              "Finance and Insurance"   = "52",
-                              "Real Estate"             = "53",
-                              "Professional Services"   = "54",
-                              "Management"              = "55",
-                              "Administrative Services" = "56",
-                              "Educational Services"    = "61",
-                              "Health Care"             = "62",
-                              "Arts and Recreation"     = "71",
-                              "Food Services"           = "72",
-                              "Other Services"          = "81",
-                              "Unknown"                 = "99")
-  )
+    naics_label = case_when(
+      naics_sector == "00"    ~ "Total",
+      naics_sector == "11"    ~ "Agriculture",
+      naics_sector == "21"    ~ "Mining",
+      naics_sector == "22"    ~ "Utilities",
+      naics_sector == "23"    ~ "Construction",
+      naics_sector == "31-33" ~ "Manufacturing",
+      naics_sector == "42"    ~ "Wholesale Trade",
+      naics_sector == "44-45" ~ "Retail Trade",
+      naics_sector == "48-49" ~ "Transportation",
+      naics_sector == "51"    ~ "Information",
+      naics_sector == "52"    ~ "Finance and Insurance",
+      naics_sector == "53"    ~ "Real Estate",
+      naics_sector == "54"    ~ "Professional Services",
+      naics_sector == "55"    ~ "Management",
+      naics_sector == "56"    ~ "Administrative Services",
+      naics_sector == "61"    ~ "Educational Services",
+      naics_sector == "62"    ~ "Health Care",
+      naics_sector == "71"    ~ "Arts and Recreation",
+      naics_sector == "72"    ~ "Food Services",
+      naics_sector == "81"    ~ "Other Services",
+      naics_sector == "99"    ~ "Unknown",
+      TRUE                    ~ "Other"),
+    naics_label = as.factor(naics_label))
 
 #  AI-specific summary (Cross-section for merging)
 ai_adoption_2018 <- tech_2018_clean |>
@@ -86,7 +87,7 @@ ai_adoption_2018 <- tech_2018_clean |>
 # company summary panel (2017-2021)
 cs_panel_clean <- cs_panel_raw |>
   clean_names() |>
-  rename(naics_sector = naics2017) |> # Fixed: bridge the clean_names gap
+  rename(naics_sector = naics2017) |>
   mutate(
     state = as.character(state),
     naics_sector = as.character(naics_sector),
@@ -100,9 +101,34 @@ cs_panel_clean <- cs_panel_raw |>
   select(-firmpdemp, -emp)
 
 cs_panel_aggregate_clean <- cs_panel_clean |>
-  filter(str_length(naics_sector) == 2)
-
-
+  filter(str_length(naics_sector) == 2,
+         !naics_sector %in% c("00", "99")) |>
+  rename(revenue = rcppdemp,
+         payroll = payann) |>
+  mutate(naics_label = case_when(
+      naics_sector == "11"    ~ "Agriculture",
+      naics_sector == "21"    ~ "Mining",
+      naics_sector == "22"    ~ "Utilities",
+      naics_sector == "23"    ~ "Construction",
+      naics_sector == "31-33" ~ "Manufacturing",
+      naics_sector == "42"    ~ "Wholesale Trade",
+      naics_sector == "44-45" ~ "Retail Trade",
+      naics_sector == "48-49" ~ "Transportation",
+      naics_sector == "51"    ~ "Information",
+      naics_sector == "52"    ~ "Finance and Insurance",
+      naics_sector == "53"    ~ "Real Estate",
+      naics_sector == "54"    ~ "Professional Services",
+      naics_sector == "55"    ~ "Management",
+      naics_sector == "56"    ~ "Administrative Services",
+      naics_sector == "61"    ~ "Educational Services",
+      naics_sector == "62"    ~ "Health Care",
+      naics_sector == "71"    ~ "Arts and Recreation",
+      naics_sector == "72"    ~ "Food Services",
+      naics_sector == "81"    ~ "Other Services",
+      TRUE                    ~ "Other"
+    ),
+    naics_label = as.factor(naics_label)
+  )
 
 
 # Save Master Files
