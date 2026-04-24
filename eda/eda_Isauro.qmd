@@ -7,6 +7,7 @@ title: "Isauro R"
 library(ggplot2)
 library(here)
 library(tidyverse)
+library(plotly)
 
 source(here::here("data", "data_cleaning.R"))
 ```
@@ -48,9 +49,9 @@ tech_2018_clean |>
 
 ## EDA 2: Average Payroll per Employee
 
-### North American Industry Classification System (NAICS2017)
+### North American Industry Classification System (naics_sector)
 
-**Note:** `NAICS2017` indices and their respective industry:
+**Note:** `naics_sector` indices and their respective industry:
 
 -   Total = `00`
 -   Agriculture, Forestry, Fishing and Hunting = `11`
@@ -79,7 +80,7 @@ tech_2018_clean |>
 
 ```{r}
 cs_panel_clean |>
-  group_by(NAICS2017) |>
+  group_by(naics_sector) |>
   summarize(medianPay = median(payroll_per_emp)) |>
   arrange(desc(medianPay))
 ```
@@ -97,21 +98,24 @@ cs_panel_clean |>
 
 > `2021` reported the highest median payroll per employee at `$58.71`. `2017` reported the lowest at `$47.78`.
 
-### NAICS2017 and Year
+### naics_sector and Year
 
 ```{r}
 cs_panel_clean |>
-  group_by(NAICS2017, year) |>
+  group_by(naics_sector, year) |>
   summarize(medianPay = median(payroll_per_emp)) |>
   arrange(desc(medianPay))
 ```
 
 > Among industries in North America throughout a 5-year period, `Utilities` report the highest median payroll per employee at `$111.38` during `2021`. `Accomodation and Food Services` report the lowest at `$16.18` during `2020`.
 
-```{r}
+```{r eval=FALSE}
 merged_panel |>
   mutate(ai_firms_ratio = ai_firms_total / n_firms) |>
-  group_by(year)
-  
+  group_by(year) |>
+  ggplot(aes(x = ai_firms_ratio, y = naics_sector, fill = naics_sector)) +
+  geom_boxplot() +
+  theme_classic() +
+  scale_fill_viridis_d()
 ```
 

@@ -1,4 +1,4 @@
-state,NAICS2017,barrier,n_firms,n_emp
+state,naics_sector,barrier,n_firms,n_emp
 01,00,No factors adversely affected the adoption of this technology,26359,700161
 01,00,Technology was too expensive,4374,125847
 01,00,Technology was not mature,1122,107838

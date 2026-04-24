@@ -1,4 +1,4 @@
-## Last updated: April 9th, 2026
+## Last updated: April 22nd, 2026
 ## By David Rios
 
 # ───────────────────────────────────────────────────────
@@ -10,7 +10,7 @@
 ## This is our data import file where we are extracting the ABS data set for the year 2018
 ## 2018 is the only year for which this data is publicly available; hence, our focus on this year.
 
-## uploading libraries :D
+## uploading libraries
 library(httr2)
 library(dplyr)
 library(tidyr)
@@ -78,12 +78,12 @@ tech_2018_raw |> count(IMPACTWF_U_LABEL) |> print(n = 50)
 tech_2018_raw |> count(FACTORS_U_LABEL)  |> print(n = 50)
 tech_2018_raw |> count(MOTUSETECH_LABEL) |> print(n = 50)
 
-# 3. Pulling company summary panel (abscs) 2017–2023
+# 3. Pulling company summary panel (abscs) 2017–2021
 
 cs_vars <- c("FIRMPDEMP", "EMP", "PAYANN", "RCPPDEMP", "NAICS2017")
 
 cs_panel_raw <- map(
-  2017:2023,
+  2017:2021,
   \(yr) fetch_abs(
     year   = yr,
     module = "abscs",
@@ -93,17 +93,46 @@ cs_panel_raw <- map(
   list_rbind()
 
 
+
+cs_panel_clean <- cs_panel_raw |>
+  filter(
+    NAICS2017 != "00",
+    nchar(NAICS2017) <= 2 | NAICS2017 %in% c("31-33", "44-45", "48-49")) |>
+  mutate(
+    naics_sector = case_when(
+      NAICS2017 %in% c("31", "32", "33", "31-33") ~ "31-33",
+      NAICS2017 %in% c("44", "45", "44-45") ~ "44-45",
+      NAICS2017 %in% c("48", "49", "48-49") ~ "48-49",
+      TRUE ~ NAICS2017 )) |>
+  group_by(year, state, naics_sector) |>
+  summarise(
+    EMP = sum(as.numeric(EMP), na.rm = TRUE),
+    FIRMPDEMP = sum(as.numeric(FIRMPDEMP), na.rm = TRUE),
+    PAYANN = sum(as.numeric(PAYANN), na.rm = TRUE),
+    RCPPDEMP = sum(as.numeric(RCPPDEMP), na.rm = TRUE),
+    .groups = "drop"
+  )
+
+## Sanity Checks
+cs_panel_clean |>
+  group_by(year, state) |>
+  summarise(total_emp = sum(EMP), .groups = "drop")
+
+cs_panel_raw |>
+  filter(NAICS2017 == "00") |>
+  mutate(EMP = as.numeric(EMP))
+
 # checking if all years came through
-glimpse(cs_panel_raw)
-count(cs_panel_raw, year)
+count(cs_panel_clean, year)
+
 
 # Saving everything for easy access later on, as .csv
 dir.create("data", showWarnings = FALSE)
 
 write.csv(tech_2018_raw, "data/tech_2018_raw.csv", row.names = FALSE)
 write.csv(cs_panel_raw,  "data/cs_panel_raw.csv",  row.names = FALSE)
+write.csv(cs_panel_clean, "data/cs_panel_clean.csv", row.names = FALSE)
 
-message("It worked!")
-
-## It worked!
+## Note: the company size clean csv file is a state-by-sector panel dataset across 2017–2021.
+## We aggregated by the first two digits of the NAICS2017 codebook.
 

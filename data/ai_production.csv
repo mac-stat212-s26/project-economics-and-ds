@@ -1,4 +1,4 @@
-state,NAICS2017,produced,n_firms,n_emp
+state,naics_sector,produced,n_firms,n_emp
 01,00,Yes,385,18936
 01,00,No,53857,1233245
 01,00,Don't know,3639,166914
