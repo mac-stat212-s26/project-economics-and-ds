@@ -4,7 +4,67 @@
     "href": "index.html",
     "title": "AI: It’s Usage in North American Companies",
     "section": "",
-    "text": "Your report goes here.\n\nCode# a test code chunk",
+    "text": "Motivation\nYour report goes here.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Report</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#research-question",
+    "href": "index.html#research-question",
+    "title": "AI: It’s Usage in North American Companies",
+    "section": "Research Question",
+    "text": "Research Question",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Report</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#background",
+    "href": "index.html#background",
+    "title": "AI: It’s Usage in North American Companies",
+    "section": "Background",
+    "text": "Background\nThe study will solely analyze business information during 2018.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Report</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#data",
+    "href": "index.html#data",
+    "title": "AI: It’s Usage in North American Companies",
+    "section": "Data",
+    "text": "Data\nData Collection\nData Acquisition\nData Understanding",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Report</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#data-insights",
+    "href": "index.html#data-insights",
+    "title": "AI: It’s Usage in North American Companies",
+    "section": "Data Insights",
+    "text": "Data Insights",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Report</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#conclusions-big-picture",
+    "href": "index.html#conclusions-big-picture",
+    "title": "AI: It’s Usage in North American Companies",
+    "section": "Conclusions / Big Picture",
+    "text": "Conclusions / Big Picture",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Report</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#limitations-and-future-work",
+    "href": "index.html#limitations-and-future-work",
+    "title": "AI: It’s Usage in North American Companies",
+    "section": "Limitations and Future Work",
+    "text": "Limitations and Future Work",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Report</span>"
     ]
@@ -113,7 +173,7 @@
     "href": "eda/eda_Isauro.html#eda-2-average-payroll-per-employee",
     "title": "Isauro R",
     "section": "EDA 2: Average Payroll per Employee",
-    "text": "EDA 2: Average Payroll per Employee\nNorth American Industry Classification System (naics_sector)\nNote: naics_sector indices and their respective industry:\n\nTotal = 00\n\nAgriculture, Forestry, Fishing and Hunting = 11\n\nMining, Quarrying, and Oil and Gas Extraction = 21\n\nUtilities = 22\n\nConstruction = 23\n\nManufacturing = 31-33\n\nWholesale Trade = 42\n\nRetail Trade = 44-45\n\nTransportation and Warehousing = 48-49\n\nInformation = 51\n\nFinance and Insurance = 52\n\nReal Estate Rental and Leasing = 53\n\nProfessional, Scientific, and Technical Services = 54\n\nManagement of Companies and Enterprises = 55\n\nAdministrative and Support and Waste Management and Remediation Services = 56\n\nEducational Services = 61\n\nHealth Care and Social Assistance = 62\n\nArts, Entertainment, and Recreation = 71\n\nAccommodation and Food Services = 72\n\nOther Services (except Public Administration) = 81\n\nPublic Administration = 92\n\nNA = 99\n\n\n\nSource: https://www.census.gov/naics/?58967?yearbck=2017\n\n\nCodecs_panel_clean |&gt;\n  group_by(naics_sector) |&gt;\n  summarize(medianPay = median(payroll_per_emp)) |&gt;\n  arrange(desc(medianPay))\n\n# A tibble: 1,910 × 2\n   naics_sector medianPay\n   &lt;chr&gt;            &lt;dbl&gt;\n 1 522293         407473.\n 2 711211         293208.\n 3 5232           214697.\n 4 52413          186906.\n 5 524130         186906.\n 6 5231           176339.\n 7 52311          162067.\n 8 523110         162067.\n 9 52312          156349.\n10 523120         156349.\n# ℹ 1,900 more rows\n\n\n\nAmong industries in North America, Utilities report the highest median payroll per employee at $105.31. Accomodation and Food Services report the lowest at $18.67.\n\nYear\n\nCodecs_panel_clean |&gt;\n  group_by(year) |&gt;\n  summarize(medianPay = median(payroll_per_emp)) |&gt;\n  arrange(desc(medianPay))\n\n# A tibble: 5 × 2\n   year medianPay\n  &lt;dbl&gt;     &lt;dbl&gt;\n1  2018    50848.\n2  2019    50565.\n3  2017    45386.\n4  2020       NA \n5  2021       NA \n\n\n\n2021 reported the highest median payroll per employee at $58.71. 2017 reported the lowest at $47.78.\n\nnaics_sector and Year\n\nCodecs_panel_clean |&gt;\n  group_by(naics_sector, year) |&gt;\n  summarize(medianPay = median(payroll_per_emp)) |&gt;\n  arrange(desc(medianPay))\n\n# A tibble: 2,804 × 3\n# Groups:   naics_sector [1,910]\n   naics_sector  year medianPay\n   &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;\n 1 522293        2017   407473.\n 2 711211        2017   293208.\n 3 5232          2021   248386.\n 4 5231          2021   203980.\n 5 52413         2017   186906.\n 6 524130        2017   186906.\n 7 5231          2020   177422.\n 8 5232          2020   177010.\n 9 523           2021   166128.\n10 52311         2017   162067.\n# ℹ 2,794 more rows\n\n\n\nAmong industries in North America throughout a 5-year period, Utilities report the highest median payroll per employee at $111.38 during 2021. Accomodation and Food Services report the lowest at $16.18 during 2020.\n\n\nCodemerged_panel |&gt;\n  mutate(ai_firms_ratio = ai_firms_total / n_firms) |&gt;\n  group_by(year) |&gt;\n  ggplot(aes(x = ai_firms_ratio, y = naics_sector, fill = naics_sector)) +\n  geom_boxplot() +\n  theme_classic() +\n  scale_fill_viridis_d()",
+    "text": "EDA 2: Average Payroll per Employee\nNorth American Industry Classification System (naics_sector)\nNote: naics_sector indices and their respective industry:\n\nTotal = 00\n\nAgriculture, Forestry, Fishing and Hunting = 11\n\nMining, Quarrying, and Oil and Gas Extraction = 21\n\nUtilities = 22\n\nConstruction = 23\n\nManufacturing = 31-33\n\nWholesale Trade = 42\n\nRetail Trade = 44-45\n\nTransportation and Warehousing = 48-49\n\nInformation = 51\n\nFinance and Insurance = 52\n\nReal Estate Rental and Leasing = 53\n\nProfessional, Scientific, and Technical Services = 54\n\nManagement of Companies and Enterprises = 55\n\nAdministrative and Support and Waste Management and Remediation Services = 56\n\nEducational Services = 61\n\nHealth Care and Social Assistance = 62\n\nArts, Entertainment, and Recreation = 71\n\nAccommodation and Food Services = 72\n\nOther Services (except Public Administration) = 81\n\nPublic Administration = 92\n\nNA = 99\n\n\n\nSource: https://www.census.gov/naics/?58967?yearbck=2017\n\n\nCodecs_panel_clean |&gt;\n  group_by(naics_sector) |&gt;\n  summarize(medianPay = median(payroll_per_emp)) |&gt;\n  arrange(desc(medianPay))\n\n# A tibble: 1,910 × 2\n   naics_sector medianPay\n   &lt;chr&gt;            &lt;dbl&gt;\n 1 522293         407473.\n 2 711211         293208.\n 3 5232           214697.\n 4 52413          186906.\n 5 524130         186906.\n 6 5231           176339.\n 7 52311          162067.\n 8 523110         162067.\n 9 52312          156349.\n10 523120         156349.\n# ℹ 1,900 more rows\n\n\n\nAmong industries in North America, Utilities report the highest median payroll per employee at $105.31. Accomodation and Food Services report the lowest at $18.67.\n\nYear\n\nCodecs_panel_clean |&gt;\n  group_by(year) |&gt;\n  summarize(medianPay = median(payroll_per_emp)) |&gt;\n  arrange(desc(medianPay))\n\n# A tibble: 5 × 2\n   year medianPay\n  &lt;dbl&gt;     &lt;dbl&gt;\n1  2018    50848.\n2  2019    50565.\n3  2017    45386.\n4  2020       NA \n5  2021       NA \n\n\n\n2021 reported the highest median payroll per employee at $58.71. 2017 reported the lowest at $47.78.\n\nnaics_sector and Year\n\nCodecs_panel_clean |&gt;\n  group_by(naics_sector, year) |&gt;\n  summarize(medianPay = median(payroll_per_emp)) |&gt;\n  arrange(desc(medianPay))\n\n# A tibble: 2,804 × 3\n# Groups:   naics_sector [1,910]\n   naics_sector  year medianPay\n   &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;\n 1 522293        2017   407473.\n 2 711211        2017   293208.\n 3 5232          2021   248386.\n 4 5231          2021   203980.\n 5 52413         2017   186906.\n 6 524130        2017   186906.\n 7 5231          2020   177422.\n 8 5232          2020   177010.\n 9 523           2021   166128.\n10 52311         2017   162067.\n# ℹ 2,794 more rows\n\n\n\nAmong industries in North America throughout a 5-year period, Utilities report the highest median payroll per employee at $111.38 during 2021. Accomodation and Food Services report the lowest at $16.18 during 2020.",
     "crumbs": [
       "EDA",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Isauro R</span>"
