@@ -45,6 +45,33 @@ tech_2018_clean <- tech_2018_raw |>
   select(year, state, naics_sector, tech_type, use_level, used_tech,
          n_firms = FIRMPDEMP, n_emp = EMP, revenue = RCPPDEMP, payroll = PAYANN)
 
+# cleaning industries
+tech_2018_clean <- tech_2018_clean |>
+  mutate(
+    naics_sector = fct_recode(as.factor(naics_sector),
+                              "Total"                   = "00",
+                              "Agriculture"             = "11",
+                              "Mining"                  = "21",
+                              "Utilities"               = "22",
+                              "Construction"            = "23",
+                              "Manufacturing"           = "31-33",
+                              "Wholesale Trade"         = "42",
+                              "Retail Trade"            = "44-45",
+                              "Transportation"          = "48-49",
+                              "Information"             = "51",
+                              "Finance and Insurance"   = "52",
+                              "Real Estate"             = "53",
+                              "Professional Services"   = "54",
+                              "Management"              = "55",
+                              "Administrative Services" = "56",
+                              "Educational Services"    = "61",
+                              "Health Care"             = "62",
+                              "Arts and Recreation"     = "71",
+                              "Food Services"           = "72",
+                              "Other Services"          = "81",
+                              "Unknown"                 = "99")
+  )
+
 #  AI-specific summary (Cross-section for merging)
 ai_adoption_2018 <- tech_2018_clean |>
   filter(tech_type == "artificial intelligence", naics_sector != "00") |>

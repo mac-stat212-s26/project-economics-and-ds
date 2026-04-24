@@ -37,37 +37,6 @@ scale_use_level_fill <- function(...) {
 
 
 
-## Cleaning
-
-```{r cleaning}
-# Map NAICS codes to friendly names for readability
-tech_2018_clean <- tech_2018_clean |> 
-  mutate(
-    naics_sector = fct_recode(as.factor(naics_sector),
-                              "Total"                   = "00",
-                              "Agriculture"             = "11",
-                              "Mining"                  = "21",
-                              "Utilities"               = "22",
-                              "Construction"            = "23",
-                              "Manufacturing"           = "31-33",  
-                              "Wholesale Trade"         = "42",
-                              "Retail Trade"            = "44-45",  
-                              "Transportation"          = "48-49",  
-                              "Information"             = "51",
-                              "Finance and Insurance"   = "52",
-                              "Real Estate"             = "53",
-                              "Professional Services"   = "54",
-                              "Management"              = "55",
-                              "Administrative Services" = "56",
-                              "Educational Services"    = "61",
-                              "Health Care"             = "62",
-                              "Arts and Recreation"     = "71",
-                              "Food Services"           = "72",
-                              "Other Services"          = "81",
-                              "Unknown"                 = "99")
-  )
-
-```
 
 
 > Based on the payroll/n_emp and ai usage, how much is the revenue changing? Are those firms who are paying their employee more seeing more gains? Or is it a matter of company size?
