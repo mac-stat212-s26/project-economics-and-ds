@@ -76,8 +76,9 @@ cs_panel_clean <- cs_panel_clean |>
 # ──────────────────────────────────────────
 ### 2. Clean Technology Data (2018 Only)
 # ──────────────────────────────────────────
+
 tech_2018_clean <- tech_2018_raw |>
-  select(-RCPPDEMP) |> # Drop the useless 0s
+  select(-RCPPDEMP, -TECHSELL, -TECHUSE, -IMPACTWF_U, -IMPACTWK_U, -FACTORS_U, -MOTUSETECH) |> # Drop the useless 0s
   rename(
     naics_sector = NAICS2017,
     n_firms = FIRMPDEMP,
@@ -148,6 +149,8 @@ tech_2018_clean <- tech_2018_raw |>
     avg_wage = (payroll * 1000) / n_emp,
     emp_per_firm = n_emp / n_firms
   )
+
+
 
 
 # ──────────────────────────────────────────
