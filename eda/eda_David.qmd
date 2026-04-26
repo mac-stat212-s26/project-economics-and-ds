@@ -1,5 +1,5 @@
 ---
-title: "David's EDA"
+title: "David's Exploration"
 format: 
   html:
     toc: true
@@ -26,6 +26,7 @@ library(stringr)
 library(scales) 
 library(ggrepel)
 library(tidymodels)
+# library(gam)
 library(randomForest)
 library(ranger)
 library(vip)
@@ -55,6 +56,15 @@ scale_use_level_fill <- function(...) {
 scale_use_level_fill_c <- function(...) {
   scale_fill_distiller(palette = "Dark2", direction = 1, name = NULL, ...)
 }
+
+
+## Things I have to fix: I did some renaming later on, so I need to replace all.
+# cs_panel_clean <- cs_panel_clean |> 
+#   rename(
+#     n_firms = FIRMPDEMP,  ## done
+#     n_emp   = EMP, ## same
+#     payroll = payroll, ## done
+#     revenue = revenue) ## done
 ```
 
 
@@ -91,18 +101,17 @@ ggplot(ai_industry_leaders, aes(x = reorder(naics_label, ai_rate), y = ai_rate))
 
 ```{r}
 tech_2018_summary <- tech_2018_clean |> 
-  # 1. Group by the categories you want to compare
   group_by(year, used_tech, use_level) |> 
   summarise(
     total_firms   = sum(n_firms, na.rm = TRUE),
     total_emp     = sum(n_emp, na.rm = TRUE),
     total_payroll = sum(payroll, na.rm = TRUE),
-    .groups       = "drop" # This ungroups the data afterward to prevent future errors
+    .groups       = "drop"
   )
 
 payroll_all <- cs_panel_clean |>
   group_by(year, naics_label) |>
-  summarise(total_payroll = sum(PAYANN * 1000, na.rm = TRUE), .groups = "drop")
+  summarise(total_payroll = sum(payroll * 1000, na.rm = TRUE), .groups = "drop")
 
 top_4_industries <- ai_industry_leaders |> slice_max(ai_rate, n = 4) |> pull(naics_label)
 payroll_top4 <- payroll_all |> filter(naics_label %in% top_4_industries)
@@ -118,7 +127,7 @@ ggplot() +
              aes(x = year, y = total_payroll, color = naics_label), 
              size = 1.5) +
   # Added accuracy = 1 right here to remove the .00
-  scale_y_continuous(labels = scales::label_dollar(scale = 1e-9, suffix = "B", accuracy = 1)) +
+  scale_y_continuous(labels = scales::label_dollar(scale = 1e-9, suffix = " B", accuracy = 1)) +
   scale_use_level() + 
   labs(
     title = "Payroll Evolution",
@@ -136,7 +145,7 @@ ggplot() +
 revenue_2017 <- cs_panel_clean |>
   filter(year == 2017) |>
   group_by(naics_label) |>
-  summarise(total_revenue = sum(RCPPDEMP * 1000, na.rm = TRUE), .groups = "drop") |>
+  summarise(total_revenue = sum(revenue * 1000, na.rm = TRUE), .groups = "drop") |>
   # Filter out any lingering zeros just to be safe
   filter(total_revenue > 0) |>
   arrange(desc(total_revenue))
@@ -182,7 +191,7 @@ tech_2018_clean |>
     payroll_per_emp = payroll / n_emp) |> 
   ggplot(aes(x = n_emp, y = payroll_per_emp, color = ai_used)) +
   geom_point(alpha = 0.3, size = 1.5) +
-  geom_smooth(se = FALSE, linewidth = 1.5) + 
+  geom_smooth( se = FALSE, linewidth = 1.5) +  # method = "mgcv",
   scale_x_log10(labels = scales::comma) +
   scale_y_continuous(
     labels = scales::label_dollar(suffix = "K"), 
@@ -197,7 +206,7 @@ tech_2018_clean |>
     color = "Adoption Status",
     caption = "Source: 2018 Annual Business Survey (ABS) | Author: David Rios\nNote: Payroll standardized to thousands of dollars per employee. Trend lines calculated via local regression (LOESS)."
   ) +
-  theme_minimal() +
+  theme_minimal() + 
   theme(legend.position = "right",
         plot.title = element_text(face = "bold", size = 16),
         plot.subtitle = element_text(color = "grey30"),
@@ -426,7 +435,8 @@ wage_wide |>
     x        = "Share of Industry Employees at AI Firms",
     y        = "AI Wage Premium (%)",
     caption  = "Source: 2018 Annual Business Survey (ABS)\nBubble size = total industry employment. Dashed line marks 0% premium; dotted line marks 15% AI workforce share.") +
-  theme(legend.position = "right")
+  theme(legend.position = "right") +
+  theme_set()
 ```
 
 

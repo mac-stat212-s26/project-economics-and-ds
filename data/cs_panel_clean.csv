@@ -1,4 +1,4 @@
-year,state,naics_sector,naics_label,EMP,FIRMPDEMP,PAYANN,RCPPDEMP,avg_wage,revenue_per_firm
+year,state,naics_sector,naics_label,n_emp,n_firms,payroll,revenue,avg_wage,revenue_per_firm
 2017,01,11,Agriculture,6942,839,272484,1387005,39251.51253241141,1653.1644815256257
 2017,01,21,Mining,5174,160,353759,2312798,68372.43911867027,14454.9875
 2017,01,22,Utilities,13552,110,1308714,9627018,96569.8051948052,87518.34545454546

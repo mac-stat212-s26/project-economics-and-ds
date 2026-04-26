@@ -22,8 +22,7 @@ cs_panel_raw  <- read_csv(here::here("data", "cs_panel_raw.csv"))
 cs_panel_clean <- cs_panel_raw |>
   filter(
     !NAICS2017 %in% c("00", "99"),
-    (nchar(as.character(NAICS2017)) == 2) | (NAICS2017 %in% c("31-33", "44-45", "48-49"))
-  ) |>
+    (nchar(as.character(NAICS2017)) == 2) | (NAICS2017 %in% c("31-33", "44-45", "48-49"))) |>
   mutate(across(c(EMP, FIRMPDEMP, PAYANN, RCPPDEMP),
                 ~ as.numeric(gsub("[^0-9.-]", "", .)))) |>
   mutate(
@@ -53,22 +52,26 @@ cs_panel_clean <- cs_panel_raw |>
       naics_sector == "71"    ~ "Arts and Recreation",
       naics_sector == "72"    ~ "Food Services",
       naics_sector == "81"    ~ "Other Services",
-      TRUE                    ~ "Other"
-    )
-  ) |>
+      TRUE                    ~ "Other")) |>
   group_by(year, state, naics_sector, naics_label) |>
   summarise(
     EMP = sum(EMP, na.rm = TRUE),
     FIRMPDEMP = sum(FIRMPDEMP, na.rm = TRUE),
     PAYANN = sum(PAYANN, na.rm = TRUE),
     RCPPDEMP = sum(RCPPDEMP, na.rm = TRUE),
-    .groups = "drop"
-  ) |>
+    .groups = "drop") |>
   mutate(
     avg_wage = (PAYANN * 1000) / EMP,
-    revenue_per_firm = if_else(FIRMPDEMP > 0, RCPPDEMP / FIRMPDEMP, NA_real_)
-  ) |>
+    revenue_per_firm = if_else(FIRMPDEMP > 0, RCPPDEMP / FIRMPDEMP, NA_real_)) |>
   filter(EMP > 0)
+
+## renaming some key vars
+cs_panel_clean <- cs_panel_clean |>
+  rename(
+    n_firms = FIRMPDEMP,
+    n_emp   = EMP,
+    payroll = PAYANN,
+    revenue = RCPPDEMP)
 
 # ──────────────────────────────────────────
 ### 2. Clean Technology Data (2018 Only)
@@ -79,8 +82,7 @@ tech_2018_clean <- tech_2018_raw |>
     naics_sector = NAICS2017,
     n_firms = FIRMPDEMP,
     n_emp = EMP,
-    payroll = PAYANN
-  ) |>
+    payroll = PAYANN) |>
   mutate(across(c(n_firms, n_emp, payroll), ~as.numeric(gsub("[^0-9.-]", "", .)))) |>
   mutate(across(c(n_firms, n_emp, payroll), ~na_if(., 0))) |> # Treat 0s as NA (Privacy suppression)
   mutate(
@@ -91,8 +93,7 @@ tech_2018_clean <- tech_2018_raw |>
       IMPACTWK_U_LABEL != "All firms" ~ IMPACTWK_U_LABEL,
       FACTORS_U_LABEL != "All firms" ~ FACTORS_U_LABEL,
       MOTUSETECH_LABEL != "All firms" ~ MOTUSETECH_LABEL,
-      TRUE ~ NA_character_
-    ),
+      TRUE ~ NA_character_),
     tech_type = str_to_lower(str_trim(str_extract(active_label, "^[^:]+"))),
     survey_response = str_trim(str_extract(active_label, "(?<=: ).+")),
 
@@ -104,8 +105,7 @@ tech_2018_clean <- tech_2018_raw |>
       use_level == "Tested, but did not use in production or service" ~ "Tested",
       use_level == "Don't know" ~ "Unknown",
       is.na(use_level) ~ NA_character_,
-      TRUE ~ NA_character_
-    ),
+      TRUE ~ NA_character_),
 
     naics_sector = case_when(
       naics_sector %in% c("31","32","33","31-33") ~ "31-33",
