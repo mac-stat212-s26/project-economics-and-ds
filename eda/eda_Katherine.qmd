@@ -20,6 +20,22 @@ library(downlit)
 library(xml2)
 
 source(here::here("data", "data_cleaning.R"))
+
+## Theme Settings
+theme_set(theme_minimal(base_size = 12))
+
+scale_use_level <- function(...) {
+  scale_color_brewer(palette = "Dark2", name = NULL, ...)
+}
+
+scale_use_level_fill <- function(...) {
+  scale_fill_brewer(palette = "Dark2", name = NULL, ...)
+}
+
+
+
+tech_2018_clean |> 
+  filter(tech_type == "artificial intelligence")
 ```
 
 
@@ -28,119 +44,60 @@ source(here::here("data", "data_cleaning.R"))
 #summary(merged_panel) # general summary of the dataset
 ```
 
-# Data Cleaning
-```{r eval=FALSE}
-unique(merged_panel$NAICS2017)
-
-merged_panel <- merged_panel |> 
-  mutate(
-    Industry = fct_recode(as.factor(NAICS2017),
-        "Total" = "00",
-        "Agriculture, Forestry, Fishing and Hunting" = "11",
-        "Mining" = "21",
-        "Construction" = "23",
-        "Utilities" = "22",
-        "Wholesale Trade" = "42",
-        "Information" = "51",
-        "Real Estate Rental and Leasing" = "53",
-        "Finance and Insurance" = "52",
-        "Professional, Scientific, and Technical Services" = "54",
-        "Management of Companies and Enterprises" = "55",
-        "Educational Services" = "61",
-        "Arts, Entertainment, and Recreation" = "71",
-        "Other Services (except Public Administration)" = "81",
-        "Health Care and Social Assistance" = "62",
-        "Administrative and Support and Waste Management and Remediation Services" = "56",
-        "Accommodation and Food Services" = "72",
-        "NA" = "99"))
-
-
-ai_barriers <- ai_barriers |> 
-  mutate(
-    Industry = fct_recode(as.factor(NAICS2017),
-        "Total" = "00",
-        "Agriculture, Forestry, Fishing and Hunting" = "11",
-        "Mining" = "21",
-        "Construction" = "23",
-        "Utilities" = "22",
-        "Wholesale Trade" = "42",
-        "Information" = "51",
-        "Real Estate Rental and Leasing" = "53",
-        "Finance and Insurance" = "52",
-        "Professional, Scientific, and Technical Services" = "54",
-        "Management of Companies and Enterprises" = "55",
-        "Educational Services" = "61",
-        "Arts, Entertainment, and Recreation" = "71",
-        "Other Services (except Public Administration)" = "81",
-        "Health Care and Social Assistance" = "62",
-        "Administrative and Support and Waste Management and Remediation Services" = "56",
-        "Accommodation and Food Services" = "72",
-        "NA" = "99"))
-```
-
 # AI Usage Over Time by State
 ```{r eval=FALSE}
 # looking at how general high AI usage has changed by state from 2017-2021
-merged_panel |> 
-  ggplot(aes(x = state, y = ai_firms_high_use)) +
-  geom_point() +
-  facet_wrap(~year) +
-  labs(x = "Firms by State", y = "# of Firms with High Reported AI Usage",
-       title = "AI Usage by State (2017-2021)")
+tech_2018_clean |> 
+  filter(tech_type == "artificial intelligence") |> 
+  filter(naics_sector != "Total") |> 
+  filter(naics_sector != "Other") |> 
+  filter(naics_sector != "Unknown") |> 
+  mutate(n_firms = n_firms/100000) |> 
+  ggplot(aes(x = state, y = n_firms, fill = use_level)) +
+  geom_col() +
+  theme_minimal() +
+  scale_use_level_fill() +
+  labs(x = "State", y = "# of Firms (in hundred-thousands)",
+       title = "AI Usage by State (2018)",
+       fill = "AI Usage Level")
 ```
 
 # AI Usage by Industry
 ```{r eval=FALSE}
 # high AI usage by industry from 2017-2021
-merged_panel |> 
-  ggplot(aes(x = Industry, y = ai_firms_high_use, fill = Industry)) +
+tech_2018_clean |> 
+  filter(tech_type == "artificial intelligence") |> 
+  filter(naics_sector != "Total") |> 
+  filter(naics_sector != "Other") |> 
+  filter(naics_sector != "Unknown") |> 
+  mutate(n_firms = n_firms/100000) |> 
+  ggplot(aes(x = naics_sector, y = n_firms, fill = use_level)) +
   geom_col() + 
   facet_wrap(~year) +
   theme(axis.text.x = element_blank()) +
-  labs(x = "Firms by Industry", 
-       y = "# of Firms with High Reported AI Usage",
-       title = "AI Usage by Industry (2017-2021)")
-```
-
-# AI Usage by Industry (Excluding Total)
-```{r eval=FALSE}
-# high AI usage by industry from 2017-2021
-merged_panel |> 
-  filter(!str_detect(NAICS2017, "Total")) |> 
-  ggplot(aes(x = Industry, y = ai_firms_high_use, fill = Industry)) +
-  geom_col() + 
-  facet_wrap(~year) +
-  theme(axis.text.x = element_blank()) +
-  labs(x = "Firms by Industry", 
-       y = "# of Firms with High Reported AI Usage",
-       title = "AI Usage by Industry (2017-2021)")
+  scale_use_level_fill() +
+  labs(x = "Industry", 
+       y = "# of Firms (in hundred-thousands)",
+       title = "AI Usage by Industry (2017-2021)", 
+       fill = "AI Usage Level")
 ```
 
 # Barriers to AI Usage by Industry (Excluding Total)
 ```{r eval=FALSE}
-ai_barriers |> 
-  filter(!str_detect(Industry, "Total")) |> 
-  filter(NAICS2017 != "00", NAICS2017 != "99") |> 
-  mutate(n_firms = n_firms/100000) |> 
-  ggplot(aes(x = NAICS2017, y = n_firms, fill = barrier)) +
-  geom_col() +
+tech_2018_clean |>
+  filter(tech_type == "artificial intelligence") |>
+  filter(naics_sector != "Total") |>
+  filter(naics_sector != "Other") |>
+  filter(naics_sector != "Unknown") |>
+  group_by(naics_sector, use_level) |>
+  summarize(n_firms = sum(n_firms, na.rm = TRUE), .groups = "drop") |>
+  ggplot(aes(x = use_level, y = naics_sector, fill = n_firms)) +
+  geom_tile() +
+  scale_fill_viridis_c(trans = "log1p", na.value = "grey90") +
   theme_minimal() +
-  labs(x = "Industry", y = "Number of Firms by Industry (in hundred-thousands)",
-       fill = "Perceived Barriers to AI Adoption",
-       title = "Near Half of Firms Across Industries See AI as Unnecessary (2017)")
-```
-
-# Barriers to AI Usage by State 
-```{r eval=FALSE}
-ai_barriers |> 
-  filter(!str_detect(Industry, "Total")) |> 
-  filter(NAICS2017 != "00", NAICS2017 != "99") |> 
-  mutate(n_firms = n_firms/100000) |> 
-  ggplot(aes(x = state, y = n_firms, fill = barrier)) +
-  geom_col() +
-  theme_minimal() +
-  labs(x = "State", y = "Number of Firms by State (in hundred-thousands)",
-       fill = "Perceived Barriers to AI Adoption",
-       title = "Near Half of Firms Across States See AI as Unnecessary (2017)")
+  labs(x = "AI Usage Level", y = "Industry", fill = "# of Firms",
+       title = "AI Usage by Industry",
+       subtitle = "AI usage is moderately low, but still varies by industry.")
+  
 ```
 
