@@ -2,12 +2,43 @@
 title: "Report"
 format: 
   html: 
+    toc: true
+    toc-depth: 3
     embed-resources: true
+    code-overflow: wrap
+    page-layout: full
 ---
 
 Your report goes here.
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 # a test code chunk
 ```
 
+## Motivation
+With how much companies seem to be adopting artificial intelligence into its , it seems like nowadays we can't seem to escape it.
+
+## Research Question
+
+
+## Background
+The study will solely analyze business information during 2018.
+
+## Data
+
+### Data Collection
+
+
+### Data Acquisition
+
+
+### Data Understanding
+
+
+## Data Insights
+
+
+## Conclusions / Big Picture
+
+
+## Limitations and Future Work

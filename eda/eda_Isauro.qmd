@@ -1,5 +1,12 @@
 ---
 title: "Isauro R"
+format: 
+  html: 
+    toc: true
+    toc-depth: 3
+    embed-resources: true
+    code-overflow: wrap
+    page-layout: full
 ---
 
 ```{r}
@@ -108,14 +115,3 @@ cs_panel_clean |>
 ```
 
 > Among industries in North America throughout a 5-year period, `Utilities` report the highest median payroll per employee at `$111.38` during `2021`. `Accomodation and Food Services` report the lowest at `$16.18` during `2020`.
-
-```{r eval=FALSE}
-merged_panel |>
-  mutate(ai_firms_ratio = ai_firms_total / n_firms) |>
-  group_by(year) |>
-  ggplot(aes(x = ai_firms_ratio, y = naics_sector, fill = naics_sector)) +
-  geom_boxplot() +
-  theme_classic() +
-  scale_fill_viridis_d()
-```
-

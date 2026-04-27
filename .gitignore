@@ -72,3 +72,4 @@ _freeze/
 *.toc
 appx/api_key.R
 appx/api_key.Renviron
+data/master_data_merged.csv

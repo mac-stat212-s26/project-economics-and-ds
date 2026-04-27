@@ -1,11 +1,9 @@
-## Last updated: April 22nd, 2026
+## Last updated: April 24nd, 2026
 ## By David Rios
 
 # ───────────────────────────────────────────────────────
 
 ## This is the code where we used census API via httr2 to pull public ABS data
-
-## I think I secured our API key? -- ASK AMIN!!!!!
 
 ## This is our data import file where we are extracting the ABS data set for the year 2018
 ## 2018 is the only year for which this data is publicly available; hence, our focus on this year.
@@ -78,52 +76,34 @@ tech_2018_raw |> count(IMPACTWF_U_LABEL) |> print(n = 50)
 tech_2018_raw |> count(FACTORS_U_LABEL)  |> print(n = 50)
 tech_2018_raw |> count(MOTUSETECH_LABEL) |> print(n = 50)
 
-# 3. Pulling company summary panel (abscs) 2017–2021
 
-cs_vars <- c("FIRMPDEMP", "EMP", "PAYANN", "RCPPDEMP", "NAICS2017")
+# 3. Pulling company summary panel (abscs) 2017–2021
+# We use a slightly different variable list because 'abscs' sometimes uses different naming conventions for NAICS in early years.
 
 cs_panel_raw <- map(
   2017:2021,
-  \(yr) fetch_abs(
-    year   = yr,
-    module = "abscs",
-    vars   = cs_vars
-  )
+  \(yr) {
+    message("Fetching year: ", yr)
+    # Note: In some years of ABSCS, the variable is just 'NAICS2017'
+    current_vars <- c("FIRMPDEMP", "EMP", "PAYANN", "RCPPDEMP", "NAICS2017")
+
+    fetch_abs(
+      year   = yr,
+      module = "abscs",
+      vars   = current_vars,
+      geo    = "state:*" # This fetches all states
+    )
+  }
 ) |>
   list_rbind()
 
-
-
-cs_panel_clean <- cs_panel_raw |>
-  filter(
-    NAICS2017 != "00",
-    nchar(NAICS2017) <= 2 | NAICS2017 %in% c("31-33", "44-45", "48-49")) |>
-  mutate(
-    naics_sector = case_when(
-      NAICS2017 %in% c("31", "32", "33", "31-33") ~ "31-33",
-      NAICS2017 %in% c("44", "45", "44-45") ~ "44-45",
-      NAICS2017 %in% c("48", "49", "48-49") ~ "48-49",
-      TRUE ~ NAICS2017 )) |>
-  group_by(year, state, naics_sector) |>
-  summarise(
-    EMP = sum(as.numeric(EMP), na.rm = TRUE),
-    FIRMPDEMP = sum(as.numeric(FIRMPDEMP), na.rm = TRUE),
-    PAYANN = sum(as.numeric(PAYANN), na.rm = TRUE),
-    RCPPDEMP = sum(as.numeric(RCPPDEMP), na.rm = TRUE),
-    .groups = "drop"
-  )
-
-## Sanity Checks
-cs_panel_clean |>
-  group_by(year, state) |>
-  summarise(total_emp = sum(EMP), .groups = "drop")
-
-cs_panel_raw |>
-  filter(NAICS2017 == "00") |>
-  mutate(EMP = as.numeric(EMP))
-
-# checking if all years came through
-count(cs_panel_clean, year)
+## Checking
+if (!is.null(cs_panel_raw)) {
+  cs_panel_raw |>
+    filter(NAICS2017 == "00") |>
+    mutate(EMP = as.numeric(EMP)) |>
+    glimpse()
+}
 
 
 # Saving everything for easy access later on, as .csv
@@ -131,7 +111,6 @@ dir.create("data", showWarnings = FALSE)
 
 write.csv(tech_2018_raw, "data/tech_2018_raw.csv", row.names = FALSE)
 write.csv(cs_panel_raw,  "data/cs_panel_raw.csv",  row.names = FALSE)
-write.csv(cs_panel_clean, "data/cs_panel_clean.csv", row.names = FALSE)
 
 ## Note: the company size clean csv file is a state-by-sector panel dataset across 2017–2021.
 ## We aggregated by the first two digits of the NAICS2017 codebook.
