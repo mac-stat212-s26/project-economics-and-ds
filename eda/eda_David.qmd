@@ -44,12 +44,6 @@ theme_set(
       panel.grid.minor = element_blank()
     )
 )
-
-scale_use_level <- function(...) { scale_color_brewer(palette = "Dark2", name = NULL, ...) }
-
-scale_use_level_fill <- function(...) { scale_fill_brewer(palette = "Dark2", name = NULL, ...) }
-
-scale_use_level_fill_c <- function(...) { scale_fill_distiller(palette = "Dark2", direction = 1, name = NULL, ...) }
 ```
 
 
@@ -74,7 +68,7 @@ ai_industry_leaders |>
   filter(ai_firms>0) |> 
   ggplot(aes(x = reorder(naics_label, ai_rate), y = ai_rate)) +
   geom_col() + 
-  scale_use_level_fill()+
+  scale_fill_viridis_b()+
   coord_flip() + 
   scale_y_continuous(labels = percent_format()) +
   labs(
@@ -87,8 +81,9 @@ ai_industry_leaders |>
         panel.grid.major.x = element_blank(), 
         axis.ticks.y = element_blank())
 ```
+## Payroll Level Change 
 
-```{r}
+```{r eval=FALSE}
 tech_2018_summary <- tech_2018_clean |> 
   group_by(year, used_tech, use_level) |> 
   summarise(
@@ -127,7 +122,7 @@ ggplot() +
   ) + theme(legend.position = "top")
 ```
 
-## % Change
+## Payroll Percentage Change
 
 ```{r}
 ## indexed payroll growth
@@ -164,13 +159,11 @@ p1_top4_ai <- ggplot() +
   geom_line(
     data = payroll_growth,
     aes(x = year, y = payroll_growth_pct, group = naics_label),
-    color = "grey85", linewidth = 0.5, alpha = 0.6
-  ) +
+    color = "grey85", linewidth = 0.5, alpha = 0.6) +
   geom_line(
     data = payroll_growth_top4,
     aes(x = year, y = payroll_growth_pct, color = naics_label),
-    linewidth = 1
-  ) +
+    linewidth = 1) +
   geom_text_repel(
     data = payroll_growth_top4 |> filter(year == max(year)),
     aes(x = year, y = payroll_growth_pct, label = naics_label, color = naics_label),
@@ -180,6 +173,7 @@ p1_top4_ai <- ggplot() +
     size = 3
   ) +
   scale_y_continuous(labels = percent_format()) +
+    scale_color_viridis_d(option = "D") +
   labs(
     title = "AI-Leading Industries",
     subtitle = "Indexed to 2017 total payroll",
@@ -187,9 +181,8 @@ p1_top4_ai <- ggplot() +
     y = "Payroll (2017 = 1)"
   ) +
   theme_minimal() +
-  theme(
-    legend.position = "none",
-    plot.title = element_text(face = "bold")
+ theme(
+    legend.position = "none"
   )
 
 p2_worse_ai <- ggplot() +
@@ -214,14 +207,13 @@ p2_worse_ai <- ggplot() +
       x = year,
       y = payroll_growth_pct,
       label = naics_label,
-      color = naics_label
-    ),
+      color = naics_label),
     nudge_x = 1,
     direction = "y",
     show.legend = FALSE,
-    size = 3
-  ) +
+    size = 3) +
   scale_y_continuous(labels = percent_format()) +
+  scale_color_viridis_d(option = "H") +
   labs(
     title = "Lower AI-Adoption Industries",
     subtitle = "Indexed to 2017 total payroll",
@@ -231,8 +223,7 @@ p2_worse_ai <- ggplot() +
   ) +
   theme_minimal() +
   theme(
-    legend.position = "none",
-    plot.title = element_text(face = "bold")
+    legend.position = "none"
   )
 
 ## final plot combining both plots above 
@@ -241,7 +232,7 @@ final_dis <- p1_top4_ai + p2_worse_ai +
   plot_annotation(
     title = "Payroll Growth Comparison: AI-Leading vs Non-Leading Industries",
     theme = theme(
-      plot.title = element_text(face = "bold", size = 16)
+      plot.title = element_text(face = "bold", size = 14)
     )
   )
 
@@ -285,7 +276,7 @@ ggplot(revenue_2017, aes(x = total_revenue, y = reorder(naics_label, total_reven
 
 Does the AI wage premium holds constant as firms grow in size?
 
-```{r}
+```{r wage_premium, warning=FALSE}
 ## wage premium story
 tech_2018_clean |>
   filter(tech_type == "artificial intelligence",
@@ -303,7 +294,7 @@ tech_2018_clean |>
   scale_y_continuous(
     labels = scales::label_dollar(suffix = "K"), 
     breaks = seq(0, 300, by = 50)) +  
-  scale_use_level() +
+    scale_color_viridis_d(option = "D") +
   labs(
     title = "Does AI Pay?",
     subtitle = "Evidence of higher payroll standards among technology adopters across firm scales",
@@ -441,33 +432,40 @@ wage_wide <- ai_industry_wages |>
 ##  The AI Wage Gap by Industry
 dumbbell_long <- wage_wide |>
   pivot_longer(
-    cols      = c(wage_no_ai, wage_ai),
-    names_to  = "group",
+    cols = c(wage_no_ai, wage_ai),
+    names_to = "group",
     values_to = "avg_wage") |>
   mutate(
-    group       = if_else(group == "wage_ai", "AI Adopters", "Non-Adopters"),
+    group = if_else(group == "wage_ai", "AI Adopters", "Non-Adopters"),
     naics_label = reorder(naics_label, wage_gap))
 
 ggplot() +
   geom_segment(
     data = wage_wide |> mutate(naics_label = reorder(naics_label, wage_gap)),
     aes(x = wage_no_ai, xend = wage_ai,
-        y = naics_label,  yend = naics_label),
+        y = naics_label, yend = naics_label),
     color = "grey75", linewidth = 1.3) +
   geom_point(
     data = dumbbell_long,
     aes(x = avg_wage, y = naics_label, color = group),
     size = 4) +
-  scale_use_level() +
+  scale_color_viridis_d(option = "D") +
   scale_x_continuous(labels = scales::label_dollar(suffix = "K")) +
   labs(
-    title    = "The AI Wage Gap by Industry",
-    subtitle = "Average annual payroll per employee: AI adopters vs. non-adopters (2018)",
-    x        = "Avg. Annual Payroll per Employee (Thousands USD)",
-    y        = NULL,
-    color    = NULL,
-    caption  = "Source: 2018 Annual Business Survey (ABS)\nRetail Trade is the only industry where AI adopters earn less on average — likely driven by logistics automation.") +
-  theme(legend.position = "top")
+    title = "The AI Wage Gap by Industry",
+    subtitle = "AI adopters vs. non-adopters (2018)",
+    x = "Avg. Annual Payroll per Employee (Thousands USD)",
+    y = NULL,
+    color = NULL,
+    caption = "Source: 2018 ABS") +
+  theme_minimal() +
+  theme(legend.position = "top",
+        plot.title = element_text(face = "bold", size = 16),
+        plot.subtitle = element_text(color = "grey30"),
+        plot.caption = element_text(hjust = 0, color = "grey40", size = 8))
+
+
+
 
 
 ## AI Wage Premium: Who Benefits Most?
