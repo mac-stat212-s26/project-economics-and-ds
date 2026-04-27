@@ -26,10 +26,11 @@ library(stringr)
 library(scales) 
 library(ggrepel)
 library(tidymodels)
-# library(gam)
 library(randomForest)
 library(ranger)
 library(vip)
+library(patchwork)
+
 
 source(here::here("data", "data_cleaning.R"))
 
@@ -83,7 +84,7 @@ ai_industry_leaders |>
 ```
 ## Payroll Level Change 
 
-```{r eval=FALSE}
+```{r}
 tech_2018_summary <- tech_2018_clean |> 
   group_by(year, used_tech, use_level) |> 
   summarise(
@@ -111,7 +112,7 @@ ggplot() +
              aes(x = year, y = total_payroll, color = naics_label), 
              size = 1.5) +
   scale_y_continuous(labels = scales::label_dollar(scale = 1e-9, suffix = " B", accuracy = 1)) +
-  scale_use_level() + 
+  scale_color_viridis_d(option = "H") +
   labs(
     title = "Payroll Evolution",
     subtitle = "Highlighting the 4 industries with the highest AI adoption rates in 2018",
