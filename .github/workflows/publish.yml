@@ -51,6 +51,11 @@ jobs:
       - name: Install System Dependencies for R Packages
         uses: r-lib/actions/setup-renv@v2
 
+      - name: Install Additional System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libudunits2-dev
+
 
       # From https://stackoverflow.com/questions/76642914/use-a-github-package-for-a-r-github-action
       # - name: Install the remotes Package
