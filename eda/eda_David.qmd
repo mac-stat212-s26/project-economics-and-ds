@@ -16,8 +16,7 @@ In this document, I will be looking at the evolution of AI. Since we only have d
 ```{r, setup, message=FALSE, warning=FALSE}
 library(here)
 library(tidyverse)
-library(tigris)
-library(sf)
+# library(tigris)
 library(stringr)
 library(scales)
 library(ggrepel)
@@ -271,7 +270,7 @@ ggplot(revenue_2017, aes(x = total_revenue, y = reorder(naics_label, total_reven
 
 Does the AI wage premium holds constant as firms grow in size?
 
-```{r, wage_premium}
+```{r, wage_premium, eval=FALSE}
 ## wage premium story
 tech_2018_clean |>
   filter(tech_type == "artificial intelligence",
