@@ -16,7 +16,7 @@ Your report goes here.
 ```
 
 ## Motivation
-With how much companies seem to be adopting artificial intelligence into its , it seems like nowadays we can't seem to escape it.
+With how much companies are adopting artificial intelligence into its services, it seems like nowadays it's impossible to escape from it. This is especially noticeable with tech companies, to the point where AI has become necessity to include in an expanding tech landscape. It's almost hard to imagine that life wasn't always like this. Not 20 years, 15, nor even 10 years ago. 
 
 ## Research Question
 

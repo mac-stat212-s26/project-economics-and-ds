@@ -25,34 +25,37 @@ source(here::here("data", "data_cleaning.R"))
 
 ```{r}
 tech_2018_clean |>
+  filter(!is.na(n_firms)) |>
   group_by(tech_type) |>
   summarize(avgFirms = mean(n_firms)) |>
   arrange(desc(avgFirms))
 ```
 
-> Among Tech Companies in the North America, `Robotics` companies have the highest average number of firms at `1529.508`. `Specialized Software` companies report the lowest at `1501.812` firms.
+> Among Tech Companies in the North America, `Specialized Software	` companies have the highest average number of firms at `1324.265`. `Specialized Equipment` companies report the lowest at `1189.696	` firms.
 
 ### By Tech Usage
 
 ```{r}
 tech_2018_clean |>
+  filter(!is.na(n_firms)) |>
   group_by(used_tech) |>
   summarize(avgFirms = mean(n_firms)) |>
   arrange(desc(avgFirms))
 ```
 
-> Among Tech Companies in the North America, Companies that `Did not use` their tech have the highest average number of firms at `6872.37554`. Companies that `Tested only` their tech report the lowest at `30.13016` firms.
+> Among Tech Companies in the North America, Companies that `Did not use` their tech have the highest average number of firms at `4514.4706`. Companies that `Tested` their tech report the lowest at `144.5495` firms.
 
 ### By Types of Tech and If They Were Used
 
 ```{r}
 tech_2018_clean |>
+  filter(!is.na(n_firms)) |>
   group_by(tech_type, used_tech) |>
   summarize(avgFirms = mean(n_firms)) |>
   arrange(desc(avgFirms))
 ```
 
-> Among Tech Companies in the North America, `Robotics` companies that `Did not use` their tech have the highest average number of firms at `8630.75257`. `Robotics` companies that `Tested only` their tech report the lowest at `14.45658` firms.
+> Among Tech Companies in the North America, `Robotics` companies that `Did not use` their tech have the highest average number of firms at `5360.76368`. `Robotics` companies that `Tested` their tech report the lowest at `87.01887` firms.
 
 ## EDA 2: Average Payroll per Employee
 
@@ -87,6 +90,7 @@ tech_2018_clean |>
 
 ```{r}
 cs_panel_clean |>
+  mutate(payroll_per_emp = payroll/n_emp) |>
   group_by(naics_sector) |>
   summarize(medianPay = median(payroll_per_emp)) |>
   arrange(desc(medianPay))
@@ -98,6 +102,7 @@ cs_panel_clean |>
 
 ```{r}
 cs_panel_clean |>
+  mutate(payroll_per_emp = payroll/n_emp) |>
   group_by(year) |>
   summarize(medianPay = median(payroll_per_emp)) |>
   arrange(desc(medianPay))
@@ -109,6 +114,7 @@ cs_panel_clean |>
 
 ```{r}
 cs_panel_clean |>
+  mutate(payroll_per_emp = payroll/n_emp) |>
   group_by(naics_sector, year) |>
   summarize(medianPay = median(payroll_per_emp)) |>
   arrange(desc(medianPay))
