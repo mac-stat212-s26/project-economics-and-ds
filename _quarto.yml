@@ -61,7 +61,7 @@ book:
 
     - part: "EDA"
       chapters:
-        - eda/eda_David.qmd
+        # - eda/eda_David.qmd
         - eda/eda_Isauro.qmd
         - eda/eda_Katherine.qmd
 
