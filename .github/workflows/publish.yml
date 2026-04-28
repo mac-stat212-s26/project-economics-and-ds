@@ -48,13 +48,27 @@ jobs:
 
       # From: https://github.com/actions/runner-images/issues/37
       # From: https://p3m.dev/client/#/repos/cran/packages/overview?search=png
-      - name: Install System Dependencies for R Packages
-        uses: r-lib/actions/setup-renv@v2
 
-      - name: Install Additional System Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libudunits2-dev
+      # chechking if this will work.
+      # - name: Install System Dependencies for R Packages
+      #   uses: r-lib/actions/setup-renv@v2
+
+      - name: Install system dependencies
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y \
+              libudunits2-dev \
+              libgdal-dev \
+              libgeos-dev \
+              libproj-dev
+
+
+      - name: Setup renv
+          uses: r-lib/actions/setup-renv@v2
+
+      - name: Force clean renv restore
+          run: |
+            Rscript -e 'renv::restore(clean = TRUE)'
 
 
       # From https://stackoverflow.com/questions/76642914/use-a-github-package-for-a-r-github-action
