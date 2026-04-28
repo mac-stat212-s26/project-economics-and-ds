@@ -13,7 +13,7 @@ In this document, I will be looking at the evolution of AI. Since we only have d
 
 ## Introduction
 
-```{r, setup, message=FALSE, warning=FALSE}
+```{r, setup, message=FALSE}
 library(here)
 library(tidyverse)
 # library(tigris)
