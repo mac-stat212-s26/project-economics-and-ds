@@ -4,6 +4,7 @@ format:
   html:
     toc: true
     code-fold: true
+    embed-resources: true
 ---
 
 ## Motivations
@@ -15,21 +16,15 @@ In this document, I will be looking at the evolution of AI. Since we only have d
 ```{r, setup, message=FALSE, warning=FALSE}
 library(here)
 library(tidyverse)
-library(ggplot2)
-library(plotly)
-library(dplyr)
 library(tigris)
-library(shiny)
-library(leaflet)
 library(sf)
 library(stringr)
-library(scales) 
+library(scales)
 library(ggrepel)
 library(tidymodels)
-library(randomForest)
 library(ranger)
-library(vip)
 library(patchwork)
+library(leaflet) 
 
 
 source(here::here("data", "data_cleaning.R"))
@@ -50,7 +45,7 @@ theme_set(
 
 ## Who's the top industry using AI?
 
-```{r top_ai}
+```{r, top_ai}
 ai_industry_leaders <- tech_2018_clean |>
   filter(
     tech_type == "artificial intelligence", 
@@ -165,14 +160,12 @@ p1_top4_ai <- ggplot() +
     data = payroll_growth_top4,
     aes(x = year, y = payroll_growth_pct, color = naics_label),
     linewidth = 1) +
-  geom_text_repel(
+  geom_text(
     data = payroll_growth_top4 |> filter(year == max(year)),
     aes(x = year, y = payroll_growth_pct, label = naics_label, color = naics_label),
     nudge_x = 1,
-    direction = "y",
     show.legend = FALSE,
-    size = 3
-  ) +
+    size = 3) +
   scale_y_continuous(labels = percent_format()) +
     scale_color_viridis_d(option = "D") +
   labs(
@@ -195,14 +188,12 @@ p2_worse_ai <- ggplot() +
   geom_line(
     data = payroll_growth_w4,
     aes(x = year, y = payroll_growth_pct, color = naics_label),
-    linewidth = 1
-  ) +
+    linewidth = 1) +
   geom_point(
     data = payroll_growth_w4,
     aes(x = year, y = payroll_growth_pct, color = naics_label),
-    size = 1
-  ) +
-  geom_text_repel(
+    size = 1) +
+  geom_text(
     data = payroll_growth_w4 |> filter(year == max(year)),
     aes(
       x = year,
@@ -210,7 +201,6 @@ p2_worse_ai <- ggplot() +
       label = naics_label,
       color = naics_label),
     nudge_x = 1,
-    direction = "y",
     show.legend = FALSE,
     size = 3) +
   scale_y_continuous(labels = percent_format()) +
@@ -231,7 +221,7 @@ p2_worse_ai <- ggplot() +
 final_dis <- p1_top4_ai + p2_worse_ai +
   plot_layout(ncol = 2) +
   plot_annotation(
-    title = "Payroll Growth Comparison: AI-Leading vs Non-Leading Industries",
+    title = "Payroll Growth Comparison",
     theme = theme(
       plot.title = element_text(face = "bold", size = 14)
     )
@@ -277,7 +267,7 @@ ggplot(revenue_2017, aes(x = total_revenue, y = reorder(naics_label, total_reven
 
 Does the AI wage premium holds constant as firms grow in size?
 
-```{r wage_premium, warning=FALSE}
+```{r, wage_premium}
 ## wage premium story
 tech_2018_clean |>
   filter(tech_type == "artificial intelligence",
@@ -290,7 +280,7 @@ tech_2018_clean |>
     payroll_per_emp = payroll / n_emp) |> 
   ggplot(aes(x = n_emp, y = payroll_per_emp, color = ai_used)) +
   geom_point(alpha = 0.3, size = 1.5) +
-  geom_smooth( se = FALSE, linewidth = 1.5) +  # method = "mgcv",
+  geom_smooth(se = FALSE, linewidth = 1.5) +  # method = "mgcv",
   scale_x_log10(labels = scales::comma) +
   scale_y_continuous(
     labels = scales::label_dollar(suffix = "K"), 
@@ -320,38 +310,50 @@ state_ai_adoption <- tech_2018_clean |>
   filter(
     tech_type == "artificial intelligence",
     !is.na(used_tech),
-    used_tech != "Unknown") |>
+    used_tech != "Unknown"
+  ) |>
   group_by(state) |>
   summarise(
     total_firms = sum(n_firms, na.rm = TRUE),
     ai_firms = sum(n_firms[used_tech == "Used"], na.rm = TRUE),
-    .groups = "drop") |>
-  mutate(ai_rate = ai_firms / total_firms) |>
+    .groups = "drop"
+  ) |>
+  mutate(
+    state = str_pad(state, 2, pad = "0"),
+    ai_rate = if_else(total_firms > 0, ai_firms / total_firms, NA_real_)
+  ) |>
   filter(total_firms > 0)
 
 # Fetch map boundaries and shift AK/HI to the bottom
-us_map <- tigris::states(cb = TRUE, resolution = "20m", class = "sf") |> 
-  tigris::shift_geometry()
+us_map <- tigris::states(cb = TRUE, resolution = "20m", class = "sf") |>
+  filter(STUSPS != "PR") |>
+  tigris::shift_geometry() |>
+  mutate(GEOID = str_pad(GEOID, 2, pad = "0"))
 
 map_data <- us_map |>
   left_join(state_ai_adoption, by = c("GEOID" = "state"))
+
+
 ggplot(map_data) +
   geom_sf(aes(fill = ai_rate), color = "white", linewidth = 0.2) +
   scale_fill_distiller(
-    palette = "OrRd", 
-    direction = 1, 
+    palette = "OrRd",
+    direction = 1,
     labels = scales::percent_format(accuracy = 1),
-    na.value = "grey95") +
+    na.value = "grey95"
+  ) +
   labs(
     title = "Where are the AI Hubs?",
     subtitle = "AI Adoption Rate by State in 2018",
     fill = "Adoption\nRate",
-    caption = "Source: 2018 Annual Business Survey (ABS)") +
+    caption = "Source: 2018 Annual Business Survey (ABS)"
+  ) +
   theme_void(base_size = 12) +
   theme(
     plot.title = element_text(face = "bold", size = 16),
     plot.subtitle = element_text(color = "grey30"),
-    legend.position = "right")
+    legend.position = "right"
+  )
 ```
 
 
@@ -359,7 +361,7 @@ ggplot(map_data) +
 
 ## Wage Gaps and Premium
 
-```{r data_preparation_cs}
+```{r, data_prep_cs}
 tech_2018_summary <- tech_2018_clean |>
   filter(
     !is.na(used_tech),
@@ -420,16 +422,20 @@ wage_wide <- ai_industry_wages |>
     wage_no_ai = `avg_wage_Did not use`,
     wage_ai    = `avg_wage_Used`,
     emp_no_ai  = `total_emp_Did not use`,
-    emp_ai     = `total_emp_Used`) |>
+    emp_ai     = `total_emp_Used`) 
+
+ wage_wide <- wage_wide |>
   mutate(
-    wage_gap     = wage_ai - wage_no_ai,
-    premium_pct  = wage_gap / wage_no_ai,
-    total_emp    = emp_no_ai + emp_ai,
-    ai_emp_share = emp_ai / total_emp)
+    wage_gap = wage_ai - wage_no_ai,
+    premium_pct = if_else(wage_no_ai > 0, wage_gap / wage_no_ai, NA_real_),
+    total_emp = emp_no_ai + emp_ai,
+    ai_emp_share = if_else(total_emp > 0, emp_ai / total_emp, NA_real_)
+  )
+
 ```
 
 
-```{r plots_cs}
+```{r, plots_cs}
 ##  The AI Wage Gap by Industry
 dumbbell_long <- wage_wide |>
   pivot_longer(
@@ -467,8 +473,6 @@ ggplot() +
 
 
 
-
-
 ## AI Wage Premium: Who Benefits Most?
 
 wage_wide |>
@@ -502,42 +506,56 @@ wage_wide |>
 
 
 ## Employment Scale vs. Wage Premium
-wage_wide |>
-  mutate(premium_sign = if_else(premium_pct >= 0, "Positive", "Negative")) |>
-  ggplot(aes(
-    x     = ai_emp_share,
-    y     = premium_pct,
-    size  = total_emp,
+ggplot(
+  wage_wide |> mutate(premium_sign = if_else(premium_pct >= 0, "Positive", "Negative")),
+  aes(
+    x = ai_emp_share,
+    y = premium_pct,
+    size = total_emp,
     color = premium_sign,
-    label = naics_label)) +
-  geom_hline(yintercept = 0,    linetype = "dashed", color = "grey60", linewidth = 0.5) +
+    label = naics_label
+  )
+) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey60", linewidth = 0.5) +
   geom_vline(xintercept = 0.15, linetype = "dotted", color = "grey60", linewidth = 0.5) +
   geom_point(alpha = 0.65) +
-  geom_text_repel(size = 3, color = "grey20", max.overlaps  = 20,
-                  segment.color = "grey70",
-                  nudge_y = if_else(wage_wide$naics_label == "Construction", -0.09, 0),
-                  nudge_x = case_when(
-                    wage_wide$naics_label == "Real Estate"             ~  0.04,
-                    wage_wide$naics_label == "Administrative Services" ~  0.04,
-                    TRUE                                               ~  0))+
+  geom_text_repel(
+    size = 3,
+    color = "grey20",
+    max.overlaps = 20,
+    box.padding = 0.3
+  ) +
   scale_x_continuous(
     labels = scales::percent_format(accuracy = 1),
-    expand = expansion(mult = c(0.05, 0.05))) +
-  scale_y_continuous(limits = c(-0.15, 0.75), labels = scales::percent_format(accuracy = 1)) +
+    expand = expansion(mult = c(0.05, 0.05))
+  ) +
+  scale_y_continuous(
+    labels = scales::percent_format(accuracy = 1),
+    limits = c(-0.15, 0.75)
+  ) +
   scale_size_continuous(
-    range  = c(3, 16),
+    range = c(3, 16),
     labels = scales::label_number(scale = 1e-6, suffix = "M", accuracy = 1),
-    name   = "Total Employees") +
+    name = "Total Employees"
+  ) +
   scale_color_manual(
     values = c("Positive" = "#2d6a4f", "Negative" = "#c1121f"),
-    guide  = "none") +
-  labs(title    = "Where Does AI Create the Most Value?",
-       subtitle = "Share of industry workforce at AI firms vs. the wage premium they command",
-       x        = "Share of Industry Employees at AI Firms",
-       y        = "AI Wage Premium (%)",
-       caption  = "Source: 2018 Annual Business Survey (ABS)\nBubble size = total industry employment. Dashed line marks 0% premium; dotted line marks 15% AI workforce share.") +
-  theme(legend.position = "right") +
-  theme_set()
+    guide = "none"
+  ) +
+  labs(
+    title = "Where Does AI Create the Most Value?",
+    subtitle = "Share of industry workforce at AI firms vs. wage premium",
+    x = "Share of Industry Employees at AI Firms",
+    y = "AI Wage Premium",
+    caption = "Source: 2018 Annual Business Survey (ABS)"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(color = "grey30"),
+    plot.caption = element_text(hjust = 0, color = "grey40", size = 8)
+  )
 ```
 
 
@@ -550,134 +568,9 @@ wage_wide |>
 
 ## AI Adoption Spatial
 
-```{r, maps, eval=FALSE}
-# --- PREPARATION: State Lookups ---
-fips_to_name <- tibble(
-  state_fips = c("01", "02", "04", "05", "06", "08", "09", "10", "11", "12", "13", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "44", "45", "46", "47", "48", "49", "50", "51", "53", "54", "55", "56"),
-  state_name = c("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming")
-)
-
-# --- STEP 1: Geometry (Silent & Clean) ---
-sf_use_s2(FALSE)
-states_sf <- suppressMessages(suppressWarnings(
-  st_as_sf(maps::map("state", plot = FALSE, fill = TRUE)) |>
-    mutate(state_name = str_to_title(word(ID, 1, sep = ":"))) |>
-    st_make_valid() |> 
-    group_by(state_name) |> 
-    summarise(geometry = st_union(geom), .groups = "drop") |>
-    st_transform(4326)
-))
-
-# --- STEP 2: AI Rates (Summarized & Defensive) ---
-ai_rates <- tech_2018_clean |>
-  ungroup() |> 
-  filter(tech_type == "artificial intelligence") |>
-  mutate(naics_sector = as.character(naics_sector)) |>
-  group_by(state, naics_sector) |>
-  summarise(
-    ai_adoption_rate = sum(n_firms[used_tech == "Used"], na.rm = TRUE) / 
-      sum(n_firms, na.rm = TRUE),
-    .groups = "drop"
-  )
-
-# --- STEP 3: Payroll (Matching by Cleaned Sector Names) ---
-payroll_stats <- cs_panel_clean |>
-  ungroup() |> 
-  group_by(state, naics_sector) |>
-  summarise(
-    mean_payroll_per_emp = mean(payroll_per_emp, na.rm = TRUE), # Raw USD
-    .groups = "drop"
-  )
-
-# --- STEP 4: Final Merge & Industry Filter ---
-state_ai_spatial <- ai_rates |>
-  left_join(payroll_stats, by = c("state", "naics_sector")) |>
-  left_join(fips_to_name, by = c("state" = "state_fips")) |>
-  filter(!is.na(state_name))
-
-# Identify industries with enough data to show in the dropdown
-valid_industries <- state_ai_spatial |>
-  group_by(naics_sector) |>
-  summarise(missing = sum(is.na(ai_adoption_rate)), .groups = "drop") |>
-  filter(missing <= 10, !naics_sector %in% c("Unknown", "Total")) |>
-  pull(naics_sector)
-
-# --- STEP 5: Shiny App ---
-ui <- fluidPage(
-  titlePanel("US AI Adoption & Payroll by Sector (2018)"),
-  sidebarLayout(
-    sidebarPanel(
-      selectInput("industry_choice", "Select Industry Sector:", 
-                  choices = sort(valid_industries),
-                  selected = "Professional Services"),
-      hr(),
-      helpText("Hover over states for metrics. Grey indicates insufficient data.")
-    ),
-    mainPanel(leafletOutput("map", height = "750px"))
-  )
-)
-
-server <- function(input, output, session) {
-  
-  filtered_data <- reactive({
-    req(input$industry_choice)
-    state_ai_spatial |>
-      filter(naics_sector == input$industry_choice) |>
-      left_join(states_sf, by = "state_name") |>
-      st_as_sf() |>
-      filter(!st_is_empty(geometry))
-  })
-  
-  output$map <- renderLeaflet({
-    leaflet() |>
-      addProviderTiles(providers$CartoDB.Positron) |>
-      setView(lng = -98.58, lat = 39.82, zoom = 4)
-  })
-  
-  observe({
-    data <- filtered_data()
-    req(nrow(data) > 0)
-    
-    pal <- colorNumeric("YlOrRd", 
-                        domain = c(0, max(data$ai_adoption_rate * 100, na.rm = TRUE)), 
-                        na.color = "#D3D3D3")
-    
-    labels <- sprintf(
-      "<strong>%s</strong><br/>
-       Sector: %s<br/>
-       AI Adoption: <b>%s</b><br/>
-       Payroll/Emp: <b>%s</b>",
-      data$state_name, 
-      data$naics_sector, 
-      ifelse(is.na(data$ai_adoption_rate), 
-             "Insufficient Data", 
-             paste0(round(data$ai_adoption_rate * 100, 2), "%")),
-      # Applied / 1000 fix here for raw USD to 'k' display
-      ifelse(is.na(data$mean_payroll_per_emp), 
-             "N/A", 
-             paste0("$", formatC(data$mean_payroll_per_emp / 1000, format="f", digits=1, big.mark=","), "k"))
-    ) |> lapply(htmltools::HTML)
-    
-    leafletProxy("map", data = data) |>
-      clearShapes() |>
-      addPolygons(
-        fillColor = ~pal(ai_adoption_rate * 100),
-        fillOpacity = 0.8, color = "white", weight = 1,
-        highlightOptions = highlightOptions(weight = 3, color = "#666", bringToFront = TRUE),
-        label = labels
-      ) |>
-      clearControls() |>
-      addLegend("bottomright", pal = pal, values = ~ai_adoption_rate * 100,
-                title = "AI Adoption (%)", labFormat = labelFormat(suffix = "%"),
-                na.label = "No Data")
-  })
-}
-
-shinyApp(ui, server)
-```
 
 
-## Using Machine Learning to predict AI Usage
+## Machine Learning to predict AI Usage
 
 After doing my EDA in the previous document, I was interested in whether we can predict which firms adopt AI. Thus, I decided to run a Random Forest.
 
@@ -687,12 +580,12 @@ The random forest algorithm extends bagging by combining both bagging and featur
 
 ### Building the Forest
 
-```{r, set_ml, message=FALSE, warning=FALSE}
+```{r, set_ml}
 tidymodels_prefer()
 ```
 
 
-```{r data_prep}
+```{r, forest_code}
 ## Prep the data
 rf_data <- tech_2018_clean |>
   filter(
@@ -776,6 +669,7 @@ ai_forest |>
     estimate = .pred_class
   )
 ```
+
 ## Gini is Biased towards continuos variables
 
 ```{r}
@@ -984,5 +878,5 @@ ai_forest |>
     fill     = "AI Adopted?",
     caption  = "Source: 2018 Annual Business Survey (ABS)\nOther variables held at median values."
   )
-
 ```
+
