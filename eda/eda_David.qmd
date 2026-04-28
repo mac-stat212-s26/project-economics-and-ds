@@ -25,6 +25,10 @@ library(tidymodels)
 library(ranger)
 library(patchwork)
 library(leaflet) 
+library(forcats)
+library(rpart)
+library(tibble)   
+library(rpart.plot)
 
 
 source(here::here("data", "data_cleaning.R"))
@@ -563,193 +567,77 @@ ggplot(
 
 > Note: industry sectors with more than 10 missing states were excluded from this analysis. These sectors are Agriculture, Mining, and Utilities. The remaining sectors provide a more reliable look at AI adoption trends. AI adoption rates are rendered to two decimal places to capture variations in sectors where adoption is emerging but still below 1%.
 
-## AI Adoption Spatial
+## Takeaways
+
+> **AI adoption in 2018 was driven by firm scale, not industry wealth or geography.**
+
+  - Adoption did not follow the money
+
+Management led AI adoption at 7.7% (Figure 1), yet ranked near the bottom in total 2017
+revenue (Figure 4). Wholesale Trade and Manufacturing — the two largest industries by revenue —were mid-tier adopters at best. Knowledge-intensive sectors moved first because AI fits their work, not because they had the deepest pockets.
+
+  - The wage premium is real — and largest where adoption is rarest
+
+AI adopters paid more at every firm size (Figure 5). But the premium was widest in sectors
+where adoption was still uncommon: Food Services led at 86%, followed by Health Care (68%) and Wholesale Trade (67%) — all low-to-mid adoption industries (Figure 6). When most peers adopt, the competitive advantage narrows; Finance and Insurance, a top adopter, showed only 24%. The bubble chart (Figure 7) confirms this: industries with the highest premiums tend to have a smaller share of workers actually at AI firms, meaning early movers are still rare enough to capture outsized returns.
+
+  - Geography is a proxy for industrial composition
+
+California dominates the adoption map (Figure 8), but the random forest assigns **State
+near-zero permutation importance** once firm characteristics are known (Figure 10). The
+geographic pattern reflects where Management, Information, and Professional Services firms
+concentrate — not something intrinsic to location.
+
+  - Payroll growth favoured AI-adopting industries — with a COVID caveat
+
+The top four AI adopters grew payroll steadily from 2017 to 2021 (Figure 2). Lower-adoption sectors, particularly Agriculture and Arts & Recreation, showed sharp swings around 2019–2020 (Figure 3) — a COVID artifact driven by in-person service disruption, not a structural signal. AI-adopting industries' relative stability over the same period may partly reflect the resilience of remote-compatible, technology-augmented operations.
+
+  - *The forest confirmed scale as the dominant factor* 
+
+The single decision tree (Figure 10) splits first on **number of firms ≥ 558**, then on
+**employees per firm ≥ 61** — a profile that maps directly onto the concentrated,
+knowledge-intensive industries at the top of Figure 1. Adding 2017 panel variables — revenue per firm and average industry wage — cut OOB prediction error from 5.3% to 3.1%, the largest accuracy gain in the analysis. Pre-adoption financial context carries genuine signal that cross-sectional 2018 data alone cannot capture.
+
+The Gini vs. permutation comparison (Figure 9) shows that Gini inflated the apparent importance of continuous size variables. Permutation importance redistributed credit more
+evenly and elevated employees-per-firm — suggesting AI adoption reflects a single latent
+dimension of firm scale rather than any one metric in isolation.
 
 
+This analysis is observational. Whether AI adoption *caused* the subsequent payroll divergence, or whether the same organizational characteristics that predict adoption also predict payroll growth, cannot be resolved with this data — and remains the natural next step.
 
-## Machine Learning to predict AI Usage
+
+## Appendix
+
+### Machine Learning to predict AI Usage
 
 After doing my EDA in the previous document, I was interested in whether we can predict which firms adopt AI. Thus, I decided to run a Random Forest.
 
-### Random Forest
+#### Random Forest
 
 The random forest algorithm extends bagging by combining both bagging and feature randomness to create an uncorrelated forest of decision trees. Decision trees work by asking a series of questions that split the data into branches. They are trained using the Classification and Regression Tree (CART) algorithm, with metrics like Gini impurity, information gain, or MSE (mean std. errors) used to evaluate split quality.
 
-### Building the Forest
+#### Building the Forest
 
-```{r, set_ml}
-tidymodels_prefer()
-```
-
-
-```{r, forest_code}
-## Prep the data
-rf_data <- tech_2018_clean |>
-  filter(
-    tech_type == "artificial intelligence",
-    used_tech %in% c("Used", "Did not use"),  # drop Unknown
-    !is.na(n_emp), !is.na(payroll), !is.na(n_firms),
-    n_emp > 0, payroll > 0, n_firms > 0,
-    naics_sector != "Total") |>
-  mutate(
-    ai_adopted  = as.factor(if_else(used_tech == "Used", "Yes", "No")),
-    avg_wage    = payroll / n_emp,
-    emp_per_firm = n_emp / n_firms,
-    naics_label = as.factor(naics_label),
-    state       = as.factor(state)) |>
-  select(ai_adopted, n_emp, n_firms, avg_wage, emp_per_firm, 
-         payroll, naics_label, state) |>
-  drop_na()
-
-
-## Model Specification
-rf_spec <- rand_forest() |>
-  set_mode("classification") |>
-  set_engine("ranger") |>
-  set_args(
-    mtry        = NULL,   # takes the square roots of the # of predictors
-    trees       = 1000,
-    min_n       = 2,
-    probability = FALSE,
-    importance  = "impurity")  # Gini index for variable importance
-
-
-## Fiting the forest
-set.seed(212)
-
-ai_forest <- rf_spec |>
-  fit(ai_adopted ~ ., data = rf_data)
-
-
-## OOB Error & Confusion Matrix
-
-# Overall OOB error rate
-ai_forest
-
-#  labels map
-var_labels <- c(
-  "n_firms"      = "Number of Firms",
-  "emp_per_firm" = "Employees per Firm",
-  "naics_label"  = "Industry Sector",
-  "n_emp"        = "Number of Employees",
-  "avg_wage"     = "Average Wage",
-  "payroll"      = "Total Payroll",
-  "state"        = "State")
-
-## Variable Importance
-ai_forest |>
-  extract_fit_engine() |>
-  pluck("variable.importance") |>
-  enframe(name = "Variable", value = "Importance") |>        # tibble
-  mutate(Variable = recode(Variable, !!!var_labels)) |>      # rename
-  arrange(Importance) |>
-  mutate(Variable = fct_inorder(Variable)) |>                # preserve order
-  ggplot(aes(x = Importance, y = Variable)) +
-  theme_minimal() +
-  geom_point(size = 1) +
-  labs(
-    title    = "What Drives AI Adoption?",
-    subtitle = "Variable importance from Random Forest (Gini impurity index)",
-    x        = "Importance",
-    y        = NULL,
-    caption  = "Source: 2018 Annual Business Survey (ABS)"
-  )
-
-
-##  In-sample confusion matrix
-
-ai_forest |>
-  predict(new_data = rf_data) |>
-  cbind(rf_data) |>
-  conf_mat(
-    truth    = ai_adopted,
-    estimate = .pred_class
-  )
-```
-
-## Gini is Biased towards continuos variables
-
-```{r}
-
-## Model Specification
-rf_spec2 <- rand_forest() |>
-  set_mode("classification") |>
-  set_engine("ranger") |>
-  set_args(
-    mtry        = NULL,   # takes the square roots of the # of predictors
-    trees       = 1000,
-    min_n       = 2,
-    probability = FALSE,
-    importance  = "permutation")  # Gini index for variable importance
-
-
-## Fiting the forest
-set.seed(212)
-
-ai_forest <- rf_spec2 |>
-  fit(ai_adopted ~ ., data = rf_data)
-
-
-## OOB Error & Confusion Matrix
-
-# Overall OOB error rate
-ai_forest
-
-#  labels map
-var_labels <- c(
-  "n_firms"      = "Number of Firms",
-  "emp_per_firm" = "Employees per Firm",
-  "naics_label"  = "Industry Sector",
-  "n_emp"        = "Number of Employees",
-  "avg_wage"     = "Average Wage",
-  "payroll"      = "Total Payroll",
-  "state"        = "State")
-
-## Variable Importance
-ai_forest |>
-  extract_fit_engine() |>
-  pluck("variable.importance") |>
-  enframe(name = "Variable", value = "Importance") |>        # tibble
-  mutate(Variable = recode(Variable, !!!var_labels)) |>      # rename
-  arrange(Importance) |>
-  mutate(Variable = fct_inorder(Variable)) |>                # preserve order
-  ggplot(aes(x = Importance, y = Variable)) +
-  theme_minimal() +
-  geom_point(size = 1) +
-  labs(
-    title    = "What Drives AI Adoption?",
-    subtitle = "Variable importance from Random Forest (Permutation Importance)",
-    x        = "Importance",
-    y        = NULL,
-    caption  = "Source: 2018 Annual Business Survey (ABS)"
-  )
-
-
-```
-### Analysis 
-
-While initial results using Gini-based importance suggested that firm size variables overwhelmingly drive AI adoption, this measure is known to be biased toward continuous predictors. Using permutation importance — which evaluates the impact of each variable on model accuracy — provides a more reliable ranking. The results confirm that firm scale remains the primary predictor of AI adoption, followed by workforce intensity and industry sector. In contrast, geographic location (state) contributes כמעט no predictive power once firm characteristics are considered.
+While initial results using Gini-based importance suggested that firm size variables overwhelmingly drive AI adoption, this measure is known to be biased toward continuous predictors. Using permutation importance — which evaluates the impact of each variable on model accuracy — provides a more reliable ranking. The results confirm that firm scale remains the primary predictor of AI adoption, followed by workforce intensity and industry sector. In contrast, geographic location (state) contributes no predictive power once firm characteristics are considered.
 
 Because firm size variables are highly correlated, permutation importance likely distributes predictive contribution across them, suggesting that AI adoption is driven by an underlying latent factor of firm scale rather than any single metric.
 
-## Merging with Company Size
 
-2017 snapshot as pre-adoption context:
+```{r forest_code}
 
-```{r}
-# Pull 2017 industry-level financials from cs_panel_clean
-# ONE row per industry (national average)
+tidymodels_prefer()
+
+# 2017 industry financials (pre-adoption context)
 industry_financials <- cs_panel_clean |>
   filter(year == 2017) |>
   group_by(naics_label) |>
   summarise(
     revenue_per_firm = mean(revenue_per_firm, na.rm = TRUE),
     avg_wage_panel   = mean(avg_wage,         na.rm = TRUE),
-    .groups = "drop"
-  )
+    .groups = "drop")
 
-# Rebuild rf_data with the new variables
-rf_data <- tech_2018_clean |>
+#  9-predictor dataset
+rf_data_9 <- tech_2018_clean |>
   filter(
     tech_type == "artificial intelligence",
     used_tech %in% c("Used", "Did not use"),
@@ -764,116 +652,225 @@ rf_data <- tech_2018_clean |>
     naics_label  = as.factor(naics_label),
     state        = as.factor(state)
   ) |>
-  left_join(industry_financials, by = "naics_label") |>   
+  left_join(industry_financials, by = "naics_label") |>
   select(
-    ai_adopted, n_emp, n_firms, avg_wage, emp_per_firm,
-    payroll, naics_label, state,
-    revenue_per_firm, avg_wage_panel                      
+    ai_adopted,
+    # 7-predictor core
+    n_emp, n_firms, avg_wage, emp_per_firm, payroll, naics_label, state,
+    # +2 from panel
+    revenue_per_firm, avg_wage_panel
   ) |>
   drop_na()
 
-# Update labels map to include new variables
+# 7-predictor subset
+rf_data_7 <- rf_data_9 |>
+  select(-revenue_per_firm, -avg_wage_panel)
+
+cat("Rows in both datasets:", nrow(rf_data_7), "(same rows, different columns)\n")
+cat("7-predictor columns:", ncol(rf_data_7) - 1, "\n")
+cat("9-predictor columns:", ncol(rf_data_9) - 1, "\n")
+
+
+#Shared label map
 var_labels <- c(
-  "n_firms"          = "Number of Firms",
-  "emp_per_firm"     = "Employees per Firm",
-  "naics_label"      = "Industry Sector",
-  "n_emp"            = "Number of Employees",
-  "avg_wage"         = "Average Wage (2018)",
+  "n_emp"            = "# Employees",
+  "n_firms"          = "# Firms",
+  "avg_wage"         = "Avg Wage (2018)",
+  "emp_per_firm"     = "Employees / Firm",
   "payroll"          = "Total Payroll",
+  "naics_label"      = "Industry Sector",
   "state"            = "State",
-  "revenue_per_firm" = "Revenue per Firm (2017)",
-  "avg_wage_panel"   = "Avg. Industry Wage (2017)"
+  "revenue_per_firm" = "Revenue / Firm (2017)",
+  "avg_wage_panel"   = "Avg Industry Wage (2017)"
 )
-```
 
 
-```{r}
-# ── Check the merged data ──────────────────────────────────────────────────
-glimpse(rf_data)
-# Should now show 9 predictors + ai_adopted, with revenue_per_firm & avg_wage_panel
+#  Forest specs
+# settings: 1000 trees, min_n = 2, sqrt(p) predictors tried per split -- AKA random forest
 
-# ── Re-fit the forest with new data ───────────────────────────────────────
-set.seed(253)
-ai_forest <- rf_spec |> fit(ai_adopted ~ ., data = rf_data)
+make_spec <- function(importance_type) {
+  rand_forest() |>
+    set_mode("classification") |>
+    set_engine("ranger") |>
+    set_args(
+      mtry        = NULL,       
+      trees       = 1000,
+      min_n       = 2,
+      probability = FALSE,
+      importance  = importance_type
+    )
+}
 
-# ── 1. OOB Summary ────────────────────────────────────────────────────────
-ai_forest  # check if OOB error changed with new vars
+spec_gini  <- make_spec("impurity")    # Gini / mean decrease in impurity
+spec_perm  <- make_spec("permutation") # Permutation importance
 
-# ── 2. OOB Confusion Matrix ───────────────────────────────────────────────
-ai_forest |>
+
+# Fit all four forests
+set.seed(212)
+forest_7_gini <- spec_gini |> fit(ai_adopted ~ ., data = rf_data_7)
+forest_7_perm <- spec_perm |> fit(ai_adopted ~ ., data = rf_data_7)
+
+set.seed(212)
+forest_9_gini <- spec_gini |> fit(ai_adopted ~ ., data = rf_data_9)
+forest_9_perm <- spec_perm |> fit(ai_adopted ~ ., data = rf_data_9)
+
+
+#  OOB error comparison table
+oob_summary <- tibble(
+  Model      = c("7 predictors", "7 predictors", "9 predictors", "9 predictors"),
+  Importance = c("Gini", "Permutation", "Gini", "Permutation"),
+  OOB_Error  = c(
+    forest_7_gini |> extract_fit_engine() |> pluck("prediction.error"),
+    forest_7_perm |> extract_fit_engine() |> pluck("prediction.error"),
+    forest_9_gini |> extract_fit_engine() |> pluck("prediction.error"),
+    forest_9_perm |> extract_fit_engine() |> pluck("prediction.error"))) |>
+  mutate(OOB_Accuracy = 1 - OOB_Error)
+
+print(oob_summary)
+
+# Visual: OOB error side-by-side
+oob_summary |>
+  ggplot(aes(x = Model, y = OOB_Error, fill = Importance)) +
+  geom_col(position = "dodge", width = 0.55) +
+  geom_text(
+    aes(label = scales::percent(OOB_Error, accuracy = 0.1)),
+    position = position_dodge(width = 0.55),
+    vjust = -0.5, size = 3.5
+  ) +
+  scale_fill_manual(values = c("Gini" = "#2d6a4f", "Permutation" = "#f4a582")) +
+  scale_y_continuous(labels = scales::percent, expand = expansion(mult = c(0, 0.1))) +
+  theme_minimal(base_size = 12) +
+  labs(
+    title    = "OOB Prediction Error: 7 vs 9 Predictors",
+    subtitle = "Lower is better — error rate on out-of-bag samples",
+    x        = NULL, y = "OOB Error Rate", fill = "Importance method",
+    caption  = "Source: 2018 Annual Business Survey + 2017 Economic Census"
+  )
+
+
+# Importance extraction helper
+get_importance <- function(forest, method_label, n_pred_label) {
+  forest |>
+    extract_fit_engine() |>
+    pluck("variable.importance") |>
+    enframe(name = "Variable", value = "Importance") |>
+    mutate(
+      Variable   = recode(Variable, !!!var_labels),
+      Method     = method_label,
+      Predictors = n_pred_label,
+      # Normalise within each forest so Gini and Permutation scales are comparable
+      Importance = Importance / max(abs(Importance))
+    )
+}
+
+importance_all <- bind_rows(
+  get_importance(forest_7_gini, "Gini",        "7 predictors"),
+  get_importance(forest_7_perm, "Permutation",  "7 predictors"),
+  get_importance(forest_9_gini, "Gini",        "9 predictors"),
+  get_importance(forest_9_perm, "Permutation",  "9 predictors")
+)
+
+
+#  Importance comparison: Gini vs Permutation (within same predictor set)
+plot_importance_comparison <- function(data, title_suffix) {
+  data |>
+    select(Variable, Method, Importance) |>
+    pivot_wider(names_from = Method, values_from = Importance) |>
+    mutate(Variable = fct_reorder(Variable, Gini)) |>
+    ggplot(aes(y = Variable)) +
+    geom_segment(
+      aes(x = Permutation, xend = Gini, yend = Variable),
+      color = "grey70", linewidth = 0.6
+    ) +
+    geom_point(aes(x = Gini,        color = "Gini"),        size = 3) +
+    geom_point(aes(x = Permutation, color = "Permutation"), size = 3) +
+    scale_color_manual(values = c("Gini" = "#2d6a4f", "Permutation" = "#e76f51")) +
+    theme_minimal(base_size = 11) +
+    labs(
+      title    = glue::glue("Gini vs Permutation Importance — {title_suffix}"),
+      subtitle = "Normalised 0–1 within each method. Dots far apart = Gini bias.",
+      x = "Normalised importance", y = NULL, color = NULL,
+      caption = "Source: 2018 Annual Business Survey"
+    ) +
+    theme(legend.position = "bottom")
+}
+
+p7 <- importance_all |>
+  filter(Predictors == "7 predictors") |>
+  plot_importance_comparison("7 predictors")
+
+p9 <- importance_all |>
+  filter(Predictors == "9 predictors") |>
+  plot_importance_comparison("9 predictors")
+
+p7 / p9   # patchwork: stacked
+
+
+#  Faceted importance
+importance_all |>
+  group_by(Method, Predictors) |>
+  mutate(Variable = fct_reorder(Variable, Importance)) |>
+  ungroup() |>
+  ggplot(aes(x = Importance, y = Variable, color = Method)) +
+  geom_point(size = 2.5, alpha = 0.85) +
+  scale_color_manual(values = c("Gini" = "#2d6a4f", "Permutation" = "#e76f51")) +
+  facet_grid(Predictors ~ Method, scales = "free_y") +
+  theme_minimal(base_size = 11) +
+  theme(strip.text = element_text(face = "bold")) +
+  labs(
+    title    = "Variable Importance: All Four Models",
+    subtitle = "Normalised importance — rows sorted independently per panel",
+    x = "Normalised importance", y = NULL, color = NULL,
+    caption = "Source: 2018 Annual Business Survey + 2017 Economic Census"
+  )
+
+
+# OOB Confusion matrices
+# (using the permutation forests since they have more honest importance estimates)
+cat("\n── Confusion matrix: 7-predictor forest (permutation) ──\n")
+forest_7_perm |>
   extract_fit_engine() |>
   pluck("confusion.matrix") |>
-  t()
+  t() |>
+  print()
 
-# ── 3. Variable Importance Plot ───────────────────────────────────────────
-ai_forest |>
+cat("\n── Confusion matrix: 9-predictor forest (permutation) ──\n")
+forest_9_perm |>
   extract_fit_engine() |>
-  pluck("variable.importance") |>
-  enframe(name = "Variable", value = "Importance") |>
-  mutate(Variable = recode(Variable, !!!var_labels)) |>
-  arrange(Importance) |>
-  mutate(Variable = fct_inorder(Variable)) |>
-  ggplot(aes(x = Importance, y = Variable)) +
-  geom_point(size = 3) +
-  labs(
-    title    = "What Drives AI Adoption?",
-    subtitle = "Variable importance from Random Forest (Gini impurity index)",
-    x        = "Importance (Gini)",
-    y        = NULL,
-    caption  = "Source: 2018 Annual Business Survey + 2017 Economic Census")
+  pluck("confusion.matrix") |>
+  t() |>
+  print()
 
-# ── 5. Single Example Tree (from the forest) ──────────────────────────────
-library(rpart)
-library(rpart.plot)
+
+# Single decision tree 
+# The forest uses 1000 of these, each on a bootstrap sample with random feature
+# subsets — individual trees are weak but their average is robust.
+
 single_tree <- decision_tree() |>
   set_mode("classification") |>
   set_engine("rpart") |>
-  set_args(cost_complexity = 0.05, tree_depth = 3) |>  
-  fit(ai_adopted ~ n_firms + emp_per_firm + avg_wage + 
-        revenue_per_firm + avg_wage_panel,   # ← drop state & naics_label
-      data = rf_data)
+  set_args(cost_complexity = 0.02, tree_depth = 4) |>
+  fit(
+    ai_adopted ~ n_firms + emp_per_firm + avg_wage + payroll + n_emp,
+    data = rf_data_7   # no state & naics_label to keep the tree readable
+  )
 
 single_tree |>
   extract_fit_engine() |>
   rpart.plot(
     type        = 4,
-    extra       = 104,
+    extra       = 104,          # show % and n at each leaf
     box.palette = "GnRd",
-    roundint    = FALSE,    # ← silences the warning
-    main        = "Example Decision Tree\n(Simplified — forest uses 1000 of these)"
-  )
-
-# ── 6. Classification Regions (2 key vars) ────────────────────────────────
-# Visualize how the forest splits on the 2 most important vars
-grid <- expand.grid(
-  n_firms      = seq(min(rf_data$n_firms), max(rf_data$n_firms), length.out = 150),
-  emp_per_firm = seq(min(rf_data$emp_per_firm), max(rf_data$emp_per_firm), length.out = 150)
-) |>
-  mutate(
-    n_emp            = median(rf_data$n_emp),
-    avg_wage         = median(rf_data$avg_wage),
-    payroll          = median(rf_data$payroll),
-    naics_label      = "Manufacturing",   # ← neutral mid-adoption industry
-    state            = "06",              # ← California, high adoption state
-    revenue_per_firm = median(rf_data$revenue_per_firm, na.rm = TRUE),
-    avg_wage_panel   = median(rf_data$avg_wage_panel,   na.rm = TRUE)
-  )
-
-ai_forest |>
-  predict(new_data = grid) |>
-  cbind(grid) |>
-  ggplot(aes(x = n_firms, y = emp_per_firm, fill = .pred_class)) +
-  geom_point(alpha = 0.8, size=0.5) +
-  scale_fill_manual(values = c("No" = "#f4a582", "Yes" = "#2d6a4f")) +
-  scale_x_log10(labels = scales::comma) +
-  scale_y_log10(labels = scales::comma) +
-  labs(
-    title    = "Forest Classification Regions",
-    subtitle = "AI adoption boundary: firm count vs. firm size (Manufacturing, CA)",
-    x        = "Number of Firms (log scale)",
-    y        = "Employees per Firm (log scale)",
-    fill     = "AI Adopted?",
-    caption  = "Source: 2018 Annual Business Survey (ABS)\nOther variables held at median values."
+    roundint    = FALSE,
+    fallen.leaves = TRUE,      
+    main = paste(
+      "One example tree (depth 4, cost_complexity = 0.02)",
+      "The random forest grows 1000 of these on bootstrapped samples",
+      "Each split considers only sqrt(5) ≈ 2 randomly chosen predictors",
+      sep = "\n"
+    )
   )
 ```
+
+
 
