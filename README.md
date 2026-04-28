@@ -21,3 +21,4 @@ questions:
     semester to prepare your machine for class.
 -   What does the expected output look like? You can use one or more
     screenshots of the main features.
+
