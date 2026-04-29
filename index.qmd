@@ -1,5 +1,5 @@
 ---
-title: "Report"
+title: "AI Adoption in U.S. Firms"
 format: 
   html: 
     toc: true
@@ -9,28 +9,49 @@ format:
     page-layout: full
 ---
 
-Your report goes here.
-
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 # a test code chunk
 ```
 
+## About Authors
+
+Welcome to our website on AI adoption among U.S. firms. We are three Economics majors at Macalester College with a shared interest in how data and technology shape economies.
+
+[David Rios](https://www.linkedin.com/in/hermogenesdavid/){target="_blank"} served as the technical lead for this project, handling API data extraction, data pipeline construction, and overall code architecture.
+
+[Katherine Manuel](https://www.linkedin.com/in/katherinesmanuel/){target="_blank"} served as the primary point of contact and project coordinator, keeping the team on track across milestones and deadlines.
+
+[Isauro Reyes](https://www.linkedin.com/in/isauro-reyes-a798a0391/){target="_blank"}  served as the style lead, shaping the visual presentation and overall communication of our findings.
+
 ## Motivation
+
 With how much companies are adopting artificial intelligence into its services, it seems like nowadays it's impossible to escape from it. This is especially noticeable with tech companies, to the point where AI has become necessity to include in an expanding tech landscape. It's almost hard to imagine that life wasn't always like this. Not 20 years, 15, nor even 10 years ago. 
+
+This is precisely why we chose this topic for our final project.
 
 ## Research Question
 
+> **What are the AI adoption trends across industries and firms in the U.S.?**
+
 
 ## Background
-The study will solely analyze business information during 2018.
+
 
 ## Data
 
+This project analyzes two datasets from the U.S. Census Bureau's Annual Business Survey (ABS), accessed through the Census Data API.
+
+The first is the **ABSTCB (Annual Business Survey: Technology Characteristics of Businesses, 2018)**, which captures how U.S. employer firms used, produced, and were impacted by various technologies — including artificial intelligence, cloud computing, robotics, specialized software, and specialized equipment. This is the only year for which this technology module is publicly available, making 2018 our reference point for AI adoption patterns.
+
+The second is the **ABSCS (Annual Business Survey: Company Summary, 2017–2021)**, which provides firm-level aggregates including number of firms, employment, annual payroll, and revenue across industries and states over time. This panel dataset allows us to track how industries evolved before and after the 2018 AI snapshot.
+
 ### Data Collection
 
+Both datasets are collected by the U.S. Census Bureau as part of the Annual Business Survey, conducted annually since 2018. The ABS covers all nonfarm employer businesses in the United States and is designed to provide nationally representative statistics on business characteristics, ownership demographics, innovation, and technology use. Firms are sampled and weighted to represent the broader population of U.S. employer businesses.
 
 ### Data Acquisition
 
+Both datasets were accessed programmatically through the Census Data API using R's *httr2* package. We constructed a reusable API fetcher function that retrieves data by year, module, and geography. The technology data was pulled at the state level across all 50 states plus Washington D.C., and the company summary panel was pulled for each year from 2017 to 2021.
 
 ### Data Understanding
 

@@ -13,7 +13,7 @@ In this document, I will be looking at the evolution of AI. Since we only have d
 
 ## Introduction
 
-```{r, setup, message=FALSE}
+```{r setup, message=FALSE}
 library(here)
 library(tidyverse)
 library(tigris)
@@ -45,6 +45,8 @@ theme_set(
 
 
 ## Who's the top industry using AI?
+
+I am interested in seeing who was the top industry in the "AI race" in 2018.
 
 ```{r, top_ai}
 ai_industry_leaders <- tech_2018_clean |>
@@ -80,15 +82,16 @@ ai_industry_leaders |>
 ```
 ## Payroll Level Change 
 
-```{r}
+I then got interested in analyzing what's the payroll evolution by industry.
+
+```{r payroll_lvl}
 tech_2018_summary <- tech_2018_clean |> 
   group_by(year, used_tech, use_level) |> 
   summarise(
     total_firms   = sum(n_firms, na.rm = TRUE),
     total_emp     = sum(n_emp, na.rm = TRUE),
     total_payroll = sum(payroll, na.rm = TRUE),
-    .groups       = "drop"
-  )
+    .groups       = "drop")
 
 payroll_all <- cs_panel_clean |>
   group_by(year, naics_label) |>
@@ -121,14 +124,15 @@ ggplot() +
 
 ## Payroll Percentage Change
 
-```{r}
+Payroll percentage change would be a better viz, and I took 2017 as the base year.
+
+```{r payroll_pct}
 ## indexed payroll growth
 payroll_growth <- payroll_all |>
   arrange(naics_label, year) |>
   group_by(naics_label) |>
   mutate(
-    payroll_growth_pct = total_payroll / first(total_payroll) #base year: 2017
-  ) |>
+    payroll_growth_pct = total_payroll / first(total_payroll)) |> #base year: 2017
   ungroup() |>
   mutate(naics_label = str_wrap(naics_label, width = 35))
 
@@ -173,19 +177,16 @@ p1_top4_ai <- ggplot() +
     title = "AI-Leading Industries",
     subtitle = "Indexed to 2017 total payroll",
     x = "Year",
-    y = "Payroll (2017 = 1)"
-  ) +
+    y = "Payroll (2017 = 1)") +
   theme_minimal() +
  theme(
-    legend.position = "none"
-  )
+    legend.position = "none")
 
 p2_worse_ai <- ggplot() +
   geom_line(
     data = payroll_growth,
     aes(x = year, y = payroll_growth_pct, group = naics_label),
-    color = "grey85", linewidth = 0.5, alpha = 0.6
-  ) +
+    color = "grey85", linewidth = 0.5, alpha = 0.6) +
   geom_line(
     data = payroll_growth_w4,
     aes(x = year, y = payroll_growth_pct, color = naics_label),
@@ -211,12 +212,9 @@ p2_worse_ai <- ggplot() +
     subtitle = "Indexed to 2017 total payroll",
     x = "Year",
     y = NULL,
-    caption = "Source: 2018 ABS + CS Panel Data"
-  ) +
+    caption = "Source: 2018 ABS + CS Panel Data") +
   theme_minimal() +
-  theme(
-    legend.position = "none"
-  )
+  theme(legend.position = "none")
 
 ## final plot combining both plots above 
 final_dis <- p1_top4_ai + p2_worse_ai +
@@ -224,9 +222,7 @@ final_dis <- p1_top4_ai + p2_worse_ai +
   plot_annotation(
     title = "Payroll Growth Comparison",
     theme = theme(
-      plot.title = element_text(face = "bold", size = 14)
-    )
-  )
+      plot.title = element_text(face = "bold", size = 14)))
 
 final_dis
 ```
@@ -234,7 +230,9 @@ final_dis
 
 ## Revenue
 
-```{r}
+We only have revenue for the yeaer 2017, so I also looked at the revenue for that year by industry
+
+```{r revenue_ai}
 revenue_2017 <- cs_panel_clean |>
   filter(year == 2017) |>
   group_by(naics_label) |>
@@ -269,6 +267,7 @@ ggplot(revenue_2017, aes(x = total_revenue, y = reorder(naics_label, total_reven
 Does the AI wage premium holds constant as firms grow in size?
 
 ```{r, wage_premium}
+
 ## wage premium story
 tech_2018_clean |>
   filter(tech_type == "artificial intelligence",
@@ -305,24 +304,23 @@ tech_2018_clean |>
 
 ## AI Hubs in the US
 
-```{r}
+Geographically, where is AI growing the most rapidly? Or where is it AI adoption rate higher?
+
+```{r ai_maps}
 # AI Adoption Rate by State
 state_ai_adoption <- tech_2018_clean |>
   filter(
     tech_type == "artificial intelligence",
     !is.na(used_tech),
-    used_tech != "Unknown"
-  ) |>
+    used_tech != "Unknown") |>
   group_by(state) |>
   summarise(
     total_firms = sum(n_firms, na.rm = TRUE),
     ai_firms = sum(n_firms[used_tech == "Used"], na.rm = TRUE),
-    .groups = "drop"
-  ) |>
+    .groups = "drop") |>
   mutate(
     state = str_pad(state, 2, pad = "0"),
-    ai_rate = if_else(total_firms > 0, ai_firms / total_firms, NA_real_)
-  ) |>
+    ai_rate = if_else(total_firms > 0, ai_firms / total_firms, NA_real_)) |>
   filter(total_firms > 0)
 
 # Fetch map boundaries and shift AK/HI to the bottom
@@ -341,26 +339,25 @@ ggplot(map_data) +
     palette = "OrRd",
     direction = 1,
     labels = scales::percent_format(accuracy = 1),
-    na.value = "grey95"
-  ) +
+    na.value = "grey95") +
   labs(
     title = "Where are the AI Hubs?",
     subtitle = "AI Adoption Rate by State in 2018",
     fill = "Adoption\nRate",
-    caption = "Source: 2018 Annual Business Survey (ABS)"
-  ) +
+    caption = "Source: 2018 Annual Business Survey (ABS)") +
   theme_void(base_size = 12) +
   theme(
     plot.title = element_text(face = "bold", size = 16),
     plot.subtitle = element_text(color = "grey30"),
-    legend.position = "right"
-  )
+    legend.position = "right")
 ```
 
 
 
 
 ## Wage Gaps and Premium
+
+But is it worth to pay the cost? Are the revenues generated from AI higher than the cost of it?
 
 ```{r, data_prep_cs}
 tech_2018_summary <- tech_2018_clean |>
@@ -388,24 +385,20 @@ industry_tech_summary <- tech_2018_clean |>
     total_firms   = sum(n_firms, na.rm = TRUE),
     total_emp     = sum(n_emp, na.rm = TRUE),
     total_payroll = sum(payroll, na.rm = TRUE),
-    .groups       = "drop"
-  ) |> 
+    .groups       = "drop") |> 
   mutate(
     emp_per_firm = if_else(total_firms > 0, total_emp / total_firms, NA_real_),
-    avg_wage     = if_else(total_emp > 0, total_payroll / total_emp, NA_real_)
-  )
+    avg_wage     = if_else(total_emp > 0, total_payroll / total_emp, NA_real_))
 
 ai_industry_wages <- industry_tech_summary |>
   filter(
     tech_type == "artificial intelligence",
-    used_tech %in% c("Did not use", "Used")
-  ) |>
+    used_tech %in% c("Did not use", "Used")) |>
   group_by(naics_label, used_tech) |>
   summarise(
     total_emp = sum(total_emp, na.rm = TRUE),
     total_payroll = sum(total_payroll, na.rm = TRUE),
-    .groups = "drop"
-  ) |>
+    .groups = "drop") |>
   mutate(avg_wage = if_else(total_emp > 0, total_payroll / total_emp, NA_real_)) |>
   filter(total_emp > 0) 
 
@@ -430,9 +423,7 @@ wage_wide <- ai_industry_wages |>
     wage_gap = wage_ai - wage_no_ai,
     premium_pct = if_else(wage_no_ai > 0, wage_gap / wage_no_ai, NA_real_),
     total_emp = emp_no_ai + emp_ai,
-    ai_emp_share = if_else(total_emp > 0, emp_ai / total_emp, NA_real_)
-  )
-
+    ai_emp_share = if_else(total_emp > 0, emp_ai / total_emp, NA_real_))
 ```
 
 
@@ -514,9 +505,7 @@ ggplot(
     y = premium_pct,
     size = total_emp,
     color = premium_sign,
-    label = naics_label
-  )
-) +
+    label = naics_label)) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey60", linewidth = 0.5) +
   geom_vline(xintercept = 0.15, linetype = "dotted", color = "grey60", linewidth = 0.5) +
   geom_point(alpha = 0.65) +
@@ -525,35 +514,29 @@ ggplot(
     color = "grey20") +
   scale_x_continuous(
     labels = scales::percent_format(accuracy = 1),
-    expand = expansion(mult = c(0.05, 0.05))
-  ) +
+    expand = expansion(mult = c(0.05, 0.05)) ) +
   scale_y_continuous(
     labels = scales::percent_format(accuracy = 1),
-    limits = c(-0.15, 0.75)
-  ) +
+    limits = c(-0.15, 0.75) ) +
   scale_size_continuous(
     range = c(3, 16),
     labels = scales::label_number(scale = 1e-6, suffix = "M", accuracy = 1),
-    name = "Total Employees"
-  ) +
+    name = "Total Employees" ) +
   scale_color_manual(
     values = c("Positive" = "#2d6a4f", "Negative" = "#c1121f"),
-    guide = "none"
-  ) +
+    guide = "none") +
   labs(
     title = "Where Does AI Create the Most Value?",
     subtitle = "Share of industry workforce at AI firms vs. wage premium",
     x = "Share of Industry Employees at AI Firms",
     y = "AI Wage Premium",
-    caption = "Source: 2018 Annual Business Survey (ABS)"
-  ) +
+    caption = "Source: 2018 Annual Business Survey (ABS)") +
   theme_minimal() +
   theme(
     legend.position = "right",
     plot.title = element_text(face = "bold", size = 16),
     plot.subtitle = element_text(color = "grey30"),
-    plot.caption = element_text(hjust = 0, color = "grey40", size = 8)
-  )
+    plot.caption = element_text(hjust = 0, color = "grey40", size = 8) )
 ```
 
 
@@ -621,7 +604,6 @@ Because firm size variables are highly correlated, permutation importance likely
 
 
 ```{r forest_code}
-
 tidymodels_prefer()
 
 # 2017 industry financials (pre-adoption context)
@@ -640,23 +622,20 @@ rf_data_9 <- tech_2018_clean |>
     used_tech %in% c("Used", "Did not use"),
     !is.na(n_emp), !is.na(payroll), !is.na(n_firms),
     n_emp > 0, payroll > 0, n_firms > 0,
-    naics_sector != "Total"
-  ) |>
+    naics_sector != "Total" ) |>
   mutate(
     ai_adopted   = as.factor(if_else(used_tech == "Used", "Yes", "No")),
     avg_wage     = payroll / n_emp,
     emp_per_firm = n_emp / n_firms,
     naics_label  = as.factor(naics_label),
-    state        = as.factor(state)
-  ) |>
+    state        = as.factor(state) ) |>
   left_join(industry_financials, by = "naics_label") |>
   select(
     ai_adopted,
     # 7-predictor core
     n_emp, n_firms, avg_wage, emp_per_firm, payroll, naics_label, state,
     # +2 from panel
-    revenue_per_firm, avg_wage_panel
-  ) |>
+    revenue_per_firm, avg_wage_panel ) |>
   drop_na()
 
 # 7-predictor subset
@@ -678,13 +657,11 @@ var_labels <- c(
   "naics_label"      = "Industry Sector",
   "state"            = "State",
   "revenue_per_firm" = "Revenue / Firm (2017)",
-  "avg_wage_panel"   = "Avg Industry Wage (2017)"
-)
+  "avg_wage_panel"   = "Avg Industry Wage (2017)")
+```
 
-
-#  Forest specs
+```{r forest_specs}
 # settings: 1000 trees, min_n = 2, sqrt(p) predictors tried per split -- AKA random forest
-
 make_spec <- function(importance_type) {
   rand_forest() |>
     set_mode("classification") |>
@@ -694,8 +671,7 @@ make_spec <- function(importance_type) {
       trees       = 1000,
       min_n       = 2,
       probability = FALSE,
-      importance  = importance_type
-    )
+      importance  = importance_type)
 }
 
 spec_gini  <- make_spec("impurity")    # Gini / mean decrease in impurity
@@ -724,7 +700,9 @@ oob_summary <- tibble(
   mutate(OOB_Accuracy = 1 - OOB_Error)
 
 print(oob_summary)
+``` 
 
+```{r forest_viz}
 # Visual: OOB error side-by-side
 oob_summary |>
   ggplot(aes(x = Model, y = OOB_Error, fill = Importance)) +
