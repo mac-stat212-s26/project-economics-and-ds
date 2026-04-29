@@ -1,0 +1,118 @@
+---
+title: "Katherine M."
+format: 
+  html: 
+    toc: true
+    toc-depth: 3
+    embed-resources: true
+    code-overflow: wrap
+    page-layout: full
+---
+
+Your exploratory data analysis of the team datasets go here.
+
+```{r}
+library(ggplot2)
+library(forcats)
+library(here)
+library(tidyverse)
+library(downlit)
+library(xml2)
+
+source(here::here("data", "data_cleaning.R"))
+
+## Theme Settings
+theme_set(theme_minimal(base_size = 12))
+
+scale_use_level <- function(...) {
+  scale_color_brewer(palette = "Dark2", name = NULL, ...)
+}
+
+scale_use_level_fill <- function(...) {
+  scale_fill_brewer(palette = "Dark2", name = NULL, ...)
+}
+
+
+
+tech_2018_clean |> 
+  filter(tech_type == "artificial intelligence")
+```
+
+
+
+```{r eval=FALSE}
+#summary(merged_panel) # general summary of the dataset
+```
+
+# AI Usage Over Time by State
+```{r eval=FALSE}
+# looking at how general high AI usage has changed by state from 2017-2021
+tech_2018_clean |> 
+  filter(tech_type == "artificial intelligence") |> 
+  filter(naics_sector != "Total") |> 
+  filter(naics_sector != "Other") |> 
+  mutate(n_firms = n_firms/100000) |> 
+  ggplot(aes(x = state, y = n_firms, fill = use_level)) +
+  geom_col() +
+  theme_minimal() +
+  scale_use_level() +
+  labs(x = "Firms by State (in hundred-thousands)", y = "# of Firms with High Reported AI Usage",
+       title = "AI Usage by State (2018)",
+       fill = "AI Usage Level")
+```
+
+# AI Usage by Industry
+```{r eval=FALSE}
+# high AI usage by industry from 2017-2021
+merged_panel |> 
+  ggplot(aes(x = Industry, y = ai_firms_high_use, fill = Industry)) +
+  geom_col() + 
+  facet_wrap(~year) +
+  theme(axis.text.x = element_blank()) +
+  labs(x = "Firms by Industry", 
+       y = "# of Firms with High Reported AI Usage",
+       title = "AI Usage by Industry (2017-2021)")
+```
+
+# AI Usage by Industry (Excluding Total)
+```{r eval=FALSE}
+# high AI usage by industry from 2017-2021
+merged_panel |> 
+  filter(!str_detect(NAICS2017, "Total")) |> 
+  ggplot(aes(x = Industry, y = ai_firms_high_use, fill = Industry)) +
+  geom_col() + 
+  facet_wrap(~year) +
+  theme(axis.text.x = element_blank()) +
+  labs(x = "Firms by Industry", 
+       y = "# of Firms with High Reported AI Usage",
+       title = "AI Usage by Industry (2017-2021)")
+```
+
+# Barriers to AI Usage by Industry (Excluding Total)
+```{r eval=FALSE}
+ai_barriers |> 
+  filter(!str_detect(Industry, "Total")) |> 
+  filter(NAICS2017 != "00", NAICS2017 != "99") |> 
+  mutate(n_firms = n_firms/100000) |> 
+  ggplot(aes(x = NAICS2017, y = n_firms, fill = barrier)) +
+  geom_col() +
+  theme_minimal() +
+  labs(x = "Industry", y = "Number of Firms by Industry (in hundred-thousands)",
+       fill = "Perceived Barriers to AI Adoption",
+       title = "Near Half of Firms Across Industries See AI as Unnecessary (2017)")
+```
+
+# Barriers to AI Usage by State 
+```{r eval=FALSE}
+ai_barriers |> 
+  filter(!str_detect(Industry, "Total")) |> 
+  filter(NAICS2017 != "00", NAICS2017 != "99") |> 
+  mutate(n_firms = n_firms/100000) |> 
+  ggplot(aes(x = state, y = n_firms, fill = barrier)) +
+  geom_col() +
+  theme_minimal() +
+  labs(x = "State", y = "Number of Firms by State (in hundred-thousands)",
+       fill = "Perceived Barriers to AI Adoption",
+       title = "Near Half of Firms Across States See AI as Unnecessary (2017)")
+```
+
