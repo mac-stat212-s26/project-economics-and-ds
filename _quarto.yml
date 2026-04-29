@@ -46,7 +46,7 @@ book:
 
   sidebar:
     title: "DS 212 Final Project."
-    logo: assets/kahoot.jpeg
+    logo: assets/ds212_logo.png
     logo-alt: "Random negative space illustration"
     collapse-level: 2
     style: "docked"

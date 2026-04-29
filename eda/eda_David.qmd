@@ -165,7 +165,7 @@ p1_top4_ai <- ggplot() +
     data = payroll_growth_top4,
     aes(x = year, y = payroll_growth_pct, color = naics_label),
     linewidth = 1) +
-  geom_text(
+  geom_text_repel(
     data = payroll_growth_top4 |> filter(year == max(year)),
     aes(x = year, y = payroll_growth_pct, label = naics_label, color = naics_label),
     nudge_x = 1,
@@ -195,7 +195,7 @@ p2_worse_ai <- ggplot() +
     data = payroll_growth_w4,
     aes(x = year, y = payroll_growth_pct, color = naics_label),
     size = 1) +
-  geom_text(
+  geom_text_repel(
     data = payroll_growth_w4 |> filter(year == max(year)),
     aes(
       x = year,
