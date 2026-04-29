@@ -22,3 +22,9 @@ questions:
 -   What does the expected output look like? You can use one or more
     screenshots of the main features.
 
+\
+
+# Welcome! 
+
+The purpose of this respository is to provide information on the state of AI in 
+U.S. businesses in 2018. 
