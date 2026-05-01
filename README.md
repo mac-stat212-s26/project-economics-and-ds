@@ -26,5 +26,11 @@ questions:
 
 # Welcome! 
 
-The purpose of this respository is to provide information on the state of AI in 
-U.S. businesses in 2018. 
+The purpose of this repository is to provide information on the state of AI in 
+U.S. businesses in 2018. It was created through the joint efforts of David Rios, 
+Isauro Reyes, and Katherine Manuel from March - May 2026 for their STAT212:
+Intermediate Data Science course. 
+
+# Data Sources
+
+

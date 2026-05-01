@@ -973,6 +973,36 @@
       "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
       "Repository": "CRAN"
     },
+    "cdlTools": {
+      "Package": "cdlTools",
+      "Version": "1.13",
+      "Source": "Repository",
+      "Title": "Tools to Download and Work with USDA Cropscape Data",
+      "Date": "2024-03-23",
+      "Authors@R": "c( person(\"Jonathan\", \"Lisic\", email = \"jlisic@gmail.com\", role = \"cre\"), person(\"Lu\", \"Chen\", role = \"aut\"), person(\"Jemma\",\"Stachelek\", email = \"stachel2@msu.edu\", role=\"ctb\") )",
+      "Maintainer": "Jonathan Lisic <jlisic@gmail.com>",
+      "URL": "https://github.com/jlisic/cdlTools",
+      "BugReports": "https://github.com/jlisic/cdlTools/issues",
+      "Description": "Downloads USDA National Agricultural Statistics Service (NASS)  cropscape data for a specified state. Utilities for fips, abbreviation,  and name conversion are also provided. Full functionality requires an  internet connection, but data sets can be cached for later off-line use.",
+      "License": "Unlimited",
+      "LazyData": "true",
+      "Encoding": "UTF-8",
+      "Depends": [
+        "R (>= 3.5.0)"
+      ],
+      "Imports": [
+        "raster",
+        "terra",
+        "stringr",
+        "rvest",
+        "utils",
+        "httr"
+      ],
+      "RoxygenNote": "7.2.3",
+      "NeedsCompilation": "yes",
+      "Author": "Jonathan Lisic [cre], Lu Chen [aut], Jemma Stachelek [ctb]",
+      "Repository": "CRAN"
+    },
     "cellranger": {
       "Package": "cellranger",
       "Version": "1.1.0",
@@ -4024,6 +4054,51 @@
       "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
       "Repository": "CRAN"
     },
+    "paletteer": {
+      "Package": "paletteer",
+      "Version": "1.7.0",
+      "Source": "Repository",
+      "Title": "Comprehensive Collection of Color Palettes",
+      "Authors@R": "c( person(\"See AUTHORS file.\", role = \"aut\"), person(\"Emil\", \"Hvitfeldt\", , \"emilhhvitfeldt@gmail.com\", role = c(\"aut\", \"cre\")) )",
+      "Description": "The choices of color palettes in R can be quite overwhelming with palettes spread over many packages with many different API's. This packages aims to collect all color palettes across the R ecosystem under the same package with a streamlined API.",
+      "License": "GPL-3",
+      "URL": "https://emilhvitfeldt.github.io/paletteer/, https://github.com/EmilHvitfeldt/paletteer",
+      "BugReports": "https://github.com/EmilHvitfeldt/paletteer/issues",
+      "Depends": [
+        "R (>= 4.1)"
+      ],
+      "Imports": [
+        "cli",
+        "prismatic",
+        "rematch2",
+        "rlang (>= 1.1.0)",
+        "rstudioapi"
+      ],
+      "Suggests": [
+        "covr",
+        "ggplot2 (>= 3.3.0)",
+        "ggthemes (>= 4.0.0)",
+        "harrypotter (>= 2.1.0)",
+        "knitr",
+        "oompaBase",
+        "palr",
+        "pals",
+        "rmarkdown",
+        "scico",
+        "testthat (>= 3.0.0)",
+        "vdiffr",
+        "viridisLite"
+      ],
+      "Config/testthat/edition": "3",
+      "Copyright": "See LICENSE.note file.",
+      "Encoding": "UTF-8",
+      "LazyData": "true",
+      "RoxygenNote": "7.3.3",
+      "NeedsCompilation": "no",
+      "Author": "See AUTHORS file. [aut], Emil Hvitfeldt [aut, cre]",
+      "Maintainer": "Emil Hvitfeldt <emilhhvitfeldt@gmail.com>",
+      "Repository": "CRAN"
+    },
     "parallelly": {
       "Package": "parallelly",
       "Version": "1.47.0",
@@ -4375,6 +4450,37 @@
       "NeedsCompilation": "no",
       "Author": "Gabor Csardi [aut, cre], Bill Denney [ctb] (<https://orcid.org/0000-0002-5759-428X>), Christophe Regouby [ctb]",
       "Maintainer": "Gabor Csardi <csardi.gabor@gmail.com>",
+      "Repository": "CRAN"
+    },
+    "prismatic": {
+      "Package": "prismatic",
+      "Version": "1.1.2",
+      "Source": "Repository",
+      "Title": "Color Manipulation Tools",
+      "Authors@R": "person(\"Emil\", \"Hvitfeldt\", , \"emilhhvitfeldt@gmail.com\", role = c(\"aut\", \"cre\"), comment = c(ORCID = \"0000-0002-0679-1945\"))",
+      "Description": "Manipulate and visualize colors in a intuitive, low-dependency and functional way.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://emilhvitfeldt.github.io/prismatic/, https://github.com/EmilHvitfeldt/prismatic",
+      "BugReports": "https://github.com/EmilHvitfeldt/prismatic/issues",
+      "Depends": [
+        "R (>= 3.2)"
+      ],
+      "Imports": [
+        "graphics",
+        "farver (>= 2.0.1)",
+        "grDevices"
+      ],
+      "Suggests": [
+        "covr",
+        "cli",
+        "testthat (>= 3.0.0)"
+      ],
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.1",
+      "Config/testthat/edition": "3",
+      "NeedsCompilation": "no",
+      "Author": "Emil Hvitfeldt [aut, cre] (<https://orcid.org/0000-0002-0679-1945>)",
+      "Maintainer": "Emil Hvitfeldt <emilhhvitfeldt@gmail.com>",
       "Repository": "CRAN"
     },
     "processx": {

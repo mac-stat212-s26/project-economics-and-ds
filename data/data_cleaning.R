@@ -108,7 +108,7 @@ cs_panel_clean <- cs_panel_raw |>
     state == "55"      ~ "Wisconsin",
     state == "56"      ~ "Wyoming"
   )) |>
-  group_by(year, state, naics_sector, naics_label) |>
+  group_by(year, state, state_label, naics_sector, naics_label) |>
   summarise(
     EMP = sum(EMP, na.rm = TRUE),
     FIRMPDEMP = sum(FIRMPDEMP, na.rm = TRUE),
