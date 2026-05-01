@@ -21,11 +21,11 @@ number-depth: 2
 
 
 book:
-  title: "AI: It's Usage in North American Companies"
+  title: "AI Usage in the U.S. Companies"
   author: ["David R.", "Katherine M.", "Isauro R"]
   date: today  # use today to update date published based on last time project was edited
   date-format: full
-  # favicon: path/to/favorite-logo.png
+  favicon: assets/ds212_logo.png
   reader-mode: true
   # site-url: https://site-url
   page-navigation: true
@@ -77,7 +77,7 @@ book:
 format:
   html:
     theme: # bootswatch themes--other options https://bootswatch.com/
-      light: flatly
+      light: morph
       dark: darkly
     search: true
     toc: true
