@@ -83,9 +83,12 @@ ai_industry_leaders |>
         axis.ticks.y = element_blank(),
         legend.position = "")
 ```
-## Payroll Level Change 
 
-I then got interested in analyzing what's the payroll evolution by industry.
+## Payroll Evolution
+
+### Level Change
+
+I then got interested in analyzing what's the payroll evolution by industry, but this was not telling me much so I also looked at the Payroll Percentage Change instead, and I took 2017 as the base year.
 
 ```{r payroll_lvl}
 tech_2018_summary <- tech_2018_clean |> 
@@ -104,7 +107,7 @@ top_4_industries <- ai_industry_leaders |> slice_max(ai_rate, n = 4) |> pull(nai
 payroll_top4 <- payroll_all |> filter(naics_label %in% top_4_industries)
 
 ggplot() +
-  geom_line(data = payroll_all, 
+  geom_line(data = payroll_all,  
             aes(x = year, y = total_payroll, group = naics_label), 
             color = "grey85", linewidth = 0.5, alpha = 0.6) +
   geom_line(data = payroll_top4, 
@@ -125,9 +128,7 @@ ggplot() +
   ) + theme(legend.position = "top")
 ```
 
-## Payroll Percentage Change
-
-Payroll percentage change would be a better viz, and I took 2017 as the base year.
+### Percentage Change
 
 ```{r payroll_pct}
 ## indexed payroll growth
@@ -233,7 +234,11 @@ final_dis
 
 ## Revenue
 
-We only have revenue for the yeaer 2017, so I also looked at the revenue for that year by industry
+We only have revenue for the yeaer 2017, so I also looked at the revenue for that year by industry. 
+
+::: {.callout-note}
+**FACT CHECK:** The [US Census Bureau](https://www.census.gov/library/stories/2020/11/2017-economic-census-data-breaks-out-industry-growth-changes-by-state.html) also reported this exact figure as the one in my visualization.
+:::
 
 ```{r revenue_ai}
 revenue_2017 <- cs_panel_clean |>
@@ -270,7 +275,13 @@ ggplot(revenue_2017, aes(x = total_revenue, fill = total_revenue, y = reorder(na
 
 ## The AI Wage Premium
 
-Does the AI wage premium holds constant as firms grow in size?
+The evidence suggests that AI-adopting firms consistently pay higher average wages per employee, but the gap shrinks as firms become larger, indicating diminishing differences in wage premia at scale.
+
+Takeaways:
+
+  - Smaller firms show a clearer wage advantage for AI adopters
+  - Larger firms exhibit a weaker AI–wage gap
+  - Overall pattern suggests heterogeneous returns to AI adoption across firm size
 
 ```{r, wage_premium}
 
@@ -357,9 +368,6 @@ ggplot(map_data) +
     plot.subtitle = element_text(color = "grey30"),
     legend.position = "right")
 ```
-
-
-
 
 ## Wage Gaps and Premium
 
@@ -545,14 +553,6 @@ ggplot(
     plot.caption = element_text(hjust = 0, color = "grey40", size = 8) )
 ```
 
-
-## Patterns within Industries
-
-
-## AI Adoption Spatial
-
-> Note: industry sectors with more than 10 missing states were excluded from this analysis. These sectors are Agriculture, Mining, and Utilities. The remaining sectors provide a more reliable look at AI adoption trends. AI adoption rates are rendered to two decimal places to capture variations in sectors where adoption is emerging but still below 1%.
-
 ## Takeaways
 
 > **AI adoption in 2018 was driven by firm scale, not industry wealth or geography.**
@@ -560,41 +560,40 @@ ggplot(
   - Adoption did not follow the money
 
 Management led AI adoption at 7.7% (Figure 1), yet ranked near the bottom in total 2017
-revenue (Figure 4). Wholesale Trade and Manufacturing — the two largest industries by revenue —were mid-tier adopters at best. Knowledge-intensive sectors moved first because AI fits their work, not because they had the deepest pockets.
+revenue (Figure 4). Wholesale Trade and Manufacturing, the two largest industries by revenue, were mid-tier adopters at best. 
 
-  - The wage premium is real — and largest where adoption is rarest
-
-AI adopters paid more at every firm size (Figure 5). But the premium was widest in sectors
-where adoption was still uncommon: Food Services led at 86%, followed by Health Care (68%) and Wholesale Trade (67%) — all low-to-mid adoption industries (Figure 6). When most peers adopt, the competitive advantage narrows; Finance and Insurance, a top adopter, showed only 24%. The bubble chart (Figure 7) confirms this: industries with the highest premiums tend to have a smaller share of workers actually at AI firms, meaning early movers are still rare enough to capture outsized returns.
+::: {.callout-note}
+Knowledge-intensive sectors moved first because AI fits their work, not because they had the deepest pockets.
+:::
 
   - Geography is a proxy for industrial composition
 
-California dominates the adoption map (Figure 8), but the random forest assigns **State
-near-zero permutation importance** once firm characteristics are known (Figure 10). The
+California dominates the adoption map, but the random forest assigns **State near-zero permutation importance** once firm characteristics are known. The
 geographic pattern reflects where Management, Information, and Professional Services firms
 concentrate — not something intrinsic to location.
 
   - Payroll growth favoured AI-adopting industries — with a COVID caveat
 
-The top four AI adopters grew payroll steadily from 2017 to 2021 (Figure 2). Lower-adoption sectors, particularly Agriculture and Arts & Recreation, showed sharp swings around 2019–2020 (Figure 3) — a COVID artifact driven by in-person service disruption, not a structural signal. AI-adopting industries' relative stability over the same period may partly reflect the resilience of remote-compatible, technology-augmented operations.
+The top four AI adopters grew payroll steadily from 2017 to 2021. Lower-adoption sectors, particularly Agriculture and Arts & Recreation, showed sharp swings around 2019–2020.
 
   - *The forest confirmed scale as the dominant factor* 
 
-The single decision tree (Figure 10) splits first on **number of firms ≥ 558**, then on
-**employees per firm ≥ 61** — a profile that maps directly onto the concentrated,
-knowledge-intensive industries at the top of Figure 1. Adding 2017 panel variables — revenue per firm and average industry wage — cut OOB prediction error from 5.3% to 3.1%, the largest accuracy gain in the analysis. Pre-adoption financial context carries genuine signal that cross-sectional 2018 data alone cannot capture.
+## Machine Learning (See Appendix)
 
-The Gini vs. permutation comparison (Figure 9) shows that Gini inflated the apparent importance of continuous size variables. Permutation importance redistributed credit more
-evenly and elevated employees-per-firm — suggesting AI adoption reflects a single latent
+The single decision tree  splits first on **number of firms ≥ 558**, then on
+**employees per firm ≥ 61,** a profile that maps directly onto the concentrated,
+knowledge-intensive industries. Adding 2017 panel variables (revenue per firm and average industry wage) cut OOB prediction error from 5.3% to 3.1%, the largest accuracy gain in the analysis.
+
+The Gini vs. permutation comparison shows that Gini inflated the apparent importance of continuous size variables. Permutation importance redistributed credit more
+evenly and elevated employees-per-firm, suggesting AI adoption reflects a single latent
 dimension of firm scale rather than any one metric in isolation.
 
-
-This analysis is observational. Whether AI adoption *caused* the subsequent payroll divergence, or whether the same organizational characteristics that predict adoption also predict payroll growth, cannot be resolved with this data — and remains the natural next step.
+This analysis is observational. Whether AI adoption *caused* the subsequent payroll divergence, or whether the same organizational characteristics that predict adoption also predict payroll growth, cannot be resolved with this data, and remains the natural next step.
 
 
 ## Appendix
 
-### Machine Learning to predict AI Usage
+### Predicting AI Usage with ML
 
 After doing my EDA in the previous document, I was interested in whether we can predict which firms adopt AI. Thus, I decided to run a Random Forest.
 
@@ -607,7 +606,6 @@ The random forest algorithm extends bagging by combining both bagging and featur
 While initial results using Gini-based importance suggested that firm size variables overwhelmingly drive AI adoption, this measure is known to be biased toward continuous predictors. Using permutation importance — which evaluates the impact of each variable on model accuracy — provides a more reliable ranking. The results confirm that firm scale remains the primary predictor of AI adoption, followed by workforce intensity and industry sector. In contrast, geographic location (state) contributes no predictive power once firm characteristics are considered.
 
 Because firm size variables are highly correlated, permutation importance likely distributes predictive contribution across them, suggesting that AI adoption is driven by an underlying latent factor of firm scale rather than any single metric.
-
 
 ```{r forest_code}
 tidymodels_prefer()
@@ -708,25 +706,27 @@ oob_summary <- tibble(
 print(oob_summary)
 ``` 
 
-```{r forest_viz}
-# Visual: OOB error side-by-side
+```{r forest_vizs}
+# OOB error
 oob_summary |>
   ggplot(aes(x = Model, y = OOB_Error, fill = Importance)) +
   geom_col(position = "dodge", width = 0.55) +
   geom_text(
     aes(label = scales::percent(OOB_Error, accuracy = 0.1)),
     position = position_dodge(width = 0.55),
-    vjust = -0.5, size = 3.5
-  ) +
-  scale_fill_manual(values = c("Gini" = "#2d6a4f", "Permutation" = "#f4a582")) +
+    vjust = -0.5, size = 3.5) +
+  scale_fill_viridis_d(option = "E", begin = 0.2, end = 0.8) +   
   scale_y_continuous(labels = scales::percent, expand = expansion(mult = c(0, 0.1))) +
   theme_minimal(base_size = 12) +
   labs(
     title    = "OOB Prediction Error: 7 vs 9 Predictors",
     subtitle = "Lower is better — error rate on out-of-bag samples",
     x        = NULL, y = "OOB Error Rate", fill = "Importance method",
-    caption  = "Source: 2018 Annual Business Survey + 2017 Economic Census"
-  )
+    caption  = "Source: 2018 Annual Business Survey + 2017 Economic Census")+
+   theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(color = "grey30"),
+    legend.position = "right")
 
 
 # Importance extraction helper
@@ -740,19 +740,16 @@ get_importance <- function(forest, method_label, n_pred_label) {
       Method     = method_label,
       Predictors = n_pred_label,
       # Normalise within each forest so Gini and Permutation scales are comparable
-      Importance = Importance / max(abs(Importance))
-    )
+      Importance = Importance / max(abs(Importance)))
 }
 
 importance_all <- bind_rows(
   get_importance(forest_7_gini, "Gini",        "7 predictors"),
   get_importance(forest_7_perm, "Permutation",  "7 predictors"),
   get_importance(forest_9_gini, "Gini",        "9 predictors"),
-  get_importance(forest_9_perm, "Permutation",  "9 predictors")
-)
+  get_importance(forest_9_perm, "Permutation",  "9 predictors"))
 
-
-#  Importance comparison: Gini vs Permutation (within same predictor set)
+# Importance comparison helper
 plot_importance_comparison <- function(data, title_suffix) {
   data |>
     select(Variable, Method, Importance) |>
@@ -761,49 +758,80 @@ plot_importance_comparison <- function(data, title_suffix) {
     ggplot(aes(y = Variable)) +
     geom_segment(
       aes(x = Permutation, xend = Gini, yend = Variable),
-      color = "grey70", linewidth = 0.6
-    ) +
+      color = "grey70", linewidth = 0.6) +
     geom_point(aes(x = Gini,        color = "Gini"),        size = 3) +
     geom_point(aes(x = Permutation, color = "Permutation"), size = 3) +
-    scale_color_manual(values = c("Gini" = "#2d6a4f", "Permutation" = "#e76f51")) +
+    scale_color_viridis_d(option = "E", begin = 0.2, end = 0.8) + # ← changed
     theme_minimal(base_size = 11) +
     labs(
       title    = glue::glue("Gini vs Permutation Importance — {title_suffix}"),
       subtitle = "Normalised 0–1 within each method. Dots far apart = Gini bias.",
       x = "Normalised importance", y = NULL, color = NULL,
-      caption = "Source: 2018 Annual Business Survey"
-    ) +
+      caption = "Source: 2018 Annual Business Survey") +
     theme(legend.position = "bottom")
 }
 
-p7 <- importance_all |>
-  filter(Predictors == "7 predictors") |>
-  plot_importance_comparison("7 predictors")
-
-p9 <- importance_all |>
-  filter(Predictors == "9 predictors") |>
-  plot_importance_comparison("9 predictors")
-
-p7 / p9   # patchwork: stacked
-
-
-#  Faceted importance
+#  importance plot
 importance_all |>
-  group_by(Method, Predictors) |>
-  mutate(Variable = fct_reorder(Variable, Importance)) |>
-  ungroup() |>
-  ggplot(aes(x = Importance, y = Variable, color = Method)) +
-  geom_point(size = 2.5, alpha = 0.85) +
-  scale_color_manual(values = c("Gini" = "#2d6a4f", "Permutation" = "#e76f51")) +
-  facet_grid(Predictors ~ Method, scales = "free_y") +
+  select(Variable, Method, Importance, Predictors) |>
+  pivot_wider(names_from = Method, values_from = Importance) |>
+  mutate(
+    x_start  = ifelse(Gini > Permutation, Gini - 0.02, Gini + 0.02),
+    x_end    = ifelse(Gini > Permutation, Permutation + 0.02, Permutation - 0.02),
+    Variable = paste0(Variable, "___", Predictors),
+    Variable = fct_reorder(Variable, Permutation)) |>
+  ggplot(aes(y = Variable)) +
+  geom_segment(
+    aes(x = x_start, xend = x_end, yend = Variable),
+    arrow = arrow(length = unit(0.18, "cm"), type = "closed", ends = "last"),
+    color = "grey60", linewidth = 0.6) +
+  geom_point(aes(x = Gini,        color = "Gini"),        size = 2.5) +
+  geom_point(aes(x = Permutation, color = "Permutation"), size = 2.5) +
+  scale_color_viridis_d(option = "E", begin = 0.2, end = 0.8) +
+  scale_y_discrete(labels = ~ sub("___.*", "", .x)) +      # ← strip the key suffix
+  facet_wrap(~ Predictors, scales = "free_y", ncol = 1) +
   theme_minimal(base_size = 11) +
-  theme(strip.text = element_text(face = "bold")) +
-  labs(
-    title    = "Variable Importance: All Four Models",
-    subtitle = "Normalised importance — rows sorted independently per panel",
+  theme(
+    strip.text      = element_text(face = "bold"),
+    plot.title      = element_text(face = "bold", size = 16),
+    plot.subtitle   = element_text(color = "grey30"),
+    legend.position = "right") +
+  labs(title    = "Variable Importance: All Four Models",
+    subtitle = "Arrow points Gini → Permutation; longer arrow = greater Gini overestimation",
     x = "Normalised importance", y = NULL, color = NULL,
-    caption = "Source: 2018 Annual Business Survey + 2017 Economic Census"
-  )
+    caption  = "Source: 2018 Annual Business Survey + 2017 Economic Census")+
+   theme(plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(color = "grey30"),
+    legend.position = "right")
+  
+
+
+# Single decision tree 
+# The forest uses 1000 of these, each on a bootstrap sample with random feature
+# subsets — individual trees are weak but their average is robust.
+
+single_tree <- decision_tree() |>
+  set_mode("classification") |>
+  set_engine("rpart") |>
+  set_args(cost_complexity = 0.02, tree_depth = 4) |>
+  fit(
+    ai_adopted ~ n_firms + emp_per_firm + avg_wage + payroll + n_emp,
+    data = rf_data_7)   # no state & naics_label to keep the tree readable
+  
+
+single_tree |>
+  extract_fit_engine() |>
+  rpart.plot(
+    type        = 4,
+    extra       = 104,          # show % and n at each leaf
+    box.palette = "PuBu",
+    roundint    = FALSE,
+    fallen.leaves = TRUE,      
+    main = paste(
+      "One example tree (depth 4, cost_complexity = 0.02)",
+      "The random forest grows 1000 of these on bootstrapped samples",
+      "Each split considers only sqrt(5) ≈ 2 randomly chosen predictors",
+      sep = "\n"))
 
 
 # OOB Confusion matrices
@@ -821,37 +849,6 @@ forest_9_perm |>
   pluck("confusion.matrix") |>
   t() |>
   print()
-
-
-# Single decision tree 
-# The forest uses 1000 of these, each on a bootstrap sample with random feature
-# subsets — individual trees are weak but their average is robust.
-
-single_tree <- decision_tree() |>
-  set_mode("classification") |>
-  set_engine("rpart") |>
-  set_args(cost_complexity = 0.02, tree_depth = 4) |>
-  fit(
-    ai_adopted ~ n_firms + emp_per_firm + avg_wage + payroll + n_emp,
-    data = rf_data_7   # no state & naics_label to keep the tree readable
-  )
-
-single_tree |>
-  extract_fit_engine() |>
-  rpart.plot(
-    type        = 4,
-    extra       = 104,          # show % and n at each leaf
-    box.palette = "GnRd",
-    roundint    = FALSE,
-    fallen.leaves = TRUE,      
-    main = paste(
-      "One example tree (depth 4, cost_complexity = 0.02)",
-      "The random forest grows 1000 of these on bootstrapped samples",
-      "Each split considers only sqrt(5) ≈ 2 randomly chosen predictors",
-      sep = "\n"
-    )
-  )
 ```
-
 
 

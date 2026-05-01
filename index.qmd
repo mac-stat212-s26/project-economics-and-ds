@@ -9,36 +9,111 @@ format:
     page-layout: full
 ---
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-# a test code chunk
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+library(plotly)
+library(dplyr)
 ```
 
-## About Authors
+<!-- ─── SCROLL FADE-IN + STAT COUNTER SCRIPT ─── -->
 
-Welcome to our website on AI adoption among U.S. firms. We are three Economics majors at Macalester College with a shared interest in how data and technology shape economies.
+```{=html}
+<script>
+// ── Scroll fade-in via IntersectionObserver ──────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target); // animate once
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+document.querySelectorAll(".fade-in, .fade-in-stagger, .zoom-in")    .forEach(el => observer.observe(el));
 
-[David Rios](https://www.linkedin.com/in/hermogenesdavid/){target="_blank"} served as the technical lead for this project, handling API data extraction, data pipeline construction, and overall code architecture.
+  // ── Animated stat counters ───────────────────────────────────────
+  const counterObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll("[data-target]").forEach(el => {
+            const target   = parseFloat(el.dataset.target);
+            const decimals = parseInt(el.dataset.decimals ?? "0");
+            const suffix   = el.dataset.suffix ?? "";
+            const prefix   = el.dataset.prefix ?? "";
+            const duration = 1400;
+            const start    = performance.now();
+            const update   = (now) => {
+              const t       = Math.min((now - start) / duration, 1);
+              const eased   = 1 - Math.pow(1 - t, 4); // ease-out quart
+              const current = eased * target;
+              el.textContent = prefix + current.toFixed(decimals) + suffix;
+              if (t < 1) requestAnimationFrame(update);
+            };
+            requestAnimationFrame(update);
+          });
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+  document.querySelectorAll(".stats-row")
+    .forEach(el => counterObserver.observe(el));
+});
+</script>
+```
 
-[Katherine Manuel](https://www.linkedin.com/in/katherinesmanuel/){target="_blank"} served as the primary point of contact and project coordinator, keeping the team on track across milestones and deadlines.
+---
 
-[Isauro Reyes](https://www.linkedin.com/in/isauro-reyes-a798a0391/){target="_blank"}  served as the style lead, shaping the visual presentation and overall communication of our findings.
+## About the Authors
 
-## Motivation
+```{=html}
+<div class="author-grid fade-in-stagger">
 
-With how much companies are adopting artificial intelligence into its services, it seems like nowadays it's impossible to escape from it. This is especially noticeable with tech companies, to the point where AI has become necessity to include in an expanding tech landscape. It's almost hard to imagine that life wasn't always like this. Not 20 years, 15, nor even 10 years ago. 
+  <div class="author-card">
+    <a href="https://www.linkedin.com/in/hermogenesdavid/" target="_blank">David Rios</a>
+    <div class="author-role">Technical lead — API extraction, data pipeline, and code architecture.</div>
+  </div>
+
+  <div class="author-card">
+    <a href="https://www.linkedin.com/in/katherinesmanuel/" target="_blank">Katherine Manuel</a>
+    <div class="author-role">Project coordinator — milestones, communication, and team alignment.</div>
+  </div>
+
+  <div class="author-card">
+    <a href="https://www.linkedin.com/in/isauro-reyes-a798a0391/" target="_blank">Isauro Reyes</a>
+    <div class="author-role">Style lead — visual presentation and communication of findings.</div>
+  </div>
+
+</div>
+```
+
+Welcome to our website on AI adoption among U.S. firms. We are three Economics majors at [Macalester College](https://www.macalester.edu/) with a shared interest in how data and technology shape economies.
+
+---
+
+## Motivation {.fade-in}
+
+With how much companies are adopting artificial intelligence into its services, it seems like nowadays it's impossible to escape from it. This is especially noticeable with tech companies, to the point where AI has become a necessity in an expanding tech landscape. It's almost hard to imagine that life wasn't always like this — not 20 years, 15, nor even 10 years ago.
 
 This is precisely why we chose this topic for our final project.
 
-## Research Question
+---
 
-> **What are the AI adoption trends across industries and firms in the U.S.?**
+## Research Question {.zoom-in}
 
+<div class="rq-text">
 
-## Background
+What are the AI adoption trends across industries and firms in the U.S.?
 
-> @Someone please fill this section by reading a paper or smth as background and seed paper for our project.
+</div>
 
-## Data
+---
+
+## Data {.fade-in}
 
 This project analyzes two datasets from the U.S. Census Bureau's Annual Business Survey (ABS), accessed through the Census Data API.
 
@@ -46,21 +121,529 @@ The first is the **ABSTCB (Annual Business Survey: Technology Characteristics of
 
 The second is the **ABSCS (Annual Business Survey: Company Summary, 2017–2021)**, which provides firm-level aggregates including number of firms, employment, annual payroll, and revenue across industries and states over time. This panel dataset allows us to track how industries evolved before and after the 2018 AI snapshot.
 
-### Data Collection
+### At a Glance
 
-Both datasets are collected by the U.S. Census Bureau as part of the Annual Business Survey, conducted annually since 2018. The ABS covers all nonfarm employer businesses in the United States and is designed to provide nationally representative statistics on business characteristics, ownership demographics, innovation, and technology use. Firms are sampled and weighted to represent the broader population of U.S. employer businesses.
+```{=html}
+<div class="stats-row">
 
-### Data Acquisition
+  <div class="stat-card">
+    <div class="stat-number" data-target="51">0</div>
+    <div class="stat-label">States + D.C. covered</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-number" data-target="5">0</div>
+    <div class="stat-label">Years of panel data</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-number" data-target="19">0</div>
+    <div class="stat-label">Industries analyzed</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-number" data-target="6095579">0</div>
+    <div class="stat-label">Employer firms (2021)</div>
+  </div>
+
+</div>
+```
+
+### Data Collection {.fade-in}
+
+Both datasets are collected by the U.S. Census Bureau as part of the Annual Business Survey, conducted annually since 2018. The ABS covers all nonfarm employer businesses in the United States and is designed to provide nationally representative statistics on business characteristics, ownership demographics, innovation, and technology use.
+
+### Data Acquisition {.fade-in}
 
 Both datasets were accessed programmatically through the Census Data API using R's *httr2* package. We constructed a reusable API fetcher function that retrieves data by year, module, and geography. The technology data was pulled at the state level across all 50 states plus Washington D.C., and the company summary panel was pulled for each year from 2017 to 2021.
 
-### Data Understanding
+---
+
+## Data Insights {.fade-in}
+
+Our analysis unfolds as a layered investigation — first identifying who led the AI race in 2018, then following the money to ask whether early adoption actually translated into payroll gains, and finally zeroing in on wages to reveal where AI creates the most tangible economic value for workers.
+
+```{r data-insights-prep, echo=FALSE, message=FALSE, warning=FALSE}
+library(here)
+library(tidyverse)
+library(scales)
+library(tigris)
+library(plotly)
+
+# Source your cleaned data (skip if already sourced in setup)
+source(here::here("data", "data_cleaning.R"))
+
+# ── AI industry leaders ──────────────────────────────────────────────
+ai_industry_leaders <- tech_2018_clean |>
+  filter(
+    tech_type == "artificial intelligence",
+    !is.na(used_tech),
+    used_tech != "Unknown") |>
+  group_by(naics_label) |>
+  summarise(
+    total_firms = sum(n_firms, na.rm = TRUE),
+    ai_firms    = sum(n_firms[used_tech == "Used"], na.rm = TRUE),
+    .groups     = "drop") |>
+  mutate(ai_rate = ai_firms / total_firms) |>
+  filter(total_firms > 0) |>
+  arrange(desc(ai_rate))
+
+# ── Payroll panel + indexed growth ──────────────────────────────────
+payroll_all <- cs_panel_clean |>
+  group_by(year, naics_label) |>
+  summarise(total_payroll = sum(payroll * 1000, na.rm = TRUE), .groups = "drop")
+
+top_4_industries <- ai_industry_leaders |> slice_max(ai_rate, n = 4) |> pull(naics_label)
+w_4_industries   <- ai_industry_leaders |> slice_min(ai_rate, n = 4) |> pull(naics_label)
+
+payroll_growth <- payroll_all |>
+  arrange(naics_label, year) |>
+  group_by(naics_label) |>
+  mutate(payroll_growth_pct = total_payroll / first(total_payroll)) |>
+  ungroup()
+
+# ── Revenue 2017 ─────────────────────────────────────────────────────
+revenue_2017 <- cs_panel_clean |>
+  filter(year == 2017) |>
+  group_by(naics_label) |>
+  summarise(total_revenue = sum(revenue * 1000, na.rm = TRUE), .groups = "drop") |>
+  filter(total_revenue > 0) |>
+  arrange(desc(total_revenue)) |>
+  mutate(
+    rev_label = case_when(
+      total_revenue >= 1e12 ~ paste0("$", round(total_revenue / 1e12, 1), "T"),
+      total_revenue >= 1e9  ~ paste0("$", round(total_revenue / 1e9,  0), "B"),
+      TRUE                  ~ paste0("$", round(total_revenue / 1e6,  0), "M")))
+
+# ── Wage gap / premium computations ─────────────────────────────────
+industry_tech_summary <- tech_2018_clean |>
+  filter(
+    !is.na(used_tech),
+    MOTUSETECH_LABEL == "All firms",
+    IMPACTWF_U_LABEL == "All firms") |>
+  group_by(year, naics_label, tech_type, used_tech, use_level) |>
+  summarise(
+    total_firms   = sum(n_firms,   na.rm = TRUE),
+    total_emp     = sum(n_emp,     na.rm = TRUE),
+    total_payroll = sum(payroll,   na.rm = TRUE),
+    .groups       = "drop") |>
+  mutate(avg_wage = if_else(total_emp > 0, total_payroll / total_emp, NA_real_))
+
+ai_industry_wages <- industry_tech_summary |>
+  filter(
+    tech_type == "artificial intelligence",
+    used_tech %in% c("Did not use", "Used")) |>
+  group_by(naics_label, used_tech) |>
+  summarise(
+    total_emp     = sum(total_emp,     na.rm = TRUE),
+    total_payroll = sum(total_payroll, na.rm = TRUE),
+    .groups       = "drop") |>
+  mutate(avg_wage = if_else(total_emp > 0, total_payroll / total_emp, NA_real_)) |>
+  filter(total_emp > 0)
+
+wage_wide <- ai_industry_wages |>
+  filter(used_tech %in% c("Did not use", "Used")) |>
+  group_by(naics_label) |>
+  filter(n() == 2) |>
+  ungroup() |>
+  pivot_wider(
+    id_cols     = naics_label,
+    names_from  = used_tech,
+    values_from = c(avg_wage, total_emp, total_payroll)) |>
+  rename(
+    wage_no_ai = `avg_wage_Did not use`,
+    wage_ai    = `avg_wage_Used`,
+    emp_no_ai  = `total_emp_Did not use`,
+    emp_ai     = `total_emp_Used`) |>
+  mutate(
+    wage_gap     = wage_ai - wage_no_ai,
+    premium_pct  = if_else(wage_no_ai > 0, wage_gap / wage_no_ai, NA_real_),
+    total_emp    = emp_no_ai + emp_ai,
+    ai_emp_share = if_else(total_emp > 0, emp_ai / total_emp, NA_real_))
+
+# ── State AI adoption for choropleth map ────────────────────────────
+state_ai_adoption <- tech_2018_clean |>
+  filter(
+    tech_type == "artificial intelligence",
+    !is.na(used_tech),
+    used_tech != "Unknown") |>
+  group_by(state) |>
+  summarise(
+    total_firms = sum(n_firms, na.rm = TRUE),
+    ai_firms    = sum(n_firms[used_tech == "Used"], na.rm = TRUE),
+    .groups     = "drop") |>
+  mutate(
+    state   = str_pad(state, 2, pad = "0"),
+    ai_rate = if_else(total_firms > 0, ai_firms / total_firms, NA_real_)) |>
+  filter(total_firms > 0)
+
+# FIPS → state abbreviation + full name
+fips_lookup <- tigris::fips_codes |>
+  select(state_code, state) |>
+  distinct() |>
+  rename(fips = state_code, abbr = state)
+
+state_names_df <- data.frame(
+  abbr      = c(state.abb, "DC"),
+  full_name = c(state.name, "District of Columbia"),
+  stringsAsFactors = FALSE)
+
+state_map_data <- state_ai_adoption |>
+  left_join(fips_lookup,     by = c("state" = "fips")) |>
+  left_join(state_names_df,  by = "abbr") |>
+  filter(!is.na(abbr)) |>
+  mutate(
+    ai_pct    = round(ai_rate * 100, 2),
+    hover_txt = paste0(
+      "<b>", full_name, " (", abbr, ")</b><br>",
+      "AI Adoption Rate: <b>", ai_pct, "%</b><br>",
+      "AI Firms: ",    comma(ai_firms),    "<br>",
+      "Total Firms: ", comma(total_firms)))
+```
+
+---
+
+### 1. Who Led the AI Race in 2018? {.fade-in}
+
+Management of Companies & Enterprises led AI adoption at 7.7%. Those industries where AI-compatible tasks (forecasting, automation, analysis) were most embedded in daily operations. Knowledge-intensive sectors moved first.
+
+```{r fig-ai-leaders, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5}
+ai_plot_data <- ai_industry_leaders |>
+  filter(ai_firms > 0) |>
+  arrange(ai_rate)
+
+plot_ly(ai_plot_data,
+  x           = ~ai_rate,
+  y           = ~factor(naics_label, levels = naics_label),
+  type        = "bar",
+  orientation = "h",
+  marker = list(
+    color      = ~ai_rate,
+    colorscale = list(c(0, "#deebf7"), c(0.5, "#6baed6"), c(1, "#08519c")),
+    showscale  = FALSE,
+    opacity    = 0.88),
+  hovertemplate = "<b>%{y}</b><br>AI Adoption Rate: <b>%{x:.2%}</b><extra></extra>"
+) |>
+  layout(
+    xaxis = list(
+      title     = "AI Adoption Rate",
+      tickformat = ".1%",
+      gridcolor = "#f0f0f0"),
+    yaxis = list(title = ""),
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor  = "rgba(0,0,0,0)",
+    margin = list(l = 10, r = 20, t = 10, b = 40),
+    font   = list(size = 12, family = "inherit")
+  ) |>
+  config(displayModeBar = FALSE)
+```
+
+---
+
+### 2. Did AI Adoption Translate to Payroll Growth? {.fade-in}
+
+Tracking payroll from 2017 to 2021, the four highest AI-adopting industries consistently outpaced the rest. The grey lines of lower-adoption sectors trail below, suggesting a structural divergence — not a short-term blip.
+
+```{r fig-payroll-growth, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
+hi_cols <- setNames(
+  c("#440154", "#31688e", "#35b779", "#fde725"),
+  top_4_industries)
+
+fig_payroll <- plot_ly()
+
+# Grey background — all other industries
+for (ind in setdiff(unique(payroll_growth$naics_label), top_4_industries)) {
+  d <- filter(payroll_growth, naics_label == ind)
+  fig_payroll <- add_trace(fig_payroll, data = d,
+    x = ~year, y = ~payroll_growth_pct,
+    type = "scatter", mode = "lines",
+    line = list(color = "rgba(180,180,180,0.35)", width = 0.8),
+    showlegend = FALSE, hoverinfo = "skip", name = ind)
+}
+
+# Highlighted top-4
+for (ind in top_4_industries) {
+  d <- filter(payroll_growth, naics_label == ind)
+  fig_payroll <- add_trace(fig_payroll, data = d,
+    x = ~year, y = ~payroll_growth_pct,
+    type = "scatter", mode = "lines+markers",
+    line   = list(color = hi_cols[[ind]], width = 2.5),
+    marker = list(color = hi_cols[[ind]], size = 7),
+    name   = ind,
+    hovertemplate = paste0(
+      "<b>", ind, "</b><br>",
+      "Year: %{x}<br>",
+      "Payroll vs 2017: <b>%{y:.0%}</b><extra></extra>"))
+}
+
+fig_payroll |>
+  layout(
+    xaxis  = list(title = "Year", dtick = 1, gridcolor = "#f0f0f0"),
+    yaxis  = list(
+      title      = "Total Payroll (2017 = 100%)",
+      tickformat = ".0%",
+      gridcolor  = "#f0f0f0"),
+    legend = list(orientation = "h", y = -0.28, font = list(size = 11)),
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor  = "rgba(0,0,0,0)",
+    font = list(size = 12, family = "inherit")
+  ) |>
+  config(displayModeBar = FALSE)
+```
+
+---
+
+### 3. The Revenue Landscape Before AI (2017) {.fade-in}
+
+But did AI adoption simply follow the money? The 2017 revenue snapshot reveals a disconnection: Retail Trade, Manufacturing, and Healthcare, the three biggest industries by revenue, were mid-to-low AI adopters. Management of Companies, the AI leader, barely registers here. Wealth and early adoption diverged.
+
+::: {.callout-note icon="false"}
+**FUN FACT:** The [US Census Bureau](https://www.census.gov/library/stories/2020/11/2017-economic-census-data-breaks-out-industry-growth-changes-by-state.html) also reported this exact figure as the one in my visualization.
+:::
+
+```{r fig-revenue, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5}
+rev_data <- revenue_2017 |> arrange(total_revenue)
+
+plot_ly(rev_data,
+  x           = ~total_revenue,
+  y           = ~factor(naics_label, levels = naics_label),
+  type        = "bar",
+  orientation = "h",
+  marker = list(
+    color      = ~total_revenue,
+    colorscale = list(c(0, "#deebf7"), c(0.5, "#6baed6"), c(1, "#08519c")),
+    showscale  = FALSE,
+    opacity    = 0.88),
+  text          = ~rev_label,
+  textposition  = "outside",
+  hovertemplate = "<b>%{y}</b><br>2017 Revenue: <b>%{text}</b><extra></extra>"
+) |>
+  layout(
+    xaxis = list(
+      title      = "Total Revenue (USD)",
+      tickprefix = "$",
+      tickformat = ".2s",
+      gridcolor  = "#f0f0f0"),
+    yaxis      = list(title = ""),
+    showlegend = FALSE,
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor  = "rgba(0,0,0,0)",
+    margin = list(l = 10, r = 80, t = 10, b = 40),
+    font   = list(size = 12, family = "inherit")
+  ) |>
+  config(displayModeBar = FALSE)
+```
+
+---
+
+### 4. The AI Wage Gap {.fade-in}
+
+Setting revenue aside, the wage difference between AI-adopting and non-adopting firms is consistent. Across nearly every sector, workers at AI firms earned more, not by a little, but by thousands of dollars per year. Hover over any industry to see both figures precisely.
+
+```{r fig-wage-gap, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5.5}
+ordered_inds <- wage_wide |> arrange(wage_gap) |> pull(naics_label)
+wd <- wage_wide |>
+  mutate(naics_label = factor(naics_label, levels = ordered_inds))
+
+plot_ly() |>
+  add_segments(
+    data       = wd,
+    x          = ~wage_no_ai,
+    xend       = ~wage_ai,
+    y          = ~naics_label,
+    yend       = ~naics_label,
+    line       = list(color = "rgba(150,150,150,0.5)", width = 2.5),
+    showlegend = FALSE,
+    hoverinfo  = "none") |>
+  add_markers(
+    data             = wd,
+    x                = ~wage_no_ai,
+    y                = ~naics_label,
+    name             = "Non-Adopters",
+    marker           = list(color = "#5e4fa2", size = 10, opacity = 0.85),
+    hovertemplate    = "<b>%{y}</b><br>Non-Adopters avg: <b>$%{x:.0f}K</b><extra></extra>") |>
+  add_markers(
+    data             = wd,
+    x                = ~wage_ai,
+    y                = ~naics_label,
+    name             = "AI Adopters",
+    marker           = list(color = "#f46d43", size = 10, opacity = 0.85),
+    hovertemplate    = "<b>%{y}</b><br>AI Adopters avg: <b>$%{x:.0f}K</b><extra></extra>") |>
+  layout(
+    xaxis  = list(title = "Avg. Annual Payroll per Employee ($K)", gridcolor = "#f0f0f0"),
+    yaxis  = list(
+      title         = "",
+      categoryorder = "array",
+      categoryarray = ordered_inds),
+    legend = list(orientation = "h", y = -0.12),
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor  = "rgba(0,0,0,0)",
+    font = list(size = 12, family = "inherit")
+  ) |>
+  config(displayModeBar = FALSE)
+```
+
+---
+
+### 5. The AI Wage Premium by Industry {.fade-in}
+
+Expressing the gap as a percentage premium reveals a striking inversion: the industries where AI adoption was *lowest* in 2018 often show the *highest* wage premium. Food Services leads at ~86%, Healthcare follows at ~68%, both low-adoption sectors. In Finance & Insurance, a top adopter, the premium has already compressed to ~24%. Early movers still capture an outsized return.
+
+```{r fig-wage-premium, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5}
+prem_data <- wage_wide |>
+  filter(!is.na(premium_pct)) |>
+  arrange(premium_pct) |>
+  mutate(
+    bar_color  = if_else(premium_pct >= 0, "#2d6a4f", "#c1121f"),
+    prem_label = paste0(round(premium_pct * 100, 1), "%"))
+
+plot_ly(prem_data,
+  x           = ~premium_pct,
+  y           = ~factor(naics_label, levels = naics_label),
+  type        = "bar",
+  orientation = "h",
+  marker      = list(color = ~bar_color, opacity = 0.85),
+  text        = ~prem_label,
+  textposition = "outside",
+  hovertemplate = "<b>%{y}</b><br>AI Wage Premium: <b>%{x:.1%}</b><extra></extra>"
+) |>
+  layout(
+    xaxis = list(
+      title         = "AI Wage Premium (%)",
+      tickformat    = ".0%",
+      gridcolor     = "#f0f0f0",
+      zeroline      = TRUE,
+      zerolinecolor = "#aaaaaa",
+      zerolinewidth = 1),
+    yaxis      = list(title = ""),
+    showlegend = FALSE,
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor  = "rgba(0,0,0,0)",
+    margin = list(l = 10, r = 70, t = 10, b = 40),
+    font   = list(size = 12, family = "inherit")
+  ) |>
+  config(displayModeBar = FALSE)
+```
+
+---
+
+### 6. Where Does AI Create the Most Value? {.fade-in}
+
+Combining the wage premium with the *share of industry workers actually at AI firms* paints a fuller picture. The upper-left quadrant (high premium, low workforce share) marks industries where AI is still a genuine differentiator. As adoption spreads rightward, the premium compresses. Bubble size reflects total employment.
+
+```{r fig-bubble, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5}
+bubble_data <- wage_wide |>
+  filter(!is.na(premium_pct), !is.na(ai_emp_share)) |>
+  mutate(premium_sign = if_else(premium_pct >= 0, "Positive Premium", "Negative Premium"))
+
+max_emp <- max(bubble_data$total_emp, na.rm = TRUE)
+
+plotly::plot_ly(
+  bubble_data,
+  x = ~ai_emp_share,
+  y = ~premium_pct,
+  size = ~total_emp,
+  color = ~premium_sign,
+  colors = c("Positive Premium" = "#2d6a4f",
+             "Negative Premium" = "#c1121f"),
+  customdata = ~naics_label,
+  type = "scatter",
+  mode = "markers",
+  marker = list(
+    opacity = 0.68,
+    sizemode = "area",
+    sizeref = 2.0 * max_emp / (60^2),
+    sizemin = 8,
+    line = list(width = 0.8, color = "white")
+  ),
+  hovertemplate = paste0(
+    "<b>%{customdata}</b><br>",
+    "AI Workforce Share: %{x:.1%}<br>",
+    "Wage Premium: %{y:.1%}<br>",
+    "Total Employees: %{marker.size:,}<extra></extra>"
+  )
+)|>
+  layout(
+    xaxis = list(
+      title      = "Share of Industry Employees at AI Firms",
+      tickformat = ".0%",
+      gridcolor  = "#f0f0f0"),
+    yaxis = list(
+      title      = "AI Wage Premium",
+      tickformat = ".0%",
+      gridcolor  = "#f0f0f0"),
+    shapes = list(
+      list(type = "line", x0 = 0, x1 = 1,    y0 = 0,    y1 = 0,
+           line = list(dash = "dash", color = "#aaa", width = 1)),
+      list(type = "line", x0 = 0.15, x1 = 0.15, y0 = -0.3, y1 = 1,
+           line = list(dash = "dot",  color = "#aaa", width = 1))),
+    legend = list(orientation = "h", y = -0.18),
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor  = "rgba(0,0,0,0)",
+    font = list(size = 12, family = "inherit")
+  ) |>
+  config(displayModeBar = FALSE)
+```
+
+---
+
+### 7. The AI Hubs of America {.fade-in}
+
+Where does AI adoption cluster geographically? California dominates, but this is largely a proxy for industrial composition. States with denser concentrations of Management, Information, and Professional Services firms show higher adoption rates. The state itself carries near-zero predictive power once firm characteristics are known.
+
+```{r fig-map, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
+plot_ly(state_map_data,
+  type         = "choropleth",
+  locationmode = "USA-states",
+  locations    = ~abbr,
+  z            = ~ai_pct,
+  text         = ~hover_txt,
+  hoverinfo    = "text",
+  colorscale   = list(
+    c(0,   "#deebf7"),
+    c(0.3, "#9ecae1"),
+    c(0.6, "#4292c6"),
+    c(1,   "#084594")),
+  colorbar = list(
+    title     = list(text = "AI Adoption<br>Rate (%)"),
+    ticksuffix = "%",
+    len        = 0.55,
+    thickness  = 15)
+) |>
+  layout(
+    geo = list(
+      scope     = "usa",
+      showlakes = TRUE,
+      lakecolor = "rgba(220,240,255,0.4)",
+      bgcolor   = "rgba(0,0,0,0)"),
+    paper_bgcolor = "rgba(0,0,0,0)",
+    margin = list(l = 0, r = 0, t = 10, b = 10),
+    font   = list(size = 12, family = "inherit")
+  ) |>
+  config(displayModeBar = FALSE)
+```
 
 
-## Data Insights
+*(Coming soon.)*
 
+**PLEASE ADD YOUR REMARKS/FINDINGS HERE**
 
-## Conclusions / Big Picture
+---
 
+## Background {.fade-in}
 
-## Limitations and Future Work
+*(Coming soon.)*
+
+@Someone please fill this section by reading a paper or smth as background and seed paper for our project.
+
+---
+
+## Conclusions / Big Picture {.fade-in}
+
+*(Coming soon.)*
+
+---
+
+## Limitations and Future Work {.fade-in}
+
+*(Coming soon.)*
