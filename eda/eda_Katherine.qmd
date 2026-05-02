@@ -1,5 +1,5 @@
 ---
-title: "Katherine M."
+title: "Katherine's Exploration"
 format: 
   html: 
     toc: true
@@ -23,7 +23,7 @@ current trends are similar to what we see in our data.
 
 Loading packages, data, and optional color themes for graphs. 
 
-```{r}
+```{r, eval= FALSE}
 # loading necessary packages for data visualizations
 library(ggplot2)
 library(dplyr)
@@ -48,7 +48,7 @@ scale_fill_paletteer_d("khroma::BuRd")
 paletteer_d("khroma::BuRd")
 ```
 
-```{r}
+```{r, eval= FALSE}
 # cleaning datasets for my viz purposes
 
 k_tech_2018_clean <- tech_2018_clean |> 
@@ -78,15 +78,17 @@ job_cuts <- job_cuts |>
 
 How does AI usage vary by state & industry?
 
-```{r eval=FALSE}
+```{r}
 # Bar Graph
 
 k_tech_2018_clean |> 
   mutate(n_firms = n_firms/100000) |> 
-  ggplot(aes(x = fct_reorder(state_label, n_firms), y = n_firms, fill = use_level)) +
+  ggplot(aes(x = fct_reorder(state_label, n_firms), 
+             y = n_firms, fill = use_level)) +
   geom_col() +
   theme_minimal() +
-  labs(x = "Firms by State (in hundred-thousands)", y = "# of Firms with High Reported AI Usage",
+  labs(x = "Firms by State (in hundred-thousands)", y = "# of Firms with 
+       High Reported AI Usage",
        title = "How Does AI Usage Vary Across the U.S.?",
        fill = "AI Usage Level",
        subtitle = "AI Usage by State in 2018",
@@ -303,7 +305,7 @@ k_tech_2018_clean |>
       lakecolor = toRGB("white")))
 ```
 
-```{r}
+```{r, results = 'hide'}
 # Which states have the LOWEST AI adoption rates? Non-Graph. 
 k_tech_2018_clean |> 
     # Grouping for total amounts. 
@@ -384,16 +386,13 @@ k_tech_2018_clean |>
     someusers_to_allfirms = (state_some_users / state_total_all_firms)) |>
   arrange(desc(someusers_to_allfirms)) |> 
   head(3)
-
-# Confirming usage levels
-unique(k_tech_2018_clean$use_level)
 ```
 
 # AI Usage by Industry
 
 How does AI usage vary by industry?
 
-```{r eval=FALSE}
+```{r}
 # high AI usage by industry from 2017-2021
 tech_2018_clean |> 
   filter(tech_type == "artificial intelligence") |> 
@@ -444,7 +443,9 @@ cs_panel_clean |>
        color = "Industry", 
        subtitle = "Number of Employees and Average Wages in 2018",
        caption = "Source: Annual Business Survey (ABSCS)")
+```
 
+```{r, results= 'hide'}
 # Scatterplots separated by Industry. 
 cs_panel_clean |> 
   filter(year == 2018) |> 
@@ -459,11 +460,8 @@ cs_panel_clean |>
 
 Where are the major tech hubs in the U.S.? 
 
-Note: Data taken from outside sources: https://online.king.edu/infographics/technology-hubs/
-Plotted with R. 
-
 ```{r}
-us_states <- states(cb = TRUE, resolution = "20m") |> 
+us_states <- states(cb = TRUE, resolution = "20m", progress_bar = FALSE) |> 
   shift_geometry()
 
 tech_hub_data <- us_states |>
@@ -509,7 +507,7 @@ ggplot(tech_hub_data) +
 
 How has AI impacted jobs in 2026?
 
-```{r}
+```{r, results = 'hide'}
 # heat map
 job_cuts |> 
   filter(!is.na(job_cuts)) |> 
@@ -526,7 +524,9 @@ job_cuts |>
        y = "Number of Job Cuts", 
        fill = "Company", 
        caption = "Source: King University")
+```
 
+```{r}
 # bar graph
 BuRd <- colorRampPalette(paletteer_d("khroma::BuRd"))(23) 
 
@@ -550,3 +550,22 @@ job_cuts |>
 
 # Takeaways
 
+**<span style="color: #27485c;"> **AI usage in 2018 was extremely limited, with
+significant usage occurring in known U.S. tech hubs.
+
+Firm presence was extremely heterogeneous across states, with California, 
+Florida, Texas, and New York vastly driving numbers. AI usage remained 
+extremely limited across most states, with outlier state Wyoming reporting 
+no AI adoption in 2018. The majority of high AI usage was concentrated in 
+known U.S. tech hubs: California, Washington state, New York state,
+Massachusetts, Texas. 
+
+**<span style="color: #27485c;"> **Industries with the highest wages in 2018
+are now reporting significant job cuts due to AI in 2026. 
+
+Industries included in the datasets also exhibited significant heterogeneity 
+in both number of employees and average wage. However, Finance & Insurance, 
+Information, and Management stood out as industries with the highest wages and 
+relatively fewest employees (not including Mining and Agriculture). Companies 
+reporting extreme job cuts due to AI in 2026 operate within many of these same
+three industries. 

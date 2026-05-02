@@ -554,7 +554,7 @@ ggplot(
 
 ## Takeaways
 
-> **AI adoption in 2018 was driven by firm scale, not industry wealth or geography.**
+> **<span style="color: #27485c;"> **AI adoption in 2018 was driven by firm scale, not industry wealth or geography.**
 
   - Adoption did not follow the money
 
