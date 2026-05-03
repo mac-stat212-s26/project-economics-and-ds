@@ -286,11 +286,10 @@ spatialplotCont(rev_per_firm_map, avg_revenue) +
 ### Highest Profitable Industry in Each State
 
 ```{r}
-# spatial visualization (highest profitable industry)
+# spatial visualization (highest industry revenue)
 ind_revenue_2017 <- revenue_2017 |>
   group_by(state, naics_label) |>
   summarise(total_revenue = sum(revenue, na.rm = TRUE), .groups = "drop") |>
-  arrange(total_revenue) |>
   group_by(state) |>
   slice_max(total_revenue, n = 1)
 
@@ -299,7 +298,7 @@ ind_rev_map <- us_map |>
 
 spatialplotDisc(ind_rev_map, naics_label) +
   labs(
-    title = "What Are the Most Profitable AI Industries in Each State?",
+    title = "What Are the Highest Revenue-Generating Industries in Each State?",
     subtitle = "Highest State Revenue in 2017",
     fill = "Industry",
     caption = "Source: 2018 Annual Business Survey")
@@ -310,7 +309,6 @@ spatialplotDisc(ind_rev_map, naics_label) +
 ind_per_firm_revenue_2017 <- revenue_2017 |>
   group_by(state, naics_label) |>
   summarise(avg_revenue = sum(revenue_per_firm, na.rm = TRUE), .groups = "drop") |>
-  arrange(avg_revenue) |>
   group_by(state) |>
   slice_max(avg_revenue, n = 1)
 
@@ -319,7 +317,7 @@ ind_per_firm_rev_map <- us_map |>
 
 spatialplotDisc(ind_per_firm_rev_map, naics_label) +
   labs(
-    title = "What Are the Most Profitable AI Industries in Each State?",
+    title = "What Are the Highest Revenue-Generating Industries in Each State?",
     subtitle = "Highest State Revenue (calculated per firm) in 2017",
     fill = "Industry",
     caption = "Source: 2018 Annual Business Survey")
