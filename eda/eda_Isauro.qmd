@@ -66,7 +66,7 @@ spatialplot <- function(df, fillvar) {
     legend.position = "right")
 }
 
-### spatial function (continuous)
+### spatial function (discrete)
 spatialplotCont <- function(df, fillvar) {
   ggplot({{df}}) +
   geom_sf(aes(fill = {{fillvar}}), color = "white", linewidth = 0.2) +
