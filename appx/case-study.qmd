@@ -1,0 +1,53 @@
+---
+title: "Case Study"
+author: "DIC"
+---
+
+Source: THE DIFFERENCES IN HOW CNN, MSNBC & FOX COVER THE NEWS [pudding.coo](https://pudding.cool/2018/01/chyrons/)
+
+## Introduction
+
+In this document, we will be talking about the data story structure of the article “The differences in how CNN, MSNBC & Fox Cover News.” This is accessed through The Pudding’s website, which we believe is a competition where people can narrate with the data.
+The author of this article is Charlie Smart.
+
+## What Did They Do?
+
+-   Clustering technique, but simple visualizations.
+
+    -   Visualization animations based on user scrolling bring the reader's attention to different, important aspects of the visualizations and different subsets in the data. Readers can hover the cursor over individual points.
+
+-   Building the visualization with the reader.
+
+    -   Each visualization starts off bare. With each paragraph of text to the side of the viz, the author adds more data to the visualization, allowing text and viz to complement each other.   
+
+-   Search bars & filtering options for specific visualizations. 
+
+    -   After the visualizations have been explored fully, the author gives the user a search bar, in which the user can input their own topics/key words and see how they’re reflected in each plot.
+
+    -   Audiences can also filter data points/subsets of the data, allowing them to focus on aspects of the dataset that they are interested in. 
+
+-   Interactive text. 
+
+    -   Certain words (ex. Month names, definitions) in the text allow audiences to hover their cursor over it, which either results in the respective portion of a graph being highlighted or visualizations of the definition being described to pop up on screen. This allows audiences to achieve a more complete understanding of what the author is talking about.
+
+## Implications & Methodology
+
+-   What’s the purpose of these plots?
+
+    -   Following the visualizations, the author makes light of the scope of political polarization, warning the user to be aware of the news they are receiving and the agenda they may be pushing. This caution makes the visualizations even stronger, as they highlight this warning in an extremely effective way.
+
+-   What was the author’s creation process?
+
+    -   At the end of the article, the author adds a section on Data and Methodology, allowing audiences better insight into data sources/what choices went into data collection, and other underlying data aspects that would otherwise be hidden in the visualizations. 
+
+## CONCLUSIONS
+
+-   The audience can draw their own conclusions based on which words are used most by the big 3 news outlets: CNN, MSNBC, and FOX.
+    This is informative as we can see which ones are biased to certain positions or ideas.
+    This is precisely what the authors of this project try to do by selecting keywords the audience might be interested in or events happening during that time, such as the Russian war, hurricanes, Trump, Hillary, etc. 
+
+-   Most importantly, we gathered more ideas on the possible direction our project can take.
+    As our project is on the AI implementation in U.S. businesses, we probably won’t do it based on words, but rather in companies, highlighting the outliers but also those left behind.
+    What industries are not catching up in the AI implementation?
+    What companies are close to the 100% AI implementation?
+    Is it possible to get 100% implementation?

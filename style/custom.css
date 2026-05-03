@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+pre, code, kbd, samp, .sourceCode, .cell-code {
+  font-family: "Fira Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+kbd {
+  border-radius: .25rem;
+  padding: .2em;
+}
+
+h2 {
+  margin-top: 4em;
+}
+
+h3 {
+  margin-top: 3em;
+}
+
+.menu-text, .nav-link, #toc-title {
+  font-size: .9em;
+}
+
+.text-start, .chapter-number {
+  font-weight: bold;
+}
+
+.sidebar-item-text.sidebar-link.active, .sidebar-item-text.sidebar-link.active .chapter-number {
+  color: #18bc9c;
+}
+
+p + ul, p + ol {
+  margin-top: -1em;
+}
+
+a:link {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+a:active {
+  text-decoration: none;
+}
+
+.code-tools-button {
+  padding: .2em .5em;
+  background-color: #ffffff;
+  border: none;
+  color: #161a20;
+  border-radius: 1000px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.code-tools-button::after {
+  content: '';
+  position: absolute;
+  height: 110%;
+  width: 105%;
+  border-radius: 1000px;
+  background-image: linear-gradient(to bottom right, #008cff, #e100ff);
+  z-index: -1;
+}
+
+.code-tools-button:hover {
+  z-index: 0;
+  color: #f0f0f0;
+  box-shadow: 40px 0 100px #008cff85, -40px 0 100px #e100ffbb ;
+}
+
+/* ============================================================
+   SCROLL FADE-IN
+   Add class="fade-in" to any element you want to animate in
+   ============================================================ */
+.fade-in {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Stagger children inside a fade-in parent */
+.fade-in-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fade-in-stagger.visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: translateY(0); }
+.fade-in-stagger.visible > *:nth-child(2) { transition-delay: 0.15s; opacity: 1; transform: translateY(0); }
+.fade-in-stagger.visible > *:nth-child(3) { transition-delay: 0.25s; opacity: 1; transform: translateY(0); }
+.fade-in-stagger.visible > *:nth-child(4) { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
+
+/* ============================================================
+   ZOOM-IN STATS ROW
+   ============================================================ */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 2rem 0;
+  justify-content: center;
+}
+.stat-card {
+  flex: 1 1 160px;
+  max-width: 220px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  cursor: default;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.25s ease,
+              border-color 0.2s ease;
+}
+/* Dark mode support */
+[data-bs-theme="dark"] .stat-card {
+  background: #1e2125;
+  border-color: #373b3e;
+}
+.stat-card:hover {
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-color: #1482FA;
+}
+.stat-number {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #1482FA;
+  line-height: 1;
+  margin-bottom: 0.35rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.stat-label {
+  font-size: 0.8rem;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+.stat-suffix {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1482FA;
+}
+
+/* ============================================================
+   SECTION DIVIDERS — subtle horizontal rule with label
+   ============================================================ */
+.section-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #1482FA;
+  margin-bottom: 0.4rem;
+}
+
+/* ============================================================
+   INTERACTIVE CHART CONTAINER
+   ============================================================ */
+.chart-container {
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  background: #fff;
+  transition: box-shadow 0.2s ease;
+}
+[data-bs-theme="dark"] .chart-container {
+  background: #1e2125;
+  border-color: #373b3e;
+}
+.chart-container:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+}
+.chart-caption {
+  font-size: 0.78rem;
+  color: #6c757d;
+  text-align: center;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* ============================================================
+   AUTHOR CARDS
+   ============================================================ */
+.author-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.author-card {
+  flex: 1 1 180px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
+  padding: 1rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+[data-bs-theme="dark"] .author-card {
+  background: #1e2125;
+  border-color: #373b3e;
+}
+.author-card:hover {
+  transform: translateY(-2px);
+  border-color: #1482FA;
+}
+.author-card a {
+  font-weight: 600;
+  color: #1482FA !important;
+  text-decoration: none;
+}
+.author-card a:hover { text-decoration: underline; }
+.author-role {
+  font-size: 0.75rem;
+  color: #6c757d;
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
+
+/* ZOOM-IN EFFECT (for research question) */
+.zoom-in {
+  opacity: 0;
+  transform: scale(0.9) translateY(30px);
+  transition: opacity 0.7s ease,
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.zoom-in.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.rq-text {
+  font-size: 1.7rem;
+  font-weight: 600;
+  text-align: center;
+  max-width: 800px;
+  margin: 1.5rem auto 0 auto;
+  line-height: 1.4;
+}
