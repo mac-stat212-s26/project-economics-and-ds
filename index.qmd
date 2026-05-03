@@ -9,22 +9,12 @@ format:
     page-layout: full
 ---
 
-```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE} 
 library(plotly)
 library(dplyr)
 library(paletteer)
 library(forcats)
 library(tigris)
-
-job_cuts <- read.csv("/Users/katiemanuel/Desktop/spring 26/stat212/project-economics-and-ds/data/job_cuts.csv")
-
-job_cuts <- job_cuts |> 
-  mutate(job_cuts = na_if(job_cuts, "Not specified")) |> 
-  mutate(job_cuts = as.integer(gsub(",", "", job_cuts))) |> 
-  mutate(month_announced = fct_relevel(month_announced, 
-                                 "October", "November", "December", "January", "February",
-                                 "March", "April", "May", "June", "July", "August",
-                                 "September"))
 ```
 
 <!-- ─── SCROLL FADE-IN + STAT COUNTER SCRIPT ─── -->
