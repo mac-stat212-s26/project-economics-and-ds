@@ -7,21 +7,24 @@ format:
     embed-resources: true
     code-overflow: wrap
     page-layout: full
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 ## Motivations
 
-In this document, I primarily look at disaggregated AI usage, both across states
-and industries. I exclude *total* and *unknown* values to focus on known data. 
-Alongside my teammates, I only focus on observations from 2018 as this was the 
-only year with data on AI usage. 
+In this document, I primarily look at disaggregated AI usage, both
+across states and industries. I exclude *total* and *unknown* values to
+focus on known data. Alongside my teammates, I only focus on
+observations from 2018 as this was the only year with data on AI usage.
 
-I also look at current (May 2026) job trends related to AI, to determine whether 
-current trends are similar to what we see in our data. 
+I also look at current (May 2026) job trends related to AI, to determine
+whether current trends are similar to what we see in our data.
 
 ## Introduction
 
-Loading packages, data, and optional color themes for graphs. 
+Loading packages, data, and optional color themes for graphs.
 
 ```{r setup, message= FALSE}
 # loading necessary packages for data visualizations
@@ -65,14 +68,13 @@ k_tech_2018_clean <- k_tech_2018_clean |>
   ungroup()
 
 # loading new dataset for job cuts
-job_cuts <- read.csv("/Users/katiemanuel/Desktop/spring 26/stat212/project-economics-and-ds/data/job_cuts.csv")
+job_cuts <- read.csv("../data/job_cuts.csv")
 
 job_cuts <- job_cuts |> 
   mutate(job_cuts = na_if(job_cuts, "Not specified")) |> 
   mutate(job_cuts = as.integer(gsub(",", "", job_cuts))) |> 
   mutate(month_announced = factor(month_announced, levels = month.name))
 ```
-
 
 # AI Usage by State
 
@@ -458,7 +460,7 @@ cs_panel_clean |>
 
 # Tech Hubs in the U.S.
 
-Where are the major tech hubs in the U.S.? 
+Where are the major tech hubs in the U.S.?
 
 ```{r}
 us_states <- states(cb = TRUE, resolution = "20m", progress_bar = FALSE) |> 
@@ -550,22 +552,22 @@ job_cuts |>
 
 # Takeaways
 
-**<span style="color: #27485c;"> **AI usage in 2018 was extremely limited, with
-significant usage occurring in known U.S. tech hubs.
+<span style="color: #27485c;"> AI usage in 2018 was extremely limited,
+with significant usage occurring in known U.S. tech hubs.
 
-Firm presence was extremely heterogeneous across states, with California, 
-Florida, Texas, and New York vastly driving numbers. AI usage remained 
-extremely limited across most states, with outlier state Wyoming reporting 
-no AI adoption in 2018. The majority of high AI usage was concentrated in 
-known U.S. tech hubs: California, Washington state, New York state,
-Massachusetts, Texas. 
+Firm presence was extremely heterogeneous across states, with
+California, Florida, Texas, and New York vastly driving numbers. AI
+usage remained extremely limited across most states, with outlier state
+Wyoming reporting no AI adoption in 2018. The majority of high AI usage
+was concentrated in known U.S. tech hubs: California, Washington state,
+New York state, Massachusetts, Texas.
 
-**<span style="color: #27485c;"> **Industries with the highest wages in 2018
-are now reporting significant job cuts due to AI in 2026. 
+<span style="color: #27485c;"> Industries with the highest wages in 2018
+are now reporting significant job cuts due to AI in 2026.
 
-Industries included in the datasets also exhibited significant heterogeneity 
-in both number of employees and average wage. However, Finance & Insurance, 
-Information, and Management stood out as industries with the highest wages and 
-relatively fewest employees (not including Mining and Agriculture). Companies 
-reporting extreme job cuts due to AI in 2026 operate within many of these same
-three industries. 
+Industries included in the datasets also exhibited significant
+heterogeneity in both number of employees and average wage. However,
+Finance & Insurance, Information, and Management stood out as industries
+with the highest wages and relatively fewest employees (not including
+Mining and Agriculture). Companies reporting extreme job cuts due to AI
+in 2026 operate within many of these same three industries.
