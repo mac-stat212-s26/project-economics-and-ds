@@ -264,7 +264,17 @@ tech_2018_clean <- tech_2018_raw |>
     emp_per_firm = n_emp / n_firms
   )
 
+# ──────────────────────────────────────────
+### 3. Clean Job Cuts Data
+# ──────────────────────────────────────────
 
+job_cuts <- job_cuts |>
+  mutate(job_cuts = na_if(job_cuts, "Not specified")) |>
+  mutate(job_cuts = as.integer(gsub(",", "", job_cuts))) |>
+  mutate(month_announced = fct_relevel(month_announced,
+                                       "October", "November", "December", "January", "February",
+                                       "March", "April", "May", "June", "July", "August",
+                                       "September"))
 
 
 # ──────────────────────────────────────────
@@ -275,9 +285,5 @@ tech_2018_clean <- tech_2018_raw |>
 # Save Master Files
 write_csv(tech_2018_clean, here::here("data", "tech_2018_clean.csv"))
 write_csv(cs_panel_clean,  here::here("data", "cs_panel_clean.csv"))
-
-
-
-
 
 
