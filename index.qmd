@@ -794,7 +794,6 @@ While our research serves as a fundamental first step in understanding AI usage
 trends, further studies will serve to capture a more complete view of our topic.
 
 ## Works Cited {.fade-in}
-katie: make citations 
 
 - King University. “Top 8 Technology Hubs in America.” King University Online, 19 Oct. 2023, online.king.edu/infographics/technology-hubs/. Accessed 3 May 2026.
 - Nietzel, Michael T. “College Graduates Face Tight Job Market, and Many Blame AI, Finds Survey.” Forbes, 28 Apr. 2026, www.forbes.com/sites/michaeltnietzel/2026/04/28/college-graduates-face-tight-job-market-and-many-blame-ai-finds-survey/.
