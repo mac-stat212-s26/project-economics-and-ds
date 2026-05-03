@@ -265,8 +265,9 @@ tech_2018_clean <- tech_2018_raw |>
   )
 
 # ──────────────────────────────────────────
-### 3. Clean Job Cuts Data
+### 3. Pulling & Cleaning Job Cuts Data
 # ──────────────────────────────────────────
+job_cuts <- read_csv(here("data", "job_cuts.csv"))
 
 job_cuts <- job_cuts |>
   mutate(job_cuts = na_if(job_cuts, "Not specified")) |>
