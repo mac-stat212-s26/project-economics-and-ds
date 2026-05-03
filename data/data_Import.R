@@ -136,3 +136,5 @@ write.csv(cs_panel_clean, "data/cs_panel_clean.csv", row.names = FALSE)
 ## Note: the company size clean csv file is a state-by-sector panel dataset across 2017–2021.
 ## We aggregated by the first two digits of the NAICS2017 codebook.
 
+# 4. Pulling job cuts data
+job_cuts <- read.csv("/Users/katiemanuel/Desktop/spring 26/stat212/project-economics-and-ds/data/job_cuts.csv")
