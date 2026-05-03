@@ -14,20 +14,10 @@ library(plotly)
 library(dplyr)
 library(paletteer)
 library(forcats)
-<<<<<<< HEAD
 library(tigris)
-=======
 
-# job_cuts <- read.csv("/Users/katiemanuel/Desktop/spring 26/stat212/project-economics-and-ds/data/job_cuts.csv")
-# 
-# job_cuts <- job_cuts |> 
-#   mutate(job_cuts = na_if(job_cuts, "Not specified")) |> 
-#   mutate(job_cuts = as.integer(gsub(",", "", job_cuts))) |> 
-#   mutate(month_announced = fct_relevel(month_announced, 
-#                                  "October", "November", "December", "January", "February",
-#                                  "March", "April", "May", "June", "July", "August",
-#                                  "September"))
->>>>>>> d0fdf92f44cd99ae819f301fcfd34cbf5c2686f8
+# Source your cleaned data (skip if already sourced in setup)
+source(here::here("data", "data_cleaning.R"))
 ```
 
 <!-- ─── SCROLL FADE-IN + STAT SCRIPT ─── -->
@@ -222,9 +212,6 @@ library(scales)
 library(tigris)
 library(plotly)
 
-# Source your cleaned data (skip if already sourced in setup)
-source(here::here("data", "data_cleaning.R"))
-
 # ── AI industry leaders ──────────────────────────────────────────────
 ai_industry_leaders <- tech_2018_clean |>
   filter(
@@ -355,7 +342,7 @@ state_map_data <- state_ai_adoption |>
 
 ---
 
-### 8. Which Industries Report the Highest Wages? {.fade-in} (katie: change #s when finalizing order)
+### 1. Which Industries Report the Highest Wages? {.fade-in}
 
 Management, Information, Finance & Insurance, and "Utilities" reported some of the highest average wages in 2018. Employee numbers were also lower in these industries relative to others. The four key industries are distinguished by color. But... what does this have to do with AI?
 
@@ -397,7 +384,7 @@ ggplotly(industry_wages, tooltip = c("text")) |>
     paper_bgcolor = "transparent")
 ```
 
-### 1. Who Led the AI Race in 2018? {.fade-in}
+### 2. Who Led the AI Race in 2018? {.fade-in}
 
 Management of Companies & Enterprises led AI adoption at 7.7%. Those industries where AI-compatible tasks (forecasting, automation, analysis) were most embedded in daily operations. Knowledge-intensive sectors moved first.
 
@@ -434,7 +421,7 @@ plot_ly(ai_plot_data,
 
 <hr style="border: 1px solid #5c6b89;">
 
-### 2. Did AI Adoption Translate to Payroll Growth? {.fade-in}
+### 3. Did AI Adoption Translate to Payroll Growth? {.fade-in}
 
 Tracking payroll from 2017 to 2021, the four highest AI-adopting industries consistently outpaced the rest. The grey lines of lower-adoption sectors trail below, suggesting a structural divergence — not a short-term blip.
 
@@ -487,7 +474,7 @@ fig_payroll |>
 
 <hr style="border: 1px solid #5c6b89;">
 
-### 3. The Revenue Landscape Before AI (2017) {.fade-in}
+### 4. The Revenue Landscape Before AI (2017) {.fade-in}
 
 But did AI adoption simply follow the money? The 2017 revenue snapshot reveals a disconnection: Retail Trade, Manufacturing, and Healthcare, the three biggest industries by revenue, were mid-to-low AI adopters. Management of Companies, the AI leader, barely registers here. Wealth and early adoption diverged.
 
@@ -530,7 +517,7 @@ plot_ly(rev_data,
 
 <hr style="border: 1px solid #5c6b89;">
 
-### 4. The AI Wage Gap {.fade-in}
+### 5. The AI Wage Gap {.fade-in}
 
 Setting revenue aside, the wage difference between AI-adopting and non-adopting firms is consistent. Across nearly every sector, workers at AI firms earned more, not by a little, but by thousands of dollars per year. Hover over any industry to see both figures precisely.
 
@@ -579,7 +566,7 @@ plot_ly() |>
 
 <hr style="border: 1px solid #5c6b89;">
 
-### 5. The AI Wage Premium by Industry {.fade-in}
+### 6. The AI Wage Premium by Industry {.fade-in}
 
 Expressing the gap as a percentage premium reveals a striking inversion: the industries where AI adoption was *lowest* in 2018 often show the *highest* wage premium. Food Services leads at ~86%, Healthcare follows at ~68%, both low-adoption sectors. In Finance & Insurance, a top adopter, the premium has already compressed to ~24%. Early movers still capture an outsized return.
 
@@ -621,7 +608,7 @@ plot_ly(prem_data,
 
 <hr style="border: 1px solid #5c6b89;">
 
-### 6. Where Does AI Create the Most Value? {.fade-in}
+### 7. Where Does AI Create the Most Value? {.fade-in}
 
 Combining the wage premium with the *share of industry workers actually at AI firms* paints a fuller picture. The upper-left quadrant (high premium, low workforce share) marks industries where AI is still a genuine differentiator. As adoption spreads rightward, the premium compresses. Bubble size reflects total employment.
 
@@ -681,7 +668,7 @@ plotly::plot_ly(
 
 <hr style="border: 1px solid #5c6b89;">
 
-### 7. The AI Hubs of America {.fade-in}
+### 8. The AI Hubs of America {.fade-in}
 
 Where does AI adoption cluster geographically? California dominates, but this is largely a proxy for industrial composition. States with denser concentrations of Management, Information, and Professional Services firms show higher adoption rates. The state itself carries near-zero predictive power once firm characteristics are known.
 
@@ -717,59 +704,33 @@ plot_ly(state_map_data,
   config(displayModeBar = FALSE)
 ```
 
-### 7.5: The Tech Hubs of America {.fade-in}
+### 8.5: The Tech Hubs of America {.fade-in}
 
 ```{r fig-techhubs, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
-us_states <- states(cb = TRUE, resolution = "20m", progress_bar = FALSE) |> 
-  shift_geometry()
+hub_states <- data.frame(
+  state = c("California", "Washington", "Colorado", "Texas", 
+            "Massachusetts", "New York", "Tennessee"),
+  category = c("Established", "Established", "Up-and-Coming", "Up-and-Coming",
+               "Established", "Established", "Up-and-Coming")
+)
 
-tech_hub_data <- us_states |>
-  left_join(tech_2018_clean, by = c("NAME" = "state_label")) |>
-  mutate(
-    map_fill = if_else(
-      NAME %in% c("California", "Washington", "Colorado", "Texas", 
-                          "Massachusetts", "New York", "Tennessee"), 
-      NAME,
-      "Other"))
-
-techhub <- ggplot(tech_hub_data) +
-  geom_sf(aes(fill = map_fill, 
-              text = paste("State:", NAME, 
-                           "<br>Category:", map_fill)), 
-          color = "white", linewidth = 0.3) +
-  scale_fill_manual(
-    values = c(
-      "California"    = "#4393C3FF", 
-      "Massachusetts" = "#4393C3FF", 
-      "Washington"    = "#4393C3FF", 
-      "Colorado"      = "#92C5DEFF",
-      "Texas"         = "#92C5DEFF",
-      "New York"      = "#4393C3FF",
-      "Tennessee"     = "#92C5DEFF",
-      "Other"         = "grey85"),
-    breaks = c(
-      "California", "Massachusetts", "New York", "Washington",
-      "Colorado", "Tennessee", "Texas", "Other"),
-    name = "States Containing AI Hubs") +
-  theme_void() +
-  theme(legend.position = "right",
-        plot.title = element_text(face = "bold", size = 16),
-        plot.subtitle = element_text(color = "grey30"),
-        plot.caption = element_text(hjust = 0, color = "grey40", size = 8)) +
-  labs(title = "Tech Hubs Across the U.S.",
-       subtitle = "Established hubs in dark blue. Up-and-coming hubs in light blue.",
-       caption = "Source: King University")
-
-ggplotly(techhub, tooltip = "text") |>
+plot_ly(
+  hub_states,
+  type = "choropleth",
+  locations = ~state,
+  locationmode = "USA-states",
+  z = ~ifelse(category == "Established", 1, 2),
+  text = ~paste("State:", state, "<br>Category:", category),
+  hoverinfo = "text",
+  colorscale = list(list(0, "#4393C3FF"), list(0.5, "#92C5DEFF"), list(1, "#92C5DEFF")),
+  showscale = FALSE
+) |>
   layout(
-    plot_bgcolor = "transparent",
-    paper_bgcolor = "transparent",
+    title = "Tech Hubs Across the U.S.",
+    geo = list(scope = "usa", showlakes = FALSE),
     legend = list(title = list(text = "States Containing AI Hubs"))
   )
 ```
-
-
-**PLEASE ADD YOUR REMARKS/FINDINGS HERE**
 
 ---
 
