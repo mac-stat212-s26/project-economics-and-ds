@@ -11,8 +11,20 @@ This is the appendix document for the Random Forest.
 
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE} 
-source(here::here("data", "data_cleaning.R"))
+library(here)
+library(tidyverse)
+library(stringr)
+library(scales)
+library(ggrepel)
+library(tidymodels)
+library(ranger)
+library(patchwork)
 library(forcats)
+library(rpart)
+library(tibble)   
+library(rpart.plot)
+library(paletteer)
+source(here::here("data", "data_cleaning.R"))
 ```
 
 

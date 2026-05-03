@@ -15,6 +15,10 @@ library(dplyr)
 library(paletteer)
 library(forcats)
 library(tigris)
+library(here)
+library(tidyverse)
+library(scales)
+library(plotly)
 
 # Source your cleaned data (skip if already sourced in setup)
 source(here::here("data", "data_cleaning.R"))
@@ -127,7 +131,7 @@ Despite c-suite excitement over the potential of AI, the fears of these job-seek
 
 Understanding the current state of AI in firms, let's now review what the AI landscape looked like in 2018. 
 
-```{r fig-job_cuts, echo=FALSE, message=FALSE, warning=FALSE, fig.height=8}
+``` {r, fig-job_cuts, echo=FALSE, message=FALSE, warning=FALSE, fig.height=8}
 BuRd <- colorRampPalette(paletteer_d("khroma::BuRd"))(23) 
 
 job_viz <- job_cuts |> 
@@ -150,7 +154,8 @@ job_viz <- job_cuts |>
        y = "Number of Job Cuts", 
        fill = NULL, 
        caption = "Source: Reuters",
-       subtitle = "Note: Visualization produced from February 2026 data.")
+       subtitle = "Note: Visualization produced from February 2026 data.") +
+  theme(legend.position = "none" )
 
 ggplotly(job_viz, tooltip = c("text")) |> 
   layout(
@@ -205,13 +210,7 @@ Our analysis proceeds in five steps. First, we examine recent job cuts in 2026 a
 
 ---
 
-```{r data-insights-prep, echo=FALSE, message=FALSE, warning=FALSE}
-library(here)
-library(tidyverse)
-library(scales)
-library(tigris)
-library(plotly)
-
+```{r data-insights-prep, message=FALSE, warning=FALSE}
 ### AI industry leaders
 ai_industry_leaders <- tech_2018_clean |>
   filter(
@@ -346,43 +345,61 @@ state_map_data <- state_ai_adoption |>
 
 Management, Information, Finance & Insurance, and "Utilities" reported some of the highest average wages in 2018. Employee numbers were also lower in these industries relative to others. The four key industries are distinguished by color. But... what does this have to do with AI?
 
-```{r fig-industry_wage, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
-industry_wages <- cs_panel_clean |> 
-  filter(year == 2018) |> 
+```{r fig-industry_wage, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5}
+wage_data <- cs_panel_clean |>
+  filter(year == 2018) |>
   mutate(high_wage = if_else(
-    naics_label %in% c("Management", "Information", "Finance and Insurance", "Utilities"), 
-    naics_label, 
-    "Other")) |>
-  group_by(naics_label) |> 
-  ggplot(aes(x = n_emp, y = avg_wage, color = high_wage,
-             text = paste0(
-      "# of Employees: <b>", n_emp, "</b><br>",
-      "Average Wage: ", round(avg_wage, 2), "<br>",
-      "State: ", state_label, "<br>",
-      "Industry: ", naics_label))) +
-  geom_point() +
-  theme_minimal() +
-  scale_color_manual(
-  values = c(
-    "Management" = "#92C5DEFF",
-    "Information" = "#6baed6", 
-    "Finance and Insurance" = "#2166ACFF",
-    "Utilities" = "#08519c",
-    "Other" = "grey70")) +
-  theme(legend.position = "bottom",
-        plot.title = element_text(face = "bold", size = 16),
-        plot.subtitle = element_text(color = "grey30"),
-        plot.caption = element_text(hjust = 0, color = "grey40", size = 8)) +
-    labs(x = "Number of Employees", 
-       y = "Average Wages Across States", 
-       color = NULL) +
-  facet_wrap(~high_wage)
+    naics_label %in% c("Management", "Information", "Finance and Insurance", "Utilities"),
+    naics_label, "Other"))
 
-ggplotly(industry_wages, tooltip = c("text")) |> 
+# Split into one trace per facet group
+groups    <- c("Management", "Information", "Finance and Insurance", "Utilities", "Other")
+pal       <- c("#92C5DE", "#6baed6", "#2166AC", "#08519c", "rgba(150,150,150,0.45)")
+names(pal) <- groups
+
+make_panel <- function(grp) {
+  d <- filter(wage_data, high_wage == grp)
+  plot_ly(d,
+    x    = ~n_emp,
+    y    = ~avg_wage,
+    type = "scatter",
+    mode = "markers",
+    name = grp,
+    marker = list(color = pal[[grp]], size = 6, opacity = 0.8),
+    hovertemplate = paste0(
+      "# Employees: <b>%{x:,}</b><br>",
+      "Avg Wage: <b>$%{y:.0f}</b><br>",
+      "State: ", d$state_label, "<br>",
+      "Industry: ", d$naics_label,
+      "<extra>", grp, "</extra>"),
+    showlegend = FALSE
+  ) |>
+    layout(
+      annotations = list(list(
+        text      = grp,
+        x         = 0.5, xref = "paper", xanchor = "center",
+        y         = 1.05, yref = "paper",
+        showarrow = FALSE,
+        font      = list(size = 11))))
+}
+
+subplot(
+  lapply(groups, make_panel),
+  nrows   = 2,
+  shareX  = FALSE,
+  shareY  = FALSE,
+  titleX  = FALSE,
+  titleY  = FALSE,
+  margin  = 0.06
+) |>
   layout(
-    plot_bgcolor = "transparent", 
-    paper_bgcolor = "transparent") |> 
-  hide_legend()
+    xaxis  = list(title = "# Employees",        gridcolor = "#f0f0f0"),
+    yaxis  = list(title = "Avg Wage ($)",        gridcolor = "#f0f0f0"),
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor  = "rgba(0,0,0,0)",
+    font   = list(size = 11, family = "inherit")
+  ) |>
+  config(displayModeBar = FALSE)
 ```
 
 ### 2. Who Led the AI Race in 2018? {.fade-in}
