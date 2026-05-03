@@ -68,7 +68,7 @@ book:
   appendices:
   - appx/proposal.qmd
   - appx/case-study.qmd
-  - wa/wa-member1.qmd
+  - wa/david_appx.qmd
   - wa/wa-member2.qmd
   - wa/wa-member3.qmd
 
