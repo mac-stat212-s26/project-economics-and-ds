@@ -12,6 +12,18 @@ format:
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
 library(plotly)
 library(dplyr)
+library(paletteer)
+library(forcats)
+
+job_cuts <- read.csv("/Users/katiemanuel/Desktop/spring 26/stat212/project-economics-and-ds/data/job_cuts.csv")
+
+job_cuts <- job_cuts |> 
+  mutate(job_cuts = na_if(job_cuts, "Not specified")) |> 
+  mutate(job_cuts = as.integer(gsub(",", "", job_cuts))) |> 
+  mutate(month_announced = fct_relevel(month_announced, 
+                                 "October", "November", "December", "January", "February",
+                                 "March", "April", "May", "June", "July", "August",
+                                 "September"))
 ```
 
 <!-- ─── SCROLL FADE-IN + STAT COUNTER SCRIPT ─── -->
@@ -110,6 +122,48 @@ This is precisely why we chose this topic for our final project.
 What are the AI adoption trends across industries and firms in the U.S.?
 
 </div>
+
+---
+
+## Background: Where Are We Seeing AI Job Cuts in 2026? {.fade-in}
+
+Throughout the U.S., finding a job is harder than ever. Job seekers, especially entry-level workers and recent/upcoming colleges graduates, are growing increasingly worried as they attempt to find employment in the era of AI. Due to employment-related concerns, some are even considering opting out of the job hunt entirely: 88.4% of graduates from a recent 2026 ZipRecruiter survey reported considering gap years, graduate school, and other non-employment options in lieu of continuing the search for work (Nietzel 2026).
+
+Despite c-suite excitement over the potential of AI, the fears of these job-seekers are not unfounded. Since last October, major companies with operations across the U.S. have announced impending job cuts, with some major companies such as Amazon and HSBC Holdings reporting an estimated 16K and 20K layoffs planned respectively (Reuters 2026). Though extreme cases, these companies are only two of many who are in the process of AI restructuring, at the cost of their human capital. 
+
+Understanding the current state of AI in firms, let's now review what the AI landscape looked like in 2018. 
+
+```{r fig-job_cuts, echo=FALSE, message=FALSE, warning=FALSE, fig.height=8}
+BuRd <- colorRampPalette(paletteer_d("khroma::BuRd"))(23) 
+
+job_viz <- job_cuts |> 
+  filter(!is.na(job_cuts)) |> 
+  filter(!job_cuts == "Not specified") |> 
+  ggplot(aes(x = month_announced, y = job_cuts, fill = company,
+             text = paste0(
+      "Company: <b>", company, "</b><br>",
+      "Month: ", month_announced, "<br>",
+      "Job Cuts: ", job_cuts))) +
+  geom_col() +
+  theme_minimal() +
+  scale_fill_manual(values = BuRd) +
+  theme(legend.position = "bottom",
+        plot.title = element_text(face = "bold", size = 16),
+        plot.subtitle = element_text(color = "grey30"),
+        plot.caption = element_text(hjust = 0, color = "grey40", size = 8)) +
+  labs(
+       x = "Month Announced",
+       y = "Number of Job Cuts", 
+       fill = NULL, 
+       caption = "Source: Reuters",
+       subtitle = "Note: Visualization produced from February 2026 data.")
+
+ggplotly(job_viz, tooltip = c("text")) |> 
+  layout(
+    plot_bgcolor = "transparent", 
+    paper_bgcolor = "transparent", 
+    legend = list(title = list(text = "")))
+```
 
 ---
 
@@ -302,6 +356,48 @@ state_map_data <- state_ai_adoption |>
 ```
 
 ---
+
+### 8. Which Industries Report the Highest Wages? {.fade-in} (katie: change #s when finalizing order)
+
+Management, Information, Finance & Insurance, and "Utilities" reported some of the highest average wages in 2018. Employee numbers were also lower in these industries relative to others. The four key industries are distinguished by color. But... what does this have to do with AI?
+
+```{r fig-industry_wage, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
+industry_wages <- cs_panel_clean |> 
+  filter(year == 2018) |> 
+  mutate(high_wage = if_else(
+    naics_label %in% c("Management", "Information", "Finance and Insurance", "Utilities"), 
+    naics_label, 
+    "Other")) |>
+  group_by(naics_label) |> 
+  ggplot(aes(x = n_emp, y = avg_wage, color = high_wage,
+             text = paste0(
+      "# of Employees: <b>", n_emp, "</b><br>",
+      "Average Wage: ", round(avg_wage, 2), "<br>",
+      "State: ", state_label, "<br>",
+      "Industry: ", naics_label))) +
+  geom_point() +
+  theme_minimal() +
+  scale_color_manual(
+  values = c(
+    "Management" = "#92C5DEFF",
+    "Information" = "#6baed6", 
+    "Finance and Insurance" = "#2166ACFF",
+    "Utilities" = "#08519c",
+    "Other" = "grey70")) +
+  theme(legend.position = "bottom",
+        plot.title = element_text(face = "bold", size = 16),
+        plot.subtitle = element_text(color = "grey30"),
+        plot.caption = element_text(hjust = 0, color = "grey40", size = 8)) +
+    labs(x = "Number of Employees", 
+       y = "Average Wages Across States", 
+       color = NULL) +
+  facet_wrap(~high_wage)
+
+ggplotly(industry_wages, tooltip = c("text")) |> 
+  layout(
+    plot_bgcolor = "transparent", 
+    paper_bgcolor = "transparent")
+```
 
 ### 1. Who Led the AI Race in 2018? {.fade-in}
 
@@ -623,18 +719,9 @@ plot_ly(state_map_data,
   config(displayModeBar = FALSE)
 ```
 
-
-*(Coming soon.)*
+### 7.5: The Tech Hubs of America {.fade-in}
 
 **PLEASE ADD YOUR REMARKS/FINDINGS HERE**
-
----
-
-## Background {.fade-in}
-
-*(Coming soon.)*
-
-@Someone please fill this section by reading a paper or smth as background and seed paper for our project.
 
 ---
 
@@ -673,6 +760,12 @@ email responses)? <br>
 ownership structure, and geographic scope)? <br>
 - How has AI usage varied throughout the years? <br>
 
-
 While our research serves as a fundamental first step in understanding AI usage
 trends, further studies will serve to capture a more complete view of our topic.
+
+## Works Cited {.fade-in}
+katie: make citations 
+
+- King University. “Top 8 Technology Hubs in America.” King University Online, 19 Oct. 2023, online.king.edu/infographics/technology-hubs/. Accessed 3 May 2026.
+- Nietzel, Michael T. “College Graduates Face Tight Job Market, and Many Blame AI, Finds Survey.” Forbes, 28 Apr. 2026, www.forbes.com/sites/michaeltnietzel/2026/04/28/college-graduates-face-tight-job-market-and-many-blame-ai-finds-survey/.
+- Reuters. “Companies Cutting Jobs as Investments Shift toward AI.” Reuters, 25 Feb. 2026, www.reuters.com/business/world-at-work/companies-cutting-jobs-investments-shift-toward-ai-2026-04-15/. Accessed 3 May 2026.
