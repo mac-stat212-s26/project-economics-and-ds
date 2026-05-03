@@ -212,7 +212,7 @@ library(scales)
 library(tigris)
 library(plotly)
 
-# ── AI industry leaders ──────────────────────────────────────────────
+### AI industry leaders
 ai_industry_leaders <- tech_2018_clean |>
   filter(
     tech_type == "artificial intelligence",
@@ -227,7 +227,7 @@ ai_industry_leaders <- tech_2018_clean |>
   filter(total_firms > 0) |>
   arrange(desc(ai_rate))
 
-# ── Payroll panel + indexed growth ──────────────────────────────────
+### Payroll panel + indexed growth
 payroll_all <- cs_panel_clean |>
   group_by(year, naics_label) |>
   summarise(total_payroll = sum(payroll * 1000, na.rm = TRUE), .groups = "drop")
@@ -241,7 +241,7 @@ payroll_growth <- payroll_all |>
   mutate(payroll_growth_pct = total_payroll / first(total_payroll)) |>
   ungroup()
 
-# ── Revenue 2017 ─────────────────────────────────────────────────────
+### Revenue 2017
 revenue_2017 <- cs_panel_clean |>
   filter(year == 2017) |>
   group_by(naics_label) |>
@@ -254,7 +254,7 @@ revenue_2017 <- cs_panel_clean |>
       total_revenue >= 1e9  ~ paste0("$", round(total_revenue / 1e9,  0), "B"),
       TRUE                  ~ paste0("$", round(total_revenue / 1e6,  0), "M")))
 
-# ── Wage gap / premium computations ─────────────────────────────────
+### Wage gap / premium computations
 industry_tech_summary <- tech_2018_clean |>
   filter(
     !is.na(used_tech),
@@ -300,7 +300,7 @@ wage_wide <- ai_industry_wages |>
     total_emp    = emp_no_ai + emp_ai,
     ai_emp_share = if_else(total_emp > 0, emp_ai / total_emp, NA_real_))
 
-# ── State AI adoption for choropleth map ────────────────────────────
+## State AI adoption for choropleth map
 state_ai_adoption <- tech_2018_clean |>
   filter(
     tech_type == "artificial intelligence",
@@ -689,8 +689,7 @@ plot_ly(state_map_data,
     title     = list(text = "AI Adoption<br>Rate (%)"),
     ticksuffix = "%",
     len        = 0.55,
-    thickness  = 15)
-) |>
+    thickness  = 15) |>
   layout(
     geo = list(
       scope     = "usa",
@@ -734,18 +733,23 @@ plot_ly(
 
 ---
 
-## Conclusions / Big Picture {.fade-in}
+## Conclusions {.fade-in}
 
-*(Coming soon.)*
+Artificial Intelligence has shifted from a productivity-enhancing tool to a potential threat to jobs—especially entry-level roles, as highlighted by Reuters recent study.
+
+Our analysis captures the early stage of AI adoption. We find that early-adopting industries experienced stronger payroll growth compared to low adopters, along with differences in wage premiums across industries. We also identify the geographic concentration of AI activity, highlighting emerging tech hubs and their evolution across states.
+
+To complement this, we use a Random Forest model to predict AI adoption. Results show that firm scale is the main driver, and adding pre-2018 variables significantly improves accuracy. Permutation importance suggests adoption reflects an underlying dimension of firm size rather than any single metric.
 
 ---
 
 ## Limitations and Future Work {.fade-in}
 
-Though we were able to conduct a relatively in-depth analysis of 2018 AI usage trends, our work is not without its limitations. Further research is still  necessary to fully understand how AI was, and is currently, being used by firms across the U.S. 
-<br>
-<br>
+Though we were able to conduct a relatively in-depth analysis of 2018 AI usage trends, our work is not without its limitations. Further research is still  necessary to fully understand how AI was, and is currently, being used by firms across the U.S. and the reasons behind its implementation. Finally, this analysis is observational, so we cannot establish whether AI adoption causes payroll growth—this remains an open question for future research.
 
+
+<br>
+<br>
 
 **We identify three main limitations in our project:**
 
@@ -770,7 +774,6 @@ While our research serves as a fundamental first step in understanding AI usage
 trends, further studies will serve to capture a more complete view of our topic.
 
 ## Works Cited {.fade-in}
-katie: make citations 
 
 - King University. “Top 8 Technology Hubs in America.” King University Online, 19 Oct. 2023, online.king.edu/infographics/technology-hubs/. Accessed 3 May 2026.
 - Nietzel, Michael T. “College Graduates Face Tight Job Market, and Many Blame AI, Finds Survey.” Forbes, 28 Apr. 2026, www.forbes.com/sites/michaeltnietzel/2026/04/28/college-graduates-face-tight-job-market-and-many-blame-ai-finds-survey/.
