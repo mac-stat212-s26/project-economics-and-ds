@@ -326,3 +326,16 @@ spatialplotDisc(ind_per_firm_rev_map, naics_label) +
 ```
 
 > Observing the two maps based on the same `Total Revenue` and `Revenue per Firms` scales, they paint very distinct pictures from one another. The first map shows that `Wholesale Trade` has the generate the highest amount of revenue for the vast majority of states, with `Manufacturing` following second. The second map tells a different story, `Utilities` is the most profitable industry (on a revenue per firm scale) for the vast majority of the country, with `Louisiana` and `Mississippi` differing by having `Manufacturing`, and `Hawaii` having `Finance and Insurance`.
+
+```{r}
+# summary tables
+# industry revenue
+ind_revenue_2017 |>
+  arrange(desc(total_revenue))
+
+# industry revenue per firm
+ind_per_firm_revenue_2017 |>
+  arrange(desc(avg_revenue))
+```
+
+> Interestingly enough, state `11`, or the `District of Columbia` has the most profitable industry per firm, despite it not being `Utilities` like all of the other states.
