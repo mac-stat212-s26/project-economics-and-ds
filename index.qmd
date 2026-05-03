@@ -338,7 +338,7 @@ plot_ly(ai_plot_data,
   config(displayModeBar = FALSE)
 ```
 
----
+<hr style="border: 1px solid #5c6b89;">
 
 ### 2. Did AI Adoption Translate to Payroll Growth? {.fade-in}
 
@@ -391,7 +391,7 @@ fig_payroll |>
   config(displayModeBar = FALSE)
 ```
 
----
+<hr style="border: 1px solid #5c6b89;">
 
 ### 3. The Revenue Landscape Before AI (2017) {.fade-in}
 
@@ -434,7 +434,7 @@ plot_ly(rev_data,
   config(displayModeBar = FALSE)
 ```
 
----
+<hr style="border: 1px solid #5c6b89;">
 
 ### 4. The AI Wage Gap {.fade-in}
 
@@ -483,7 +483,7 @@ plot_ly() |>
   config(displayModeBar = FALSE)
 ```
 
----
+<hr style="border: 1px solid #5c6b89;">
 
 ### 5. The AI Wage Premium by Industry {.fade-in}
 
@@ -525,7 +525,7 @@ plot_ly(prem_data,
   config(displayModeBar = FALSE)
 ```
 
----
+<hr style="border: 1px solid #5c6b89;">
 
 ### 6. Where Does AI Create the Most Value? {.fade-in}
 
@@ -585,7 +585,7 @@ plotly::plot_ly(
   config(displayModeBar = FALSE)
 ```
 
----
+<hr style="border: 1px solid #5c6b89;">
 
 ### 7. The AI Hubs of America {.fade-in}
 
@@ -646,4 +646,33 @@ plot_ly(state_map_data,
 
 ## Limitations and Future Work {.fade-in}
 
-*(Coming soon.)*
+Though we were able to conduct a relatively in-depth analysis of 2018 AI usage 
+trends, our work is not without its limitations. Further research is still 
+necessary to fully understand how AI was, and is currently, being used by firms 
+across the U.S. 
+<br>
+<br>
+
+
+**We identify three main limitations in our project:**
+
+- Limited years of AI data availability. <br>
+- Limited AI usage & industry business characteristics. <br>
+- Lack of firm-level data.<br>
+
+Following these limitations, we recommend that subsequent research analyze
+*multiple years* of AI usage utilizing specific industry *and* firm-level data. 
+<br>
+<br>
+**Subsequent research may find it imperative to look into questions such as:**
+<br>
+
+- How exactly AI was used in individual businesses (ex. spreadsheet creation, 
+email responses)? <br>
+- How may AI usage vary across other firm/industry characteristics (ex. revenue, 
+ownership structure, and geographic scope)? <br>
+- How has AI usage varied throughout the years? <br>
+
+
+While our research serves as a fundamental first step in understanding AI usage
+trends, further studies will serve to capture a more complete view of our topic.
