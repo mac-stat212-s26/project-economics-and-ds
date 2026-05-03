@@ -759,7 +759,7 @@ add_trace(
 
 Pivoting back to revenue, are states across the US truly seeing success? As it turns out, the AI hubs found previously are also associated with the highest amount of total revenue. California in particular generates nearly 4 Trillion dollars in revenue, with Texas following behind. As for most of the other states, their revenue falls well below 1 Trillion dollars.
 
-```{r fig-map, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
+```{r fig-rev, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
 # map of the US
 us_map <- tigris::states(cb = TRUE, resolution = "20m", class = "sf") |>
   filter(STUSPS != "PR") |>
@@ -797,7 +797,7 @@ ggplotly(revenue_plotly, tooltip = "text")
 
 In terms of industry, the highest revenue generated type across each US state is by far Wholesale Trade, followed by Manufacturing in the Eastern US. Interestingly, New York displays their Finance and Insurance industry as the one with the most revenue, which makes sense given as Wall Street is located in Lower Manhattan.
 
-```{r fig-map, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
+```{r fig-rev-ind, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
 # filtered to 2017 data (since that was the only year in which revenue was reported)
 ind_revenue_2017 <- cs_panel_clean |>
   filter(year == 2017) |>
