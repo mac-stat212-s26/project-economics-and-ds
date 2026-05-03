@@ -197,19 +197,13 @@ The second is the **ABSCS (Annual Business Survey: Company Summary, 2017–2021)
 </div>
 ```
 
-### Data Collection {.fade-in}
+### Data Collection, and Acquisition {.fade-in}
 
-Both datasets are collected by the U.S. Census Bureau as part of the Annual Business Survey, conducted annually since 2018. The ABS covers all nonfarm employer businesses in the United States and is designed to provide nationally representative statistics on business characteristics, ownership demographics, innovation, and technology use.
+Both datasets come from the U.S. Census Bureau’s Annual Business Survey (ABS), conducted annually since 2018. The ABS covers all nonfarm employer businesses in the United States and provides nationally representative data on firm characteristics, ownership, innovation, and technology use. We accessed both datasets through the Census Data API using R’s httr2 package and built a reusable function to retrieve data by year, module, and geography. The technology module was collected at the state level for all 50 states and Washington, D.C., while the company summary panel spans 2017–2021.
 
-### Data Acquisition {.fade-in}
-
-Both datasets were accessed programmatically through the Census Data API using R's *httr2* package. We constructed a reusable API fetcher function that retrieves data by year, module, and geography. The technology data was pulled at the state level across all 50 states plus Washington D.C., and the company summary panel was pulled for each year from 2017 to 2021.
+Our analysis proceeds in five steps. First, we examine recent job cuts in 2026 and late 2025 based on reporting from Reuters. Second, we analyze state-level revenue in 2017 using the ABS panel (as this is the only year with complete revenue data). Third, we identify the highest-revenue industries within each state. Fourth, we study AI adoption in 2018 and track subsequent payroll changes across industries. Finally, we estimate the wage premium associated with AI. To complement this analysis, we use a Random Forest model to predict AI adoption across sectors, evaluating performance using both Gini impurity and permutation importance.
 
 ---
-
-## Data Insights {.fade-in}
-
-Our analysis unfolds as a layered investigation — first identifying who led the AI race in 2018, then following the money to ask whether early adoption actually translated into payroll gains, and finally zeroing in on wages to reveal where AI creates the most tangible economic value for workers.
 
 ```{r data-insights-prep, echo=FALSE, message=FALSE, warning=FALSE}
 library(here)
