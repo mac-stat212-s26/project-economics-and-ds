@@ -15,18 +15,18 @@ library(dplyr)
 library(paletteer)
 library(forcats)
 
-job_cuts <- read.csv("/Users/katiemanuel/Desktop/spring 26/stat212/project-economics-and-ds/data/job_cuts.csv")
-
-job_cuts <- job_cuts |> 
-  mutate(job_cuts = na_if(job_cuts, "Not specified")) |> 
-  mutate(job_cuts = as.integer(gsub(",", "", job_cuts))) |> 
-  mutate(month_announced = fct_relevel(month_announced, 
-                                 "October", "November", "December", "January", "February",
-                                 "March", "April", "May", "June", "July", "August",
-                                 "September"))
+# job_cuts <- read.csv("/Users/katiemanuel/Desktop/spring 26/stat212/project-economics-and-ds/data/job_cuts.csv")
+# 
+# job_cuts <- job_cuts |> 
+#   mutate(job_cuts = na_if(job_cuts, "Not specified")) |> 
+#   mutate(job_cuts = as.integer(gsub(",", "", job_cuts))) |> 
+#   mutate(month_announced = fct_relevel(month_announced, 
+#                                  "October", "November", "December", "January", "February",
+#                                  "March", "April", "May", "June", "July", "August",
+#                                  "September"))
 ```
 
-<!-- ─── SCROLL FADE-IN + STAT COUNTER SCRIPT ─── -->
+<!-- ─── SCROLL FADE-IN + STAT SCRIPT ─── -->
 
 ```{=html}
 <script>
@@ -494,7 +494,7 @@ fig_payroll |>
 But did AI adoption simply follow the money? The 2017 revenue snapshot reveals a disconnection: Retail Trade, Manufacturing, and Healthcare, the three biggest industries by revenue, were mid-to-low AI adopters. Management of Companies, the AI leader, barely registers here. Wealth and early adoption diverged.
 
 ::: {.callout-note icon="false"}
-**FUN FACT:** The [US Census Bureau](https://www.census.gov/library/stories/2020/11/2017-economic-census-data-breaks-out-industry-growth-changes-by-state.html) also reported this exact figure as the one in my visualization.
+**FUN FACT:** The [US Census Bureau](https://www.census.gov/library/stories/2020/11/2017-economic-census-data-breaks-out-industry-growth-changes-by-state.html) also reported this exact figure as in our visualization below.
 :::
 
 ```{r fig-revenue, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5}
@@ -733,10 +733,7 @@ plot_ly(state_map_data,
 
 ## Limitations and Future Work {.fade-in}
 
-Though we were able to conduct a relatively in-depth analysis of 2018 AI usage 
-trends, our work is not without its limitations. Further research is still 
-necessary to fully understand how AI was, and is currently, being used by firms 
-across the U.S. 
+Though we were able to conduct a relatively in-depth analysis of 2018 AI usage trends, our work is not without its limitations. Further research is still  necessary to fully understand how AI was, and is currently, being used by firms across the U.S. 
 <br>
 <br>
 
