@@ -113,7 +113,7 @@ tech_2018_clean |>
   arrange(desc(avgFirms))
 ```
 
-> Among Tech Companies in the North America, `Specialized Software	` companies have the highest average number of firms at `1324.265`. `Specialized Equipment` companies report the lowest at `1189.696	` firms.
+Among Tech Companies in the North America, `Specialized Software	` companies have the highest average number of firms at `1324.265`. `Specialized Equipment` companies report the lowest at `1189.696	` firms.
 
 ### By Tech Usage
 
@@ -125,7 +125,7 @@ tech_2018_clean |>
   arrange(desc(avgFirms))
 ```
 
-> Among Tech Companies in the North America, Companies that `Did not use` their tech have the highest average number of firms at `4514.4706`. Companies that `Tested` their tech report the lowest at `144.5495` firms.
+Among Tech Companies in the North America, Companies that `Did not use` their tech have the highest average number of firms at `4514.4706`. Companies that `Tested` their tech report the lowest at `144.5495` firms.
 
 ### By Types of Tech and If They Were Used
 
@@ -138,7 +138,7 @@ tech_2018_clean |>
   arrange(desc(avgFirms))
 ```
 
-> Among Tech Companies in the North America, `Robotics` companies that `Did not use` their tech have the highest average number of firms at `5360.76368`. `Robotics` companies that `Tested` their tech report the lowest at `87.01887` firms.
+Among Tech Companies in the North America, `Robotics` companies that `Did not use` their tech have the highest average number of firms at `5360.76368`. `Robotics` companies that `Tested` their tech report the lowest at `87.01887` firms.
 
 ```{r}
 # visualization
@@ -185,7 +185,7 @@ tech_2018_clean |>
 -   Public Administration = `92`
 -   NA = `99`
 
-> **Source:** https://www.census.gov/naics/?58967?yearbck=2017
+**Source:** https://www.census.gov/naics/?58967?yearbck=2017
 
 ```{r}
 cs_panel_clean |>
@@ -195,7 +195,7 @@ cs_panel_clean |>
   arrange(desc(medianPay))
 ```
 
-> Among industries in North America, `Utilities` report the highest median payroll per employee at `$105.31`. `Accomodation and Food Services` report the lowest at `$18.67`.
+Among industries in North America, `Utilities` report the highest median payroll per employee at `$105.31`. `Accomodation and Food Services` report the lowest at `$18.67`.
 
 ### Year
 
@@ -207,7 +207,7 @@ cs_panel_clean |>
   arrange(desc(medianPay))
 ```
 
-> `2021` reported the highest median payroll per employee at `$58.71`. `2017` reported the lowest at `$47.78`.
+`2021` reported the highest median payroll per employee at `$58.71`. `2017` reported the lowest at `$47.78`.
 
 ### naics_sector and Year
 
@@ -220,7 +220,7 @@ cs_panel_clean |>
   arrange(desc(medianPay))
 ```
 
-> Among industries in North America throughout a 5-year period, `Utilities` report the highest median payroll per employee at `$111.38` during `2021`. `Accomodation and Food Services` report the lowest at `$16.18` during `2020`.
+Among industries in North America throughout a 5-year period, `Utilities` report the highest median payroll per employee at `$111.38` during `2021`. `Accomodation and Food Services` report the lowest at `$16.18` during `2020`.
 
 ```{r}
 # visualization
@@ -281,7 +281,7 @@ spatialplotCont(rev_per_firm_map, avg_revenue) +
     caption = "Source: 2018 Annual Business Survey")
 ```
 
-> When looking at the maps for revenue across each states, the results vary drastically when observing it on a `total revenue` scale, and a `revenue per firm` scale. For the former, `California` proves to be the highest profitable AI state, followed by `Texas` by a difference of nearly $1 Trillion. As for the latter scale, the revenue is a lot more evenly distributed across each state, with the East Coast generating more revenue per firm compared to other regions in the US.
+When looking at the maps for revenue across each states, the results vary drastically when observing it on a `total revenue` scale, and a `revenue per firm` scale. For the former, `California` proves to be the highest profitable AI state, followed by `Texas` by a difference of nearly $1 Trillion. As for the latter scale, the revenue is a lot more evenly distributed across each state, with the East Coast generating more revenue per firm compared to other regions in the US.
 
 ### Highest Profitable Industry in Each State
 
@@ -323,7 +323,7 @@ spatialplotDisc(ind_per_firm_rev_map, naics_label) +
     caption = "Source: 2018 Annual Business Survey")
 ```
 
-> Observing the two maps based on the same `Total Revenue` and `Revenue per Firms` scales, they paint very distinct pictures from one another. The first map shows that `Wholesale Trade` has the generate the highest amount of revenue for the vast majority of states, with `Manufacturing` following second. The second map tells a different story, `Utilities` is the most profitable industry (on a revenue per firm scale) for the vast majority of the country, with `Louisiana` and `Mississippi` differing by having `Manufacturing`, and `Hawaii` having `Finance and Insurance`.
+Observing the two maps based on the same `Total Revenue` and `Revenue per Firms` scales, they paint very distinct pictures from one another. The first map shows that `Wholesale Trade` has the generate the highest amount of revenue for the vast majority of states, with `Manufacturing` following second. The second map tells a different story, `Utilities` is the most profitable industry (on a revenue per firm scale) for the vast majority of the country, with `Louisiana` and `Mississippi` differing by having `Manufacturing`, and `Hawaii` having `Finance and Insurance`.
 
 ```{r}
 # summary tables
@@ -336,4 +336,4 @@ ind_per_firm_revenue_2017 |>
   arrange(desc(avg_revenue))
 ```
 
-> Interestingly enough, state `11`, or the `District of Columbia` has the most profitable industry per firm, despite it not being `Utilities` like all of the other states.
+Interestingly enough, state `11`, or the `District of Columbia` has the most profitable industry per firm, despite it not being `Utilities` like all of the other states.
