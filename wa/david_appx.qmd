@@ -12,6 +12,7 @@ This is the appendix document for the Random Forest.
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE} 
 source(here::here("data", "data_cleaning.R"))
+library(forcats)
 ```
 
 

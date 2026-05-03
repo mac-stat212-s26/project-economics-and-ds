@@ -690,7 +690,7 @@ plot_ly(state_map_data,
     title     = list(text = "AI Adoption<br>Rate (%)"),
     ticksuffix = "%",
     len        = 0.55,
-    thickness  = 15) |>
+    thickness  = 15)) |>
   layout(
     geo = list(
       scope     = "usa",
@@ -699,8 +699,7 @@ plot_ly(state_map_data,
       bgcolor   = "rgba(0,0,0,0)"),
     paper_bgcolor = "rgba(0,0,0,0)",
     margin = list(l = 0, r = 0, t = 10, b = 10),
-    font   = list(size = 12, family = "inherit")
-  ) |>
+    font   = list(size = 12, family = "inherit")) |>
   config(displayModeBar = FALSE)
 ```
 
