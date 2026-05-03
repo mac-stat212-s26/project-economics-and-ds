@@ -381,7 +381,8 @@ industry_wages <- cs_panel_clean |>
 ggplotly(industry_wages, tooltip = c("text")) |> 
   layout(
     plot_bgcolor = "transparent", 
-    paper_bgcolor = "transparent")
+    paper_bgcolor = "transparent") |> 
+  hide_legend()
 ```
 
 ### 2. Who Led the AI Race in 2018? {.fade-in}
@@ -710,24 +711,47 @@ hub_states <- data.frame(
   state = c("California", "Washington", "Colorado", "Texas", 
             "Massachusetts", "New York", "Tennessee"),
   category = c("Established", "Established", "Up-and-Coming", "Up-and-Coming",
-               "Established", "Established", "Up-and-Coming")
+               "Established", "Established", "Up-and-Coming"),
+  state_abb = c("CA", "WA", "CO", "TX", "MA", "NY", "TN"),
+  color_val = c(1, 1, 0, 0, 1, 1, 0)
 )
 
-plot_ly(
-  hub_states,
+plot_ly() |>
+  add_trace(
+  data = hub_states |> filter(category == "Established"),
   type = "choropleth",
-  locations = ~state,
+  locations = ~state_abb,
   locationmode = "USA-states",
-  z = ~ifelse(category == "Established", 1, 2),
+  z = ~color_val,
+  colorscale = list(list(0, "#4393C3"), list(1, "#4393C3")),
+  showscale = FALSE,
+  name = "Established",
   text = ~paste("State:", state, "<br>Category:", category),
   hoverinfo = "text",
-  colorscale = list(list(0, "#4393C3FF"), list(0.5, "#92C5DEFF"), list(1, "#92C5DEFF")),
-  showscale = FALSE
+  marker = list(line = list(color = "white", width = 0.5))
 ) |>
+add_trace(
+  data = hub_states |> filter(category == "Up-and-Coming"),
+  type = "choropleth",
+  locations = ~state_abb,
+  locationmode = "USA-states",
+  z = ~color_val,
+  colorscale = list(list(0, "#92C5DE"), list(1, "#92C5DE")),
+  showscale = FALSE,
+  name = "Up-and-Coming",
+  text = ~paste("State:", state, "<br>Category:", category),
+  hoverinfo = "text",
+  marker = list(line = list(color = "white", width = 0.5))) |> 
   layout(
-    title = "Tech Hubs Across the U.S.",
-    geo = list(scope = "usa", showlakes = FALSE),
-    legend = list(title = list(text = "States Containing AI Hubs"))
+    geo = list(
+  scope = "usa", 
+  showlakes = FALSE,
+  bgcolor = "rgba(0,0,0,0)",
+  landcolor = "rgba(0,0,0,0)",
+  showland = TRUE,
+  subunitcolor = "grey"), 
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor = "rgba(0,0,0,0)"
   )
 ```
 
