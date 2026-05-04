@@ -30,58 +30,58 @@ source(here::here("data", "data_cleaning.R"))
 <script>
 // ── Scroll fade-in via IntersectionObserver ──────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-  const observerOptions = { threshold: 0.05 };
+const observerOptions = { threshold: 0.05 };
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+entry.target.classList.add("visible");
+observer.unobserve(entry.target);
+}
+});
+}, observerOptions);
 
-  function observeAll() {
-    document.querySelectorAll(".fade-in, .fade-in-stagger, .zoom-in")
-      .forEach(el => {
-        if (!el.classList.contains("visible")) {
-          observer.observe(el);
-        }
-      });
-  }
+function observeAll() {
+document.querySelectorAll(".fade-in, .fade-in-stagger, .zoom-in")
+.forEach(el => {
+if (!el.classList.contains("visible")) {
+observer.observe(el);
+}
+});
+}
 
-  // ── Run rendered widgets ─────────────────────────────────────────
-  observeAll();
-  setTimeout(observeAll, 500);
-  setTimeout(observeAll, 1500);
+// ── Run rendered widgets ─────────────────────────────────────────
+observeAll();
+setTimeout(observeAll, 500);
+setTimeout(observeAll, 1500);
 
-  // ── Animated stat counters ───────────────────────────────────────
-  const counterObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.querySelectorAll("[data-target]").forEach(el => {
-          const target   = parseFloat(el.dataset.target);
-          const decimals = parseInt(el.dataset.decimals ?? "0");
-          const suffix   = el.dataset.suffix ?? "";
-          const prefix   = el.dataset.prefix ?? "";
-          const duration = 1400;
-          const start    = performance.now();
-          const update   = (now) => {
-            const t       = Math.min((now - start) / duration, 1);
-            const eased   = 1 - Math.pow(1 - t, 4);
-            const current = eased * target;
-            el.textContent = prefix + current.toFixed(decimals) + suffix;
-            if (t < 1) requestAnimationFrame(update);
-          };
-          requestAnimationFrame(update);
-        });
-        counterObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.3 });
+// ── Animated stat counters ───────────────────────────────────────
+const counterObserver = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+entry.target.querySelectorAll("[data-target]").forEach(el => {
+const target   = parseFloat(el.dataset.target);
+const decimals = parseInt(el.dataset.decimals ?? "0");
+const suffix   = el.dataset.suffix ?? "";
+const prefix   = el.dataset.prefix ?? "";
+const duration = 1400;
+const start    = performance.now();
+const update   = (now) => {
+const t       = Math.min((now - start) / duration, 1);
+const eased   = 1 - Math.pow(1 - t, 4);
+const current = eased * target;
+el.textContent = prefix + current.toFixed(decimals) + suffix;
+if (t < 1) requestAnimationFrame(update);
+};
+requestAnimationFrame(update);
+});
+counterObserver.unobserve(entry.target);
+}
+});
+}, { threshold: 0.3 });
 
-  document.querySelectorAll(".stats-row")
-    .forEach(el => counterObserver.observe(el));
+document.querySelectorAll(".stats-row")
+.forEach(el => counterObserver.observe(el));
 });
 </script>
 ```
@@ -93,20 +93,20 @@ document.addEventListener("DOMContentLoaded", () => {
 ```{=html}
 <div class="author-grid fade-in-stagger">
 
-  <div class="author-card">
-    <a href="https://www.linkedin.com/in/hermogenesdavid/" target="_blank">David Rios</a>
-    <div class="author-role">Technical lead — API extraction, data pipeline, and code architecture.</div>
-  </div>
+<div class="author-card">
+<a href="https://www.linkedin.com/in/hermogenesdavid/" target="_blank">David Rios</a>
+<div class="author-role">Technical lead — API extraction, data pipeline, and code architecture.</div>
+</div>
 
-  <div class="author-card">
-    <a href="https://www.linkedin.com/in/katherinesmanuel/" target="_blank">Katherine Manuel</a>
-    <div class="author-role">Project coordinator — milestones, communication, and team alignment.</div>
-  </div>
+<div class="author-card">
+<a href="https://www.linkedin.com/in/katherinesmanuel/" target="_blank">Katherine Manuel</a>
+<div class="author-role">Project coordinator — milestones, communication, and team alignment.</div>
+</div>
 
-  <div class="author-card">
-    <a href="https://www.linkedin.com/in/isauro-reyes-a798a0391/" target="_blank">Isauro Reyes</a>
-    <div class="author-role">Style lead — visual presentation and communication of findings.</div>
-  </div>
+<div class="author-card">
+<a href="https://www.linkedin.com/in/isauro-reyes-a798a0391/" target="_blank">Isauro Reyes</a>
+<div class="author-role">Style lead — visual presentation and communication of findings.</div>
+</div>
 
 </div>
 ```
@@ -200,25 +200,25 @@ The second is the **ABSCS (Annual Business Survey: Company Summary, 2017–2021)
 ```{=html}
 <div class="stats-row">
 
-  <div class="stat-card">
-    <div class="stat-number" data-target="51">0</div>
-    <div class="stat-label">States + D.C. covered</div>
-  </div>
+<div class="stat-card">
+<div class="stat-number" data-target="51">0</div>
+<div class="stat-label">States + D.C. covered</div>
+</div>
 
-  <div class="stat-card">
-    <div class="stat-number" data-target="5">0</div>
-    <div class="stat-label">Years of panel data</div>
-  </div>
+<div class="stat-card">
+<div class="stat-number" data-target="5">0</div>
+<div class="stat-label">Years of panel data</div>
+</div>
 
-  <div class="stat-card">
-    <div class="stat-number" data-target="19">0</div>
-    <div class="stat-label">Industries analyzed</div>
-  </div>
+<div class="stat-card">
+<div class="stat-number" data-target="19">0</div>
+<div class="stat-label">Industries analyzed</div>
+</div>
 
-  <div class="stat-card">
-    <div class="stat-number" data-target="6095579">0</div>
-    <div class="stat-label">Employer firms (2021)</div>
-  </div>
+<div class="stat-card">
+<div class="stat-number" data-target="6095579">0</div>
+<div class="stat-label">Employer firms (2021)</div>
+</div>
 
 </div>
 ```
@@ -387,19 +387,19 @@ x_range <- range(wage_data$n_emp, na.rm = TRUE)
 make_panel <- function(grp) {
   d <- filter(wage_data, high_wage == grp)
   plot_ly(d,
-    x    = ~n_emp,
-    y    = ~avg_wage,
-    type = "scatter",
-    mode = "markers",
-    name = grp,
-    marker = list(color = pal[[grp]], size = 6, opacity = 0.8),
-    hovertemplate = paste0(
-      "# Employees: <b>%{x:,}</b><br>",
-      "Avg Wage: <b>$%{y:.0f}</b><br>",
-      "State: ", d$state_label, "<br>",
-      "Industry: ", d$naics_label,
-      "<extra>", grp, "</extra>"),
-    showlegend = FALSE
+          x    = ~n_emp,
+          y    = ~avg_wage,
+          type = "scatter",
+          mode = "markers",
+          name = grp,
+          marker = list(color = pal[[grp]], size = 6, opacity = 0.8),
+          hovertemplate = paste0(
+            "# Employees: <b>%{x:,}</b><br>",
+            "Avg Wage: <b>$%{y:.0f}</b><br>",
+            "State: ", d$state_label, "<br>",
+            "Industry: ", d$naics_label,
+            "<extra>", grp, "</extra>"),
+          showlegend = FALSE
   ) |>
     layout(
       xaxis = list(range = x_range),  # fix x range per panel
@@ -431,16 +431,16 @@ ai_plot_data <- ai_industry_leaders |>
   arrange(ai_rate)
 
 plot_ly(ai_plot_data,
-  x           = ~ai_rate,
-  y           = ~factor(naics_label, levels = naics_label),
-  type        = "bar",
-  orientation = "h",
-  marker = list(
-    color      = ~ai_rate,
-    colorscale = list(c(0, "#deebf7"), c(0.5, "#6baed6"), c(1, "#08519c")),
-    showscale  = FALSE,
-    opacity    = 0.88),
-  hovertemplate = "<b>%{y}</b><br>AI Adoption Rate: <b>%{x:.2%}</b><extra></extra>"
+        x           = ~ai_rate,
+        y           = ~factor(naics_label, levels = naics_label),
+        type        = "bar",
+        orientation = "h",
+        marker = list(
+          color      = ~ai_rate,
+          colorscale = list(c(0, "#deebf7"), c(0.5, "#6baed6"), c(1, "#08519c")),
+          showscale  = FALSE,
+          opacity    = 0.88),
+        hovertemplate = "<b>%{y}</b><br>AI Adoption Rate: <b>%{x:.2%}</b><extra></extra>"
 ) |>
   layout(
     xaxis = list(
@@ -480,11 +480,11 @@ fig_payroll <- plot_ly()
 for (ind in grey_industries) {
   d <- filter(payroll_growth, naics_label == ind)
   fig_payroll <- add_trace(fig_payroll, data = d,
-    x = ~year, y = ~payroll_growth_pct,
-    type = "scatter", mode = "lines",
-    line = list(color = "rgba(180,180,180,0.35)", width = 0.8),
-    showlegend = FALSE, hoverinfo = "skip", name = ind,
-    visible = TRUE)
+                           x = ~year, y = ~payroll_growth_pct,
+                           type = "scatter", mode = "lines",
+                           line = list(color = "rgba(180,180,180,0.35)", width = 0.8),
+                           showlegend = FALSE, hoverinfo = "skip", name = ind,
+                           visible = TRUE)
 }
 
 n_grey <- length(grey_industries)
@@ -493,30 +493,30 @@ n_grey <- length(grey_industries)
 for (ind in top_4_industries) {
   d <- filter(payroll_growth, naics_label == ind)
   fig_payroll <- add_trace(fig_payroll, data = d,
-    x = ~year, y = ~payroll_growth_pct,
-    type = "scatter", mode = "lines+markers",
-    line   = list(color = hi_cols_top[[ind]], width = 2.5),
-    marker = list(color = hi_cols_top[[ind]], size = 7),
-    name   = ind, visible = TRUE,
-    hovertemplate = paste0(
-      "<b>", ind, "</b><br>",
-      "Year: %{x}<br>",
-      "Payroll vs 2017: <b>%{y:.0%}</b><extra></extra>"))
+                           x = ~year, y = ~payroll_growth_pct,
+                           type = "scatter", mode = "lines+markers",
+                           line   = list(color = hi_cols_top[[ind]], width = 2.5),
+                           marker = list(color = hi_cols_top[[ind]], size = 7),
+                           name   = ind, visible = TRUE,
+                           hovertemplate = paste0(
+                             "<b>", ind, "</b><br>",
+                             "Year: %{x}<br>",
+                             "Payroll vs 2017: <b>%{y:.0%}</b><extra></extra>"))
 }
 
 ### bottom 4 traces
 for (ind in w_4_industries) {
   d <- filter(payroll_growth, naics_label == ind)
   fig_payroll <- add_trace(fig_payroll, data = d,
-    x = ~year, y = ~payroll_growth_pct,
-    type = "scatter", mode = "lines+markers",
-    line   = list(color = hi_cols_bot[[ind]], width = 2.5),
-    marker = list(color = hi_cols_bot[[ind]], size = 7),
-    name   = ind, visible = FALSE,   # hidden by default
-    hovertemplate = paste0(
-      "<b>", ind, "</b><br>",
-      "Year: %{x}<br>",
-      "Payroll vs 2017: <b>%{y:.0%}</b><extra></extra>"))
+                           x = ~year, y = ~payroll_growth_pct,
+                           type = "scatter", mode = "lines+markers",
+                           line   = list(color = hi_cols_bot[[ind]], width = 2.5),
+                           marker = list(color = hi_cols_bot[[ind]], size = 7),
+                           name   = ind, visible = FALSE,   # hidden by default
+                           hovertemplate = paste0(
+                             "<b>", ind, "</b><br>",
+                             "Year: %{x}<br>",
+                             "Payroll vs 2017: <b>%{y:.0%}</b><extra></extra>"))
 }
 
 ### visibility vectors
@@ -590,18 +590,18 @@ But did AI adoption simply follow the money? The 2017 revenue snapshot reveals a
 rev_data <- revenue_2017 |> arrange(total_revenue)
 
 plot_ly(rev_data,
-  x           = ~total_revenue,
-  y           = ~factor(naics_label, levels = naics_label),
-  type        = "bar",
-  orientation = "h",
-  marker = list(
-    color      = ~total_revenue,
-    colorscale = list(c(0, "#deebf7"), c(0.5, "#6baed6"), c(1, "#08519c")),
-    showscale  = FALSE,
-    opacity    = 0.88),
-  text          = ~rev_label,
-  textposition  = "outside",
-  hovertemplate = "<b>%{y}</b><br>2017 Revenue: <b>%{text}</b><extra></extra>"
+        x           = ~total_revenue,
+        y           = ~factor(naics_label, levels = naics_label),
+        type        = "bar",
+        orientation = "h",
+        marker = list(
+          color      = ~total_revenue,
+          colorscale = list(c(0, "#deebf7"), c(0.5, "#6baed6"), c(1, "#08519c")),
+          showscale  = FALSE,
+          opacity    = 0.88),
+        text          = ~rev_label,
+        textposition  = "outside",
+        hovertemplate = "<b>%{y}</b><br>2017 Revenue: <b>%{text}</b><extra></extra>"
 ) |>
   layout(
     xaxis = list(
@@ -683,14 +683,14 @@ prem_data <- wage_wide |>
     prem_label = paste0(round(premium_pct * 100, 1), "%"))
 
 plot_ly(prem_data,
-  x           = ~premium_pct,
-  y           = ~factor(naics_label, levels = naics_label),
-  type        = "bar",
-  orientation = "h",
-  marker      = list(color = ~bar_color, opacity = 0.85),
-  text        = ~prem_label,
-  textposition = "outside",
-  hovertemplate = "<b>%{y}</b><br>AI Wage Premium: <b>%{x:.1%}</b><extra></extra>"
+        x           = ~premium_pct,
+        y           = ~factor(naics_label, levels = naics_label),
+        type        = "bar",
+        orientation = "h",
+        marker      = list(color = ~bar_color, opacity = 0.85),
+        text        = ~prem_label,
+        textposition = "outside",
+        hovertemplate = "<b>%{y}</b><br>AI Wage Premium: <b>%{x:.1%}</b><extra></extra>"
 ) |>
   layout(
     xaxis = list(
@@ -745,7 +745,7 @@ plotly::plot_ly(
     "<b>%{customdata}</b><br>",
     "AI Workforce Share: %{x:.1%}<br>",
     "Wage Premium: %{y:.1%}<br>",
-    "Total Employees: %{marker.size:,}<extra></extra>"
+    "Total Employees: %{marker.size:.2f}M<extra></extra>"
   )
 )|>
   layout(
@@ -767,7 +767,7 @@ plotly::plot_ly(
     plot_bgcolor  = "rgba(0,0,0,0)",
     font = list(size = 12, family = "inherit")
   ) |>
-  config(displayModeBar = FALSE)
+  config(displayModeBar = FALSE) 
 ```
 
 <hr style="border: 1px solid #5c6b89;">
@@ -778,22 +778,22 @@ Where does AI adoption cluster geographically? California dominates, but this is
 
 ```{r fig-map, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
 plot_ly(state_map_data,
-  type         = "choropleth",
-  locationmode = "USA-states",
-  locations    = ~abbr,
-  z            = ~ai_pct,
-  text         = ~hover_txt,
-  hoverinfo    = "text",
-  colorscale   = list(
-    c(0,   "#deebf7"),
-    c(0.3, "#9ecae1"),
-    c(0.6, "#4292c6"),
-    c(1,   "#084594")),
-  colorbar = list(
-    title     = list(text = "AI Adoption<br>Rate (%)"),
-    ticksuffix = "%",
-    len        = 0.55,
-    thickness  = 15)) |>
+        type         = "choropleth",
+        locationmode = "USA-states",
+        locations    = ~abbr,
+        z            = ~ai_pct,
+        text         = ~hover_txt,
+        hoverinfo    = "text",
+        colorscale   = list(
+          c(0,   "#deebf7"),
+          c(0.3, "#9ecae1"),
+          c(0.6, "#4292c6"),
+          c(1,   "#084594")),
+        colorbar = list(
+          title     = list(text = "AI Adoption<br>Rate (%)"),
+          ticksuffix = "%",
+          len        = 0.55,
+          thickness  = 15)) |>
   layout(
     geo = list(
       scope     = "usa",
@@ -820,38 +820,38 @@ hub_states <- data.frame(
 
 plot_ly() |>
   add_trace(
-  data = hub_states |> filter(category == "Established"),
-  type = "choropleth",
-  locations = ~state_abb,
-  locationmode = "USA-states",
-  z = ~color_val,
-  colorscale = list(list(0, "#4393C3"), list(1, "#4393C3")),
-  showscale = FALSE,
-  name = "Established",
-  text = ~paste("State:", state, "<br>Category:", category),
-  hoverinfo = "text",
-  marker = list(line = list(color = "white", width = 0.5))
-) |>
-add_trace(
-  data = hub_states |> filter(category == "Up-and-Coming"),
-  type = "choropleth",
-  locations = ~state_abb,
-  locationmode = "USA-states",
-  z = ~color_val,
-  colorscale = list(list(0, "#92C5DE"), list(1, "#92C5DE")),
-  showscale = FALSE,
-  name = "Up-and-Coming",
-  text = ~paste("State:", state, "<br>Category:", category),
-  hoverinfo = "text",
-  marker = list(line = list(color = "white", width = 0.5))) |> 
+    data = hub_states |> filter(category == "Established"),
+    type = "choropleth",
+    locations = ~state_abb,
+    locationmode = "USA-states",
+    z = ~color_val,
+    colorscale = list(list(0, "#4393C3"), list(1, "#4393C3")),
+    showscale = FALSE,
+    name = "Established",
+    text = ~paste("State:", state, "<br>Category:", category),
+    hoverinfo = "text",
+    marker = list(line = list(color = "white", width = 0.5))
+  ) |>
+  add_trace(
+    data = hub_states |> filter(category == "Up-and-Coming"),
+    type = "choropleth",
+    locations = ~state_abb,
+    locationmode = "USA-states",
+    z = ~color_val,
+    colorscale = list(list(0, "#92C5DE"), list(1, "#92C5DE")),
+    showscale = FALSE,
+    name = "Up-and-Coming",
+    text = ~paste("State:", state, "<br>Category:", category),
+    hoverinfo = "text",
+    marker = list(line = list(color = "white", width = 0.5))) |> 
   plotly::layout(
     geo = list(
-  scope = "usa", 
-  showlakes = FALSE,
-  bgcolor = "rgba(0,0,0,0)",
-  landcolor = "rgba(0,0,0,0)",
-  showland = TRUE,
-  subunitcolor = "grey"), 
+      scope = "usa", 
+      showlakes = FALSE,
+      bgcolor = "rgba(0,0,0,0)",
+      landcolor = "rgba(0,0,0,0)",
+      showland = TRUE,
+      subunitcolor = "grey"), 
     paper_bgcolor = "rgba(0,0,0,0)",
     plot_bgcolor = "rgba(0,0,0,0)"
   )
@@ -921,8 +921,8 @@ ind_revenue_2017 <- cs_panel_clean |>
 ind_map <- ind_revenue_2017 |>
   left_join(us_map, by = c("state" = "GEOID")) |>
   mutate(hover_info = paste("State:", STUSPS, "<br>Top Industry:", naics_label,
-                       "<br>Total Revenue: $", scales::comma(total_revenue))
-         )
+                            "<br>Total Revenue: $", scales::comma(total_revenue))
+  )
 
 plot_ly() |>
   add_trace(
