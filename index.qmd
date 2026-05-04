@@ -761,7 +761,7 @@ add_trace(
   text = ~paste("State:", state, "<br>Category:", category),
   hoverinfo = "text",
   marker = list(line = list(color = "white", width = 0.5))) |> 
-  layout(
+  plotly::layout(
     geo = list(
   scope = "usa", 
   showlakes = FALSE,
@@ -782,34 +782,48 @@ Pivoting back to revenue, are states across the US truly seeing success? As it t
 # map of the US
 us_map <- tigris::states(cb = TRUE, resolution = "20m", class = "sf") |>
   filter(STUSPS != "PR") |>
-  tigris::shift_geometry() |>
-  mutate(GEOID = str_pad(GEOID, 2, pad = "0"))
+  mutate(GEOID = str_pad(GEOID, 2, pad = "0")) |>
+  select(GEOID, STUSPS)
 
 # filtered to 2017 data (since that was the only year in which revenue was reported)
 state_revenue_2017 <- cs_panel_clean |>
   filter(year == 2017) |>
   group_by(state) |>
-  summarise(total_revenue = sum(revenue, na.rm = TRUE), .groups = "drop") |>
-  mutate(hover_info = paste0("<b>Total Revenue: $</b>", total_revenue))
+  summarise(total_revenue = sum(revenue, na.rm = TRUE) / 1e9, .groups = "drop")
 
 # visualization  
-rev_map <- us_map |>
-  left_join(state_revenue_2017, by = c("GEOID" = "state"))
+rev_map <- state_revenue_2017 |>
+  left_join(us_map, by = c("state" = "GEOID")) |>
+  mutate(hover_info  = paste("State:", STUSPS, "<br>Total Revenue: $", 
+                             scales::comma(round(total_revenue, 2)), "T"))
 
-revenue_plotly <- ggplot(rev_map) +
-  geom_sf(aes(fill = total_revenue/1000000000, text = hover_info), color = "white", linewidth = 0.2) +
-  scale_fill_distiller(
-    palette = "PuBu",
-    direction = 1,) +
-  theme_void(base_size = 12) +
-  theme(
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(color = "grey30"),
-    legend.position = "right") +
-  labs(fill = "Total Revenue \n (in Trillions$)")
-
-# plotly
-ggplotly(revenue_plotly, tooltip = "text")
+plot_ly() |>
+  add_trace(
+    data         = rev_map,
+    type         = "choropleth",
+    locations    = ~STUSPS,
+    locationmode = "USA-states",
+    z            = ~total_revenue,
+    colorscale   = list(list(0, "#034E7B"), list(1, "#F1EEF6")),
+    reversescale = TRUE,
+    showscale    = FALSE,
+    name         = "Total Revenue",
+    text         = ~hover_info,
+    hoverinfo    = "text",
+    marker       = list(line = list(color = "white", width = 0.5))
+  ) |>
+  plotly::layout(
+    geo = list(
+      scope        = "usa",
+      showlakes    = FALSE,
+      bgcolor      = "rgba(0,0,0,0)",
+      landcolor    = "rgba(0,0,0,0)",
+      showland     = TRUE,
+      subunitcolor = "grey"
+    ),
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor  = "rgba(0,0,0,0)"
+  )
 ```
 
 ### 9.5: What Are the Highest Revenue-Generating Industries in Each State? {.fade-in}
@@ -823,27 +837,94 @@ ind_revenue_2017 <- cs_panel_clean |>
   group_by(state, naics_label) |>
   summarise(total_revenue = sum(revenue, na.rm = TRUE), .groups = "drop") |>
   group_by(state) |>
-  slice_max(total_revenue, n = 1) |>
-  mutate(hover_info = paste0("<b>Total Revenue: $</b>", (total_revenue)))
+  slice_max(total_revenue, n = 1)
 
 # visualization  
-ind_map <- us_map |>
-  left_join(ind_revenue_2017, by = c("GEOID" = "state"))
+ind_map <- ind_revenue_2017 |>
+  left_join(us_map, by = c("state" = "GEOID")) |>
+  mutate(hover_info = paste("State:", STUSPS, "<br>Top Industry:", naics_label,
+                       "<br>Total Revenue: $", scales::comma(total_revenue))
+         )
 
-industry_plotly <- ggplot(ind_map) +
-  geom_sf(aes(fill = naics_label, text = hover_info), color = "white", linewidth = 0.2) +
-  scale_fill_brewer(
-    palette = "PuBu",
-    direction = 1,) +
-  theme_void(base_size = 12) +
-  theme(
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(color = "grey30"),
-    legend.position = "right") +
-  labs(fill = "Industry")
-
-# plotly
-ggplotly(industry_plotly, tooltip = "text")
+plot_ly() |>
+  add_trace(
+    data         = ind_map |> filter(naics_label == "Wholesale Trade"),
+    type         = "choropleth",
+    locations    = ~STUSPS,
+    locationmode = "USA-states",
+    z            = ~total_revenue,
+    colorscale   = list(list(0, "#034E7B"), list(1, "#034E7B")),
+    showscale    = FALSE,
+    name         = "Wholesale Trade",
+    text         = ~hover_info,
+    hoverinfo    = "text",
+    marker       = list(line = list(color = "white", width = 0.5))
+  ) |>
+  add_trace(
+    data         = ind_map |> filter(naics_label == "Retail Trade"),
+    type         = "choropleth",
+    locations    = ~STUSPS,
+    locationmode = "USA-states",
+    z            = ~total_revenue,
+    colorscale   = list(list(0, "#2B8CBE"), list(1, "#2B8CBE")),
+    showscale    = FALSE,
+    name         = "Retail Trade",
+    text         = ~hover_info,
+    hoverinfo    = "text",
+    marker       = list(line = list(color = "white", width = 0.5))
+  ) |>
+  add_trace(
+    data         = ind_map |> filter(naics_label == "Mining"),
+    type         = "choropleth",
+    locations    = ~STUSPS,
+    locationmode = "USA-states",
+    z            = ~total_revenue,
+    colorscale   = list(list(0, "#74A9CF"), list(1, "#74A9CF")),
+    showscale    = FALSE,
+    name         = "Mining",
+    text         = ~hover_info,
+    hoverinfo    = "text",
+    marker       = list(line = list(color = "white", width = 0.5))
+  ) |>
+  add_trace(
+    data         = ind_map |> filter(naics_label == "Manufacturing"),
+    type         = "choropleth",
+    locations    = ~STUSPS,
+    locationmode = "USA-states",
+    z            = ~total_revenue,
+    colorscale   = list(list(0, "#BDC9E1"), list(1, "#BDC9E1")),
+    showscale    = FALSE,
+    name         = "Manufacturing",
+    text         = ~hover_info,
+    hoverinfo    = "text",
+    marker       = list(line = list(color = "white", width = 0.5))
+  ) |>
+  add_trace(
+    data         = ind_map |> filter(naics_label == "Finance and Insurance"),
+    type         = "choropleth",
+    locations    = ~STUSPS,
+    locationmode = "USA-states",
+    z            = ~total_revenue,
+    colorscale   = list(list(0, "#F1EEF6"), list(1, "#F1EEF6")),
+    showscale    = FALSE,
+    name         = "Finance and Insurance",
+    text         = ~hover_info,
+    hoverinfo    = "text",
+    marker       = list(line = list(color = "white", width = 0.5))
+  ) |>
+  plotly::layout(
+    legend = list(title = list(text = "<b>Industry</b>")),
+    geo = list(
+      scope        = "usa",
+      showlakes    = FALSE,
+      bgcolor      = "rgba(0,0,0,0)",
+      landcolor    = "rgba(0,0,0,0)",
+      showland     = TRUE,
+      subunitcolor = "grey"
+    ),
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor  = "rgba(0,0,0,0)"
+  )
 ```
 
 ---
