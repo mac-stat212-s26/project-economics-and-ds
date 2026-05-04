@@ -78,12 +78,20 @@ document.addEventListener("DOMContentLoaded", () => {
         counterObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.3 });
+  }, { threshold: 0.3 }); //
 
   document.querySelectorAll(".stats-row")
     .forEach(el => counterObserver.observe(el));
 });
 </script>
+
+<style>
+  figcaption, .figure-caption, p.caption {
+    color: #4A5568; 
+    font-weight: 500;          
+    font-size: 1.05em;         
+  }
+</style>
 ```
 
 ---
@@ -141,7 +149,7 @@ Despite c-suite excitement over the potential of AI, the fears of these job-seek
 
 Understanding the current state of AI in firms, let's now review what the AI landscape looked like in 2018. 
 
-``` {r, fig-job_cuts, echo=FALSE, message=FALSE, warning=FALSE, fig.height=8}
+``` {r, fig-job_cuts, echo=FALSE, message=FALSE, warning=FALSE, fig.height=8, fig.cap = "Major job cuts due to AI from the last few months (2025-2026). Hover over the viz to see specific companies & industries."}
 # selecting color palette
 BuRd <- colorRampPalette(paletteer_d("khroma::BuRd"))(length(unique(job_cuts$company)))
 
@@ -372,7 +380,7 @@ us_map <- tigris::states(cb = TRUE, resolution = "20m", class = "sf", progress_b
 
 Management, Information, Finance & Insurance, and "Utilities" reported some of the highest average wages in 2018. Employee numbers were also lower in these industries relative to others. The four key industries are distinguished by color. But... what does this have to do with AI?
 
-```{r fig-industry_wage, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5}
+```{r fig-industry_wage, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5, fig.cap= "Management, Information, Finance & Insurance, and Utilities Lead for highest average wages and some of the lowest employment numbers."}
 wage_data <- cs_panel_clean |>
   filter(year == 2018) |>
   mutate(high_wage = if_else(
@@ -383,6 +391,7 @@ groups    <- c("Management", "Information", "Finance and Insurance", "Utilities"
 pal       <- c("#92C5DE", "#6baed6", "#2166AC", "#08519c", "rgba(150,150,150,0.45)")
 names(pal) <- groups
 x_range <- range(wage_data$n_emp, na.rm = TRUE)
+y_range <- range(wage_data$avg_wage, na.rm = TRUE)
 
 make_panel <- function(grp) {
   d <- filter(wage_data, high_wage == grp)
@@ -397,12 +406,11 @@ make_panel <- function(grp) {
       "# Employees: <b>%{x:,}</b><br>",
       "Avg Wage: <b>$%{y:.0f}</b><br>",
       "State: ", d$state_label, "<br>",
-      "Industry: ", d$naics_label,
-      "<extra>", grp, "</extra>"),
-    showlegend = FALSE
-  ) |>
+      "Industry: ", d$naics_label, "<extra></extra>"),
+    showlegend = FALSE) |>
     layout(
-      xaxis = list(range = x_range),  # fix x range per panel
+      xaxis = list(range = x_range, matches = "x"),
+      yaxis = list(range = y_range, matches = "y"),
       annotations = list(list(
         text      = grp,
         x         = 0.5, xref = "paper", xanchor = "center",
@@ -415,11 +423,46 @@ subplot(
   lapply(groups, make_panel),
   nrows   = 2,
   shareX  = TRUE,
-  shareY  = FALSE,
-  titleX  = FALSE,
-  titleY  = FALSE,
-  margin  = 0.06)
+  shareY  = TRUE,
+  titleX  = FALSE, 
+  titleY  = FALSE, 
+  margin  = 0.06
+) |> 
+  layout(
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor  = "rgba(0,0,0,0)",
+    margin = list(b = 100, l = 80), 
+    annotations = list(
+      # Global X-Axis Title
+      list(
+        text      = "Number of Employees",
+        x         = 0.5,
+        y         = -0.12,
+        xref      = "paper",
+        yref      = "paper",
+        xanchor   = "center",
+        yanchor   = "top",
+        showarrow = FALSE,
+        font      = list(size = 14)
+      ),
+      # Global Y-Axis Title
+      list(
+        text      = "Average Wage (USD)",
+        x         = -0.08, # Pushed outside the left margin
+        y         = 0.5,
+        xref      = "paper",
+        yref      = "paper",
+        xanchor   = "center",
+        yanchor   = "bottom",
+        showarrow = FALSE,
+        textangle = -90,   # Rotated sideways
+        font      = list(size = 14)
+      )
+    )
+  )
 ```
+
+<hr style="border: 1px solid #5c6b89;">
 
 ### 2. Who Led the AI Race in 2018? {.fade-in}
 
@@ -739,9 +782,11 @@ plot_ly(state_map_data,
   config(displayModeBar = FALSE)
 ```
 
+<hr style="border: 1px solid #5c6b89;">
+
 ### 8.5: The Tech Hubs of America {.fade-in}
 
-```{r fig-techhubs, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
+```{r fig-techhubs, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5, fig.cap= "Existing tech hubs within the U.S. Older, established tech hubs are in dark blue, with up-and-coming tech hubs in light blue."}
 hub_states <- data.frame(
   state = c("California", "Washington", "Colorado", "Texas", 
             "Massachusetts", "New York", "Tennessee"),
@@ -790,6 +835,8 @@ add_trace(
   )
 ```
 
+<hr style="border: 1px solid #5c6b89;">
+
 ### 9. Where are AI Companies Generating the Highest Revenue? {.fade-in}
 
 Pivoting back to revenue, are states across the US truly seeing success? As it turns out, the AI hubs found previously are also associated with the highest amount of total revenue. California in particular generates nearly 4 Trillion dollars in revenue, with Texas following behind. As for most of the other states, their revenue falls well below 1 Trillion dollars.
@@ -836,6 +883,8 @@ plot_ly() |>
     plot_bgcolor  = "rgba(0,0,0,0)"
   )
 ```
+
+<hr style="border: 1px solid #5c6b89;">
 
 ### 9.5: What Are the Highest Revenue-Generating Industries in Each State? {.fade-in}
 
