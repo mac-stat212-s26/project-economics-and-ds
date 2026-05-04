@@ -809,40 +809,6 @@ revenue_plotly <- ggplot(rev_map) +
 ggplotly(revenue_plotly, tooltip = "text")
 ```
 
-### 9.5: What Are the Highest Revenue-Generating Industries in Each State? {.fade-in}
-
-In terms of industry, the highest revenue generated type across each US state is by far Wholesale Trade, followed by Manufacturing in the Eastern US. Interestingly, New York displays their Finance and Insurance industry as the one with the most revenue, which makes sense given as Wall Street is located in Lower Manhattan.
-
-```{r fig-rev-ind, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
-# filtered to 2017 data (since that was the only year in which revenue was reported)
-ind_revenue_2017 <- cs_panel_clean |>
-  filter(year == 2017) |>
-  group_by(state, naics_label) |>
-  summarise(total_revenue = sum(revenue, na.rm = TRUE), .groups = "drop") |>
-  group_by(state) |>
-  slice_max(total_revenue, n = 1) |>
-  mutate(hover_info = paste0("<b>Total Revenue: $</b>", (total_revenue)))
-
-# visualization  
-ind_map <- us_map |>
-  left_join(ind_revenue_2017, by = c("GEOID" = "state"))
-
-industry_plotly <- ggplot(ind_map) +
-  geom_sf(aes(fill = naics_label, text = hover_info), color = "white", linewidth = 0.2) +
-  scale_fill_brewer(
-    palette = "PuBu",
-    direction = 1,) +
-  theme_void(base_size = 12) +
-  theme(
-    plot.title = element_text(face = "bold", size = 16),
-    plot.subtitle = element_text(color = "grey30"),
-    legend.position = "right") +
-  labs(fill = "Industry")
-
-# plotly
-ggplotly(industry_plotly, tooltip = "text")
-```
-
 ---
 
 ## Conclusions {.fade-in}
