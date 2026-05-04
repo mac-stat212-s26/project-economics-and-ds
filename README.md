@@ -31,6 +31,10 @@ U.S. businesses in 2018. It was created through the joint efforts of David Rios,
 Isauro Reyes, and Katherine Manuel from March - May 2026 for their STAT212:
 Intermediate Data Science course. 
 
-# Data Sources
+# Software Requirements
 
+To run all the code provided in this repository, users must have at a minimum 
+RStudio Version 2026.01.0 Build 392 and R version 4.5.2. 
+
+# Data Sources
 
