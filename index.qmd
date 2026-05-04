@@ -463,44 +463,110 @@ plot_ly(ai_plot_data,
 Tracking payroll from 2017 to 2021, the four highest AI-adopting industries consistently outpaced the rest. The grey lines of lower-adoption sectors trail below, suggesting a structural divergence — not a short-term blip.
 
 ```{r fig-payroll-growth, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
-hi_cols <- setNames(
+hi_cols_top <- setNames(
   c("#440154", "#31688e", "#35b779", "#fde725"),
   top_4_industries)
 
+hi_cols_bot <- setNames(
+  c("#7b2d8b", "#c0392b", "#e67e22", "#2980b9"),
+  w_4_industries)
+
+all_industries   <- unique(payroll_growth$naics_label)
+grey_industries <- all_industries
+
 fig_payroll <- plot_ly()
 
-# Grey background — all other industries
-for (ind in setdiff(unique(payroll_growth$naics_label), top_4_industries)) {
+### grey background
+for (ind in grey_industries) {
   d <- filter(payroll_growth, naics_label == ind)
   fig_payroll <- add_trace(fig_payroll, data = d,
     x = ~year, y = ~payroll_growth_pct,
     type = "scatter", mode = "lines",
     line = list(color = "rgba(180,180,180,0.35)", width = 0.8),
-    showlegend = FALSE, hoverinfo = "skip", name = ind)
+    showlegend = FALSE, hoverinfo = "skip", name = ind,
+    visible = TRUE)
 }
 
-# Highlighted top-4
+n_grey <- length(grey_industries)
+
+### top 4 traces
 for (ind in top_4_industries) {
   d <- filter(payroll_growth, naics_label == ind)
   fig_payroll <- add_trace(fig_payroll, data = d,
     x = ~year, y = ~payroll_growth_pct,
     type = "scatter", mode = "lines+markers",
-    line   = list(color = hi_cols[[ind]], width = 2.5),
-    marker = list(color = hi_cols[[ind]], size = 7),
-    name   = ind,
+    line   = list(color = hi_cols_top[[ind]], width = 2.5),
+    marker = list(color = hi_cols_top[[ind]], size = 7),
+    name   = ind, visible = TRUE,
     hovertemplate = paste0(
       "<b>", ind, "</b><br>",
       "Year: %{x}<br>",
       "Payroll vs 2017: <b>%{y:.0%}</b><extra></extra>"))
 }
 
+### bottom 4 traces
+for (ind in w_4_industries) {
+  d <- filter(payroll_growth, naics_label == ind)
+  fig_payroll <- add_trace(fig_payroll, data = d,
+    x = ~year, y = ~payroll_growth_pct,
+    type = "scatter", mode = "lines+markers",
+    line   = list(color = hi_cols_bot[[ind]], width = 2.5),
+    marker = list(color = hi_cols_bot[[ind]], size = 7),
+    name   = ind, visible = FALSE,   # hidden by default
+    hovertemplate = paste0(
+      "<b>", ind, "</b><br>",
+      "Year: %{x}<br>",
+      "Payroll vs 2017: <b>%{y:.0%}</b><extra></extra>"))
+}
+
+### visibility vectors
+n_top <- length(top_4_industries)
+n_bot <- length(w_4_industries)
+n_total <- n_grey + n_top + n_bot
+
+# top button: grey + top visible, bottom hidden
+vis_top <- c(rep(TRUE, n_grey + n_top), rep(FALSE, n_bot))
+
+# bottom button: grey + bottom visible, top hidden
+vis_bot <- c(rep(TRUE, n_grey), rep(FALSE, n_top), rep(TRUE, n_bot))
+
+##  toggle buttons
+y_range <- range(payroll_growth$payroll_growth_pct)
+
 fig_payroll |>
   layout(
+    updatemenus = list(list(
+      type       = "buttons",
+      direction  = "right",
+      x = 1, xanchor = "right",
+      y = 1, yanchor = "top",
+      buttons = list(
+        list(
+          label  = "Top 4",
+          method = "update",
+          args   = list(
+            list(visible = vis_top),
+            list(title = "Payroll Growth: AI-Leading Industries"))),
+        list(
+          label  = "Bottom 4",
+          method = "update",
+          args   = list(
+            list(visible = vis_bot),
+            list(title = "Payroll Growth: Lower AI-Adoption Industries"))))
+    )),
+    title  = list(
+      text = "Payroll Growth: AI-Leading Industries",
+      font = list(size = 14),
+      y = 0.95   
+    ),
     xaxis  = list(title = "Year", dtick = 1, gridcolor = "#f0f0f0"),
     yaxis  = list(
       title      = "Total Payroll (2017 = 100%)",
       tickformat = ".0%",
-      gridcolor  = "#f0f0f0"),
+      gridcolor  = "#f0f0f0",
+      range      = y_range,
+      autorange  = FALSE
+    ),
     legend = list(orientation = "h", y = -0.28, font = list(size = 11)),
     paper_bgcolor = "rgba(0,0,0,0)",
     plot_bgcolor  = "rgba(0,0,0,0)",
@@ -508,6 +574,7 @@ fig_payroll |>
   ) |>
   config(displayModeBar = FALSE)
 ```
+
 
 <hr style="border: 1px solid #5c6b89;">
 
