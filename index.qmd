@@ -150,8 +150,6 @@ Despite c-suite excitement over the potential of AI, the fears of these job-seek
 Understanding the current state of AI in firms, let's now review what the AI landscape looked like in 2018. 
 
 ``` {r, fig-job_cuts, echo=FALSE, message=FALSE, warning=FALSE, fig.height=8, fig.cap = "Major job cuts due to AI from the last few months (2025-2026). Hover over the viz to see specific companies & industries."}
-# selecting color palette
-BuRd <- colorRampPalette(paletteer_d("khroma::BuRd"))(length(unique(job_cuts$company)))
 
 # cleaning the dataset
 job_cuts_clean <- job_cuts |>
@@ -159,37 +157,50 @@ job_cuts_clean <- job_cuts |>
   filter(job_cuts != "Not specified")
 
 # setting colors + companies
-companies <- unique(job_cuts_clean$company)
-colors <- setNames(BuRd, companies)
+sectors <- unique(job_cuts_clean$naics_label)
+BuRd <- colorRampPalette(paletteer_d("khroma::BuRd"))(length(sectors))
+sector_colors <- setNames(BuRd, sectors)
 
 # creating the visualization
-plot_ly() |>
+plot_ly() |> 
   add_bars(
     data = job_cuts_clean,
     x = ~month_announced,
     y = ~job_cuts,
-    color = ~company,
-    colors = colors,
+    color = ~naics_label,      
+    colors = sector_colors,   
+    marker = list(line = list(color = "white", width = 1.5)),
     text = ~paste0(
       "Company: <b>", company, "</b><br>",
+      "Sector: ", naics_label, "<br>",
       "Month: ", month_announced, "<br>",
       "Job Cuts: ", job_cuts),
     hoverinfo = "text",
-    textposition = "none",
-    showlegend = FALSE) |>
+    textposition = "none") |>
   layout(
     barmode = "stack",
     xaxis = list(title = "Month Announced"),
     yaxis = list(title = "Number of Job Cuts"),
     paper_bgcolor = "transparent",
     plot_bgcolor = "transparent",
-    legend = list(title = list(text = "")),
+    margin = list(b = 120), 
+    legend = list(
+      title = list(text = ""),
+      orientation = "h",
+      xanchor = "center",
+      x = 0.5,
+      y = -0.3),
     annotations = list(
-      x = 0, y = -0.15,
-      text = "Source: Reuters | Note: Visualization produced from February 2026 data.",
-      showarrow = FALSE,
-      xref = "paper", yref = "paper",
-      xanchor = "left", font = list(size = 10, color = "grey40"))) |>
+      list(
+        x = 0, 
+        y = -0.15,
+        text = "Source: Reuters | Note: Visualization produced from February 2026 data.",
+        showarrow = FALSE,
+        xref = "paper", 
+        yref = "paper",
+        xanchor = "left", 
+        yanchor = "top",
+        font = list(size = 10, color = "grey40")))) |>
   config(displayModeBar = FALSE)
 ```
 

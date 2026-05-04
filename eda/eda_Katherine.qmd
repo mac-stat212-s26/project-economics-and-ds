@@ -453,14 +453,12 @@ job_cuts |>
 
 ```{r}
 # bar graph
-BuRd <- colorRampPalette(paletteer_d("khroma::BuRd"))(23) 
-
 job_cuts |> 
   filter(!is.na(job_cuts)) |> 
-  ggplot(aes(x = month_announced, y = job_cuts, fill = company)) +
+  ggplot(aes(x = month_announced, y = job_cuts, fill = naics_label)) +
   geom_col() +
   theme_minimal() +
-  scale_fill_manual(values = BuRd) +
+  scale_fill_paletteer_d("khroma::BuRd") +
   theme(legend.position = "right",
         plot.title = element_text(face = "bold", size = 16),
         plot.subtitle = element_text(color = "grey30"),
