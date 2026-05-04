@@ -56,4 +56,16 @@ these sources are not used as extensively.
 
 ## Steps to Properly Run Our Code
 
+Though all the code in this repository is already complete and ready for
+outside usage, to properly run our code the following steps should be completed
+in the following order:
+
+1. Run the `data_Import.R` file, located in the data folder. 
+2. Run the `data_cleaning.R` file, located in the data folder. 
+3. Run the appropriate file you would like to access. (ex. team member 
+appendices, main index),
+4. Alternatively, you can access our completed website at: https://mac-stat212-s26.github.io/project-economics-and-ds/
+
 ## Expected Output
+
+
