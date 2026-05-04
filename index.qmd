@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         counterObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.3 }); //
+  }, { threshold: 0.3 });
 
   document.querySelectorAll(".stats-row")
     .forEach(el => counterObserver.observe(el));
@@ -101,20 +101,20 @@ document.addEventListener("DOMContentLoaded", () => {
 ```{=html}
 <div class="author-grid fade-in-stagger">
 
-  <div class="author-card">
-    <a href="https://www.linkedin.com/in/hermogenesdavid/" target="_blank">David Rios</a>
-    <div class="author-role">Technical lead — API extraction, data pipeline, and code architecture.</div>
-  </div>
+<div class="author-card">
+<a href="https://www.linkedin.com/in/hermogenesdavid/" target="_blank">David Rios</a>
+<div class="author-role">Technical lead — API extraction, data pipeline, and code architecture.</div>
+</div>
 
-  <div class="author-card">
-    <a href="https://www.linkedin.com/in/katherinesmanuel/" target="_blank">Katherine Manuel</a>
-    <div class="author-role">Project coordinator — milestones, communication, and team alignment.</div>
-  </div>
+<div class="author-card">
+<a href="https://www.linkedin.com/in/katherinesmanuel/" target="_blank">Katherine Manuel</a>
+<div class="author-role">Project coordinator — milestones, communication, and team alignment.</div>
+</div>
 
-  <div class="author-card">
-    <a href="https://www.linkedin.com/in/isauro-reyes-a798a0391/" target="_blank">Isauro Reyes</a>
-    <div class="author-role">Style lead — visual presentation and communication of findings.</div>
-  </div>
+<div class="author-card">
+<a href="https://www.linkedin.com/in/isauro-reyes-a798a0391/" target="_blank">Isauro Reyes</a>
+<div class="author-role">Style lead — visual presentation and communication of findings.</div>
+</div>
 
 </div>
 ```
@@ -208,25 +208,25 @@ The second is the **ABSCS (Annual Business Survey: Company Summary, 2017–2021)
 ```{=html}
 <div class="stats-row">
 
-  <div class="stat-card">
-    <div class="stat-number" data-target="51">0</div>
-    <div class="stat-label">States + D.C. covered</div>
-  </div>
+<div class="stat-card">
+<div class="stat-number" data-target="51">0</div>
+<div class="stat-label">States + D.C. covered</div>
+</div>
 
-  <div class="stat-card">
-    <div class="stat-number" data-target="5">0</div>
-    <div class="stat-label">Years of panel data</div>
-  </div>
+<div class="stat-card">
+<div class="stat-number" data-target="5">0</div>
+<div class="stat-label">Years of panel data</div>
+</div>
 
-  <div class="stat-card">
-    <div class="stat-number" data-target="19">0</div>
-    <div class="stat-label">Industries analyzed</div>
-  </div>
+<div class="stat-card">
+<div class="stat-number" data-target="19">0</div>
+<div class="stat-label">Industries analyzed</div>
+</div>
 
-  <div class="stat-card">
-    <div class="stat-number" data-target="6095579">0</div>
-    <div class="stat-label">Employer firms (2021)</div>
-  </div>
+<div class="stat-card">
+<div class="stat-number" data-target="6095579">0</div>
+<div class="stat-label">Employer firms (2021)</div>
+</div>
 
 </div>
 ```
@@ -387,8 +387,8 @@ wage_data <- cs_panel_clean |>
     naics_label %in% c("Management", "Information", "Finance and Insurance", "Utilities"),
     naics_label, "Other"))
 
-groups    <- c("Management", "Information", "Finance and Insurance", "Utilities", "Other")
-pal       <- c("#92C5DE", "#6baed6", "#2166AC", "#08519c", "rgba(150,150,150,0.45)")
+groups     <- c("Management", "Information", "Finance and Insurance", "Utilities", "Other")
+pal        <- c("#92C5DE", "#6baed6", "#2166AC", "#08519c", "rgba(150,150,150,0.45)")
 names(pal) <- groups
 x_range <- range(wage_data$n_emp, na.rm = TRUE)
 y_range <- range(wage_data$avg_wage, na.rm = TRUE)
@@ -406,7 +406,8 @@ make_panel <- function(grp) {
       "# Employees: <b>%{x:,}</b><br>",
       "Avg Wage: <b>$%{y:.0f}</b><br>",
       "State: ", d$state_label, "<br>",
-      "Industry: ", d$naics_label, "<extra></extra>"),
+      "Industry: ", d$naics_label, 
+      "<extra></extra>"),
     showlegend = FALSE) |>
     layout(
       xaxis = list(range = x_range, matches = "x"),
@@ -426,8 +427,7 @@ subplot(
   shareY  = TRUE,
   titleX  = FALSE, 
   titleY  = FALSE, 
-  margin  = 0.06
-) |> 
+  margin  = 0.06) |> 
   layout(
     paper_bgcolor = "rgba(0,0,0,0)",
     plot_bgcolor  = "rgba(0,0,0,0)",
@@ -448,18 +448,15 @@ subplot(
       # Global Y-Axis Title
       list(
         text      = "Average Wage (USD)",
-        x         = -0.08, # Pushed outside the left margin
+        x         = -0.08, 
         y         = 0.5,
         xref      = "paper",
         yref      = "paper",
         xanchor   = "center",
         yanchor   = "bottom",
         showarrow = FALSE,
-        textangle = -90,   # Rotated sideways
-        font      = list(size = 14)
-      )
-    )
-  )
+        textangle = -90,   
+        font      = list(size = 14))))
 ```
 
 <hr style="border: 1px solid #5c6b89;">
@@ -474,16 +471,16 @@ ai_plot_data <- ai_industry_leaders |>
   arrange(ai_rate)
 
 plot_ly(ai_plot_data,
-  x           = ~ai_rate,
-  y           = ~factor(naics_label, levels = naics_label),
-  type        = "bar",
-  orientation = "h",
-  marker = list(
-    color      = ~ai_rate,
-    colorscale = list(c(0, "#deebf7"), c(0.5, "#6baed6"), c(1, "#08519c")),
-    showscale  = FALSE,
-    opacity    = 0.88),
-  hovertemplate = "<b>%{y}</b><br>AI Adoption Rate: <b>%{x:.2%}</b><extra></extra>"
+        x           = ~ai_rate,
+        y           = ~factor(naics_label, levels = naics_label),
+        type        = "bar",
+        orientation = "h",
+        marker = list(
+          color      = ~ai_rate,
+          colorscale = list(c(0, "#deebf7"), c(0.5, "#6baed6"), c(1, "#08519c")),
+          showscale  = FALSE,
+          opacity    = 0.88),
+        hovertemplate = "<b>%{y}</b><br>AI Adoption Rate: <b>%{x:.2%}</b><extra></extra>"
 ) |>
   layout(
     xaxis = list(
@@ -506,44 +503,110 @@ plot_ly(ai_plot_data,
 Tracking payroll from 2017 to 2021, the four highest AI-adopting industries consistently outpaced the rest. The grey lines of lower-adoption sectors trail below, suggesting a structural divergence — not a short-term blip.
 
 ```{r fig-payroll-growth, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
-hi_cols <- setNames(
+hi_cols_top <- setNames(
   c("#440154", "#31688e", "#35b779", "#fde725"),
   top_4_industries)
 
+hi_cols_bot <- setNames(
+  c("#7b2d8b", "#c0392b", "#e67e22", "#2980b9"),
+  w_4_industries)
+
+all_industries   <- unique(payroll_growth$naics_label)
+grey_industries <- all_industries
+
 fig_payroll <- plot_ly()
 
-# Grey background — all other industries
-for (ind in setdiff(unique(payroll_growth$naics_label), top_4_industries)) {
+### grey background
+for (ind in grey_industries) {
   d <- filter(payroll_growth, naics_label == ind)
   fig_payroll <- add_trace(fig_payroll, data = d,
-    x = ~year, y = ~payroll_growth_pct,
-    type = "scatter", mode = "lines",
-    line = list(color = "rgba(180,180,180,0.35)", width = 0.8),
-    showlegend = FALSE, hoverinfo = "skip", name = ind)
+                           x = ~year, y = ~payroll_growth_pct,
+                           type = "scatter", mode = "lines",
+                           line = list(color = "rgba(180,180,180,0.35)", width = 0.8),
+                           showlegend = FALSE, hoverinfo = "skip", name = ind,
+                           visible = TRUE)
 }
 
-# Highlighted top-4
+n_grey <- length(grey_industries)
+
+### top 4 traces
 for (ind in top_4_industries) {
   d <- filter(payroll_growth, naics_label == ind)
   fig_payroll <- add_trace(fig_payroll, data = d,
-    x = ~year, y = ~payroll_growth_pct,
-    type = "scatter", mode = "lines+markers",
-    line   = list(color = hi_cols[[ind]], width = 2.5),
-    marker = list(color = hi_cols[[ind]], size = 7),
-    name   = ind,
-    hovertemplate = paste0(
-      "<b>", ind, "</b><br>",
-      "Year: %{x}<br>",
-      "Payroll vs 2017: <b>%{y:.0%}</b><extra></extra>"))
+                           x = ~year, y = ~payroll_growth_pct,
+                           type = "scatter", mode = "lines+markers",
+                           line   = list(color = hi_cols_top[[ind]], width = 2.5),
+                           marker = list(color = hi_cols_top[[ind]], size = 7),
+                           name   = ind, visible = TRUE,
+                           hovertemplate = paste0(
+                             "<b>", ind, "</b><br>",
+                             "Year: %{x}<br>",
+                             "Payroll vs 2017: <b>%{y:.0%}</b><extra></extra>"))
 }
+
+### bottom 4 traces
+for (ind in w_4_industries) {
+  d <- filter(payroll_growth, naics_label == ind)
+  fig_payroll <- add_trace(fig_payroll, data = d,
+                           x = ~year, y = ~payroll_growth_pct,
+                           type = "scatter", mode = "lines+markers",
+                           line   = list(color = hi_cols_bot[[ind]], width = 2.5),
+                           marker = list(color = hi_cols_bot[[ind]], size = 7),
+                           name   = ind, visible = FALSE,   # hidden by default
+                           hovertemplate = paste0(
+                             "<b>", ind, "</b><br>",
+                             "Year: %{x}<br>",
+                             "Payroll vs 2017: <b>%{y:.0%}</b><extra></extra>"))
+}
+
+### visibility vectors
+n_top <- length(top_4_industries)
+n_bot <- length(w_4_industries)
+n_total <- n_grey + n_top + n_bot
+
+# top button: grey + top visible, bottom hidden
+vis_top <- c(rep(TRUE, n_grey + n_top), rep(FALSE, n_bot))
+
+# bottom button: grey + bottom visible, top hidden
+vis_bot <- c(rep(TRUE, n_grey), rep(FALSE, n_top), rep(TRUE, n_bot))
+
+##  toggle buttons
+y_range <- range(payroll_growth$payroll_growth_pct)
 
 fig_payroll |>
   layout(
+    updatemenus = list(list(
+      type       = "buttons",
+      direction  = "right",
+      x = 1, xanchor = "right",
+      y = 1, yanchor = "top",
+      buttons = list(
+        list(
+          label  = "Top 4",
+          method = "update",
+          args   = list(
+            list(visible = vis_top),
+            list(title = "Payroll Growth: AI-Leading Industries"))),
+        list(
+          label  = "Bottom 4",
+          method = "update",
+          args   = list(
+            list(visible = vis_bot),
+            list(title = "Payroll Growth: Lower AI-Adoption Industries"))))
+    )),
+    title  = list(
+      text = "Payroll Growth: AI-Leading Industries",
+      font = list(size = 14),
+      y = 0.95   
+    ),
     xaxis  = list(title = "Year", dtick = 1, gridcolor = "#f0f0f0"),
     yaxis  = list(
       title      = "Total Payroll (2017 = 100%)",
       tickformat = ".0%",
-      gridcolor  = "#f0f0f0"),
+      gridcolor  = "#f0f0f0",
+      range      = y_range,
+      autorange  = FALSE
+    ),
     legend = list(orientation = "h", y = -0.28, font = list(size = 11)),
     paper_bgcolor = "rgba(0,0,0,0)",
     plot_bgcolor  = "rgba(0,0,0,0)",
@@ -551,6 +614,7 @@ fig_payroll |>
   ) |>
   config(displayModeBar = FALSE)
 ```
+
 
 <hr style="border: 1px solid #5c6b89;">
 
@@ -566,18 +630,18 @@ But did AI adoption simply follow the money? The 2017 revenue snapshot reveals a
 rev_data <- revenue_2017 |> arrange(total_revenue)
 
 plot_ly(rev_data,
-  x           = ~total_revenue,
-  y           = ~factor(naics_label, levels = naics_label),
-  type        = "bar",
-  orientation = "h",
-  marker = list(
-    color      = ~total_revenue,
-    colorscale = list(c(0, "#deebf7"), c(0.5, "#6baed6"), c(1, "#08519c")),
-    showscale  = FALSE,
-    opacity    = 0.88),
-  text          = ~rev_label,
-  textposition  = "outside",
-  hovertemplate = "<b>%{y}</b><br>2017 Revenue: <b>%{text}</b><extra></extra>"
+        x           = ~total_revenue,
+        y           = ~factor(naics_label, levels = naics_label),
+        type        = "bar",
+        orientation = "h",
+        marker = list(
+          color      = ~total_revenue,
+          colorscale = list(c(0, "#deebf7"), c(0.5, "#6baed6"), c(1, "#08519c")),
+          showscale  = FALSE,
+          opacity    = 0.88),
+        text          = ~rev_label,
+        textposition  = "outside",
+        hovertemplate = "<b>%{y}</b><br>2017 Revenue: <b>%{text}</b><extra></extra>"
 ) |>
   layout(
     xaxis = list(
@@ -659,14 +723,14 @@ prem_data <- wage_wide |>
     prem_label = paste0(round(premium_pct * 100, 1), "%"))
 
 plot_ly(prem_data,
-  x           = ~premium_pct,
-  y           = ~factor(naics_label, levels = naics_label),
-  type        = "bar",
-  orientation = "h",
-  marker      = list(color = ~bar_color, opacity = 0.85),
-  text        = ~prem_label,
-  textposition = "outside",
-  hovertemplate = "<b>%{y}</b><br>AI Wage Premium: <b>%{x:.1%}</b><extra></extra>"
+        x           = ~premium_pct,
+        y           = ~factor(naics_label, levels = naics_label),
+        type        = "bar",
+        orientation = "h",
+        marker      = list(color = ~bar_color, opacity = 0.85),
+        text        = ~prem_label,
+        textposition = "outside",
+        hovertemplate = "<b>%{y}</b><br>AI Wage Premium: <b>%{x:.1%}</b><extra></extra>"
 ) |>
   layout(
     xaxis = list(
@@ -721,7 +785,7 @@ plotly::plot_ly(
     "<b>%{customdata}</b><br>",
     "AI Workforce Share: %{x:.1%}<br>",
     "Wage Premium: %{y:.1%}<br>",
-    "Total Employees: %{marker.size:,}<extra></extra>"
+    "Total Employees: %{marker.size:.2f}M<extra></extra>"
   )
 )|>
   layout(
@@ -743,7 +807,7 @@ plotly::plot_ly(
     plot_bgcolor  = "rgba(0,0,0,0)",
     font = list(size = 12, family = "inherit")
   ) |>
-  config(displayModeBar = FALSE)
+  config(displayModeBar = FALSE) 
 ```
 
 <hr style="border: 1px solid #5c6b89;">
@@ -754,22 +818,22 @@ Where does AI adoption cluster geographically? California dominates, but this is
 
 ```{r fig-map, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
 plot_ly(state_map_data,
-  type         = "choropleth",
-  locationmode = "USA-states",
-  locations    = ~abbr,
-  z            = ~ai_pct,
-  text         = ~hover_txt,
-  hoverinfo    = "text",
-  colorscale   = list(
-    c(0,   "#deebf7"),
-    c(0.3, "#9ecae1"),
-    c(0.6, "#4292c6"),
-    c(1,   "#084594")),
-  colorbar = list(
-    title     = list(text = "AI Adoption<br>Rate (%)"),
-    ticksuffix = "%",
-    len        = 0.55,
-    thickness  = 15)) |>
+        type         = "choropleth",
+        locationmode = "USA-states",
+        locations    = ~abbr,
+        z            = ~ai_pct,
+        text         = ~hover_txt,
+        hoverinfo    = "text",
+        colorscale   = list(
+          c(0,   "#deebf7"),
+          c(0.3, "#9ecae1"),
+          c(0.6, "#4292c6"),
+          c(1,   "#084594")),
+        colorbar = list(
+          title     = list(text = "AI Adoption<br>Rate (%)"),
+          ticksuffix = "%",
+          len        = 0.55,
+          thickness  = 15)) |>
   layout(
     geo = list(
       scope     = "usa",
@@ -798,38 +862,38 @@ hub_states <- data.frame(
 
 plot_ly() |>
   add_trace(
-  data = hub_states |> filter(category == "Established"),
-  type = "choropleth",
-  locations = ~state_abb,
-  locationmode = "USA-states",
-  z = ~color_val,
-  colorscale = list(list(0, "#4393C3"), list(1, "#4393C3")),
-  showscale = FALSE,
-  name = "Established",
-  text = ~paste("State:", state, "<br>Category:", category),
-  hoverinfo = "text",
-  marker = list(line = list(color = "white", width = 0.5))
-) |>
-add_trace(
-  data = hub_states |> filter(category == "Up-and-Coming"),
-  type = "choropleth",
-  locations = ~state_abb,
-  locationmode = "USA-states",
-  z = ~color_val,
-  colorscale = list(list(0, "#92C5DE"), list(1, "#92C5DE")),
-  showscale = FALSE,
-  name = "Up-and-Coming",
-  text = ~paste("State:", state, "<br>Category:", category),
-  hoverinfo = "text",
-  marker = list(line = list(color = "white", width = 0.5))) |> 
+    data = hub_states |> filter(category == "Established"),
+    type = "choropleth",
+    locations = ~state_abb,
+    locationmode = "USA-states",
+    z = ~color_val,
+    colorscale = list(list(0, "#4393C3"), list(1, "#4393C3")),
+    showscale = FALSE,
+    name = "Established",
+    text = ~paste("State:", state, "<br>Category:", category),
+    hoverinfo = "text",
+    marker = list(line = list(color = "white", width = 0.5))
+  ) |>
+  add_trace(
+    data = hub_states |> filter(category == "Up-and-Coming"),
+    type = "choropleth",
+    locations = ~state_abb,
+    locationmode = "USA-states",
+    z = ~color_val,
+    colorscale = list(list(0, "#92C5DE"), list(1, "#92C5DE")),
+    showscale = FALSE,
+    name = "Up-and-Coming",
+    text = ~paste("State:", state, "<br>Category:", category),
+    hoverinfo = "text",
+    marker = list(line = list(color = "white", width = 0.5))) |> 
   plotly::layout(
     geo = list(
-  scope = "usa", 
-  showlakes = FALSE,
-  bgcolor = "rgba(0,0,0,0)",
-  landcolor = "rgba(0,0,0,0)",
-  showland = TRUE,
-  subunitcolor = "grey"), 
+      scope = "usa", 
+      showlakes = FALSE,
+      bgcolor = "rgba(0,0,0,0)",
+      landcolor = "rgba(0,0,0,0)",
+      showland = TRUE,
+      subunitcolor = "grey"), 
     paper_bgcolor = "rgba(0,0,0,0)",
     plot_bgcolor = "rgba(0,0,0,0)"
   )
@@ -903,8 +967,8 @@ ind_revenue_2017 <- cs_panel_clean |>
 ind_map <- ind_revenue_2017 |>
   left_join(us_map, by = c("state" = "GEOID")) |>
   mutate(hover_info = paste("State:", STUSPS, "<br>Top Industry:", naics_label,
-                       "<br>Total Revenue: $", scales::comma(total_revenue))
-         )
+                            "<br>Total Revenue: $", scales::comma(total_revenue))
+  )
 
 plot_ly() |>
   add_trace(
