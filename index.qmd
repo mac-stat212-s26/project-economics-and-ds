@@ -132,36 +132,47 @@ Despite c-suite excitement over the potential of AI, the fears of these job-seek
 Understanding the current state of AI in firms, let's now review what the AI landscape looked like in 2018. 
 
 ``` {r, fig-job_cuts, echo=FALSE, message=FALSE, warning=FALSE, fig.height=8}
-BuRd <- colorRampPalette(paletteer_d("khroma::BuRd"))(23) 
+# selecting color palette
+BuRd <- colorRampPalette(paletteer_d("khroma::BuRd"))(length(unique(job_cuts$company)))
 
-job_viz <- job_cuts |> 
-  filter(!is.na(job_cuts)) |> 
-  filter(!job_cuts == "Not specified") |> 
-  ggplot(aes(x = month_announced, y = job_cuts, fill = company,
-             text = paste0(
+# cleaning the dataset
+job_cuts_clean <- job_cuts |>
+  filter(!is.na(job_cuts)) |>
+  filter(job_cuts != "Not specified")
+
+# setting colors + companies
+companies <- unique(job_cuts_clean$company)
+colors <- setNames(BuRd, companies)
+
+# creating the visualization
+plot_ly() |>
+  add_bars(
+    data = job_cuts_clean,
+    x = ~month_announced,
+    y = ~job_cuts,
+    color = ~company,
+    colors = colors,
+    text = ~paste0(
       "Company: <b>", company, "</b><br>",
       "Month: ", month_announced, "<br>",
-      "Job Cuts: ", job_cuts))) +
-  geom_col() +
-  theme_minimal() +
-  scale_fill_manual(values = BuRd) +
-  theme(legend.position = "bottom",
-        plot.title = element_text(face = "bold", size = 16),
-        plot.subtitle = element_text(color = "grey30"),
-        plot.caption = element_text(hjust = 0, color = "grey40", size = 8)) +
-  labs(
-       x = "Month Announced",
-       y = "Number of Job Cuts", 
-       fill = NULL, 
-       caption = "Source: Reuters",
-       subtitle = "Note: Visualization produced from February 2026 data.") +
-  theme(legend.position = "none" )
-
-ggplotly(job_viz, tooltip = c("text")) |> 
+      "Job Cuts: ", job_cuts),
+    hoverinfo = "text",
+    textposition = "none",
+    showlegend = FALSE) |>
   layout(
-    plot_bgcolor = "transparent", 
-    paper_bgcolor = "transparent", 
-    legend = list(title = list(text = "")))
+    barmode = "stack",
+    xaxis = list(title = "Month Announced"),
+    yaxis = list(title = "Number of Job Cuts"),
+    paper_bgcolor = "transparent",
+    plot_bgcolor = "transparent",
+    legend = list(title = list(text = "")),
+    annotations = list(
+      x = 0, y = -0.15,
+      text = "Source: Reuters | Note: Visualization produced from February 2026 data.",
+      showarrow = FALSE,
+      xref = "paper", yref = "paper",
+      xanchor = "left", font = list(size = 10, color = "grey40"))) |>
+  config(displayModeBar = FALSE)
 ```
 
 ---
@@ -355,6 +366,7 @@ wage_data <- cs_panel_clean |>
 groups    <- c("Management", "Information", "Finance and Insurance", "Utilities", "Other")
 pal       <- c("#92C5DE", "#6baed6", "#2166AC", "#08519c", "rgba(150,150,150,0.45)")
 names(pal) <- groups
+x_range <- range(wage_data$n_emp, na.rm = TRUE)
 
 make_panel <- function(grp) {
   d <- filter(wage_data, high_wage == grp)
@@ -374,6 +386,7 @@ make_panel <- function(grp) {
     showlegend = FALSE
   ) |>
     layout(
+      xaxis = list(range = x_range),  # fix x range per panel
       annotations = list(list(
         text      = grp,
         x         = 0.5, xref = "paper", xanchor = "center",
@@ -385,20 +398,11 @@ make_panel <- function(grp) {
 subplot(
   lapply(groups, make_panel),
   nrows   = 2,
-  shareX  = FALSE,
+  shareX  = TRUE,
   shareY  = FALSE,
   titleX  = FALSE,
   titleY  = FALSE,
-  margin  = 0.06
-) |>
-  layout(
-    xaxis  = list(title = "# Employees",        gridcolor = "#f0f0f0"),
-    yaxis  = list(title = "Avg Wage ($)",        gridcolor = "#f0f0f0"),
-    paper_bgcolor = "rgba(0,0,0,0)",
-    plot_bgcolor  = "rgba(0,0,0,0)",
-    font   = list(size = 11, family = "inherit")
-  ) |>
-  config(displayModeBar = FALSE)
+  margin  = 0.06)
 ```
 
 ### 2. Who Led the AI Race in 2018? {.fade-in}
