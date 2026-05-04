@@ -2,4 +2,4 @@
 title: "Isauro R."
 ---
 
-Work area to try code
+Please refer to `/eda/eda_Isauro.html` for additional visualizations and supplemental findings.

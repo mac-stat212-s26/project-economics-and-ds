@@ -22,7 +22,7 @@ number-depth: 2
 
 book:
   title: "AI Usage in the U.S. Companies"
-  author: ["David R.", "Katherine M.", "Isauro R"]
+  author: ["David R.", "Katherine M.", "Isauro R."]
   date: today  # use today to update date published based on last time project was edited
   date-format: full
   favicon: assets/ds212_logo.png
@@ -111,7 +111,7 @@ format:
 execute:
   echo: true
   warning: false
-  error: false
+  error: true
   cache: false
 #   freeze: auto # remove when using GitHub action to execute code
 

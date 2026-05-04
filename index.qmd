@@ -30,46 +30,56 @@ source(here::here("data", "data_cleaning.R"))
 <script>
 // ── Scroll fade-in via IntersectionObserver ──────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          observer.unobserve(entry.target); // animate once
+  const observerOptions = { threshold: 0.05 };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  function observeAll() {
+    document.querySelectorAll(".fade-in, .fade-in-stagger, .zoom-in")
+      .forEach(el => {
+        if (!el.classList.contains("visible")) {
+          observer.observe(el);
         }
       });
-    },
-    { threshold: 0.12 }
-  );
-document.querySelectorAll(".fade-in, .fade-in-stagger, .zoom-in")    .forEach(el => observer.observe(el));
+  }
+
+  // ── Run rendered widgets ─────────────────────────────────────────
+  observeAll();
+  setTimeout(observeAll, 500);
+  setTimeout(observeAll, 1500);
 
   // ── Animated stat counters ───────────────────────────────────────
-  const counterObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.querySelectorAll("[data-target]").forEach(el => {
-            const target   = parseFloat(el.dataset.target);
-            const decimals = parseInt(el.dataset.decimals ?? "0");
-            const suffix   = el.dataset.suffix ?? "";
-            const prefix   = el.dataset.prefix ?? "";
-            const duration = 1400;
-            const start    = performance.now();
-            const update   = (now) => {
-              const t       = Math.min((now - start) / duration, 1);
-              const eased   = 1 - Math.pow(1 - t, 4); // ease-out quart
-              const current = eased * target;
-              el.textContent = prefix + current.toFixed(decimals) + suffix;
-              if (t < 1) requestAnimationFrame(update);
-            };
-            requestAnimationFrame(update);
-          });
-          counterObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.3 }
-  );
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll("[data-target]").forEach(el => {
+          const target   = parseFloat(el.dataset.target);
+          const decimals = parseInt(el.dataset.decimals ?? "0");
+          const suffix   = el.dataset.suffix ?? "";
+          const prefix   = el.dataset.prefix ?? "";
+          const duration = 1400;
+          const start    = performance.now();
+          const update   = (now) => {
+            const t       = Math.min((now - start) / duration, 1);
+            const eased   = 1 - Math.pow(1 - t, 4);
+            const current = eased * target;
+            el.textContent = prefix + current.toFixed(decimals) + suffix;
+            if (t < 1) requestAnimationFrame(update);
+          };
+          requestAnimationFrame(update);
+        });
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
   document.querySelectorAll(".stats-row")
     .forEach(el => counterObserver.observe(el));
 });
@@ -221,7 +231,7 @@ Our analysis proceeds in five steps. First, we examine recent job cuts in 2026 a
 
 ---
 
-```{r data-insights-prep, message=FALSE, warning=FALSE}
+```{r data-insights-prep, echo=FALSE, message=FALSE, warning=FALSE}
 ### AI industry leaders
 ai_industry_leaders <- tech_2018_clean |>
   filter(
@@ -348,6 +358,12 @@ state_map_data <- state_ai_adoption |>
       "AI Adoption Rate: <b>", ai_pct, "%</b><br>",
       "AI Firms: ",    comma(ai_firms),    "<br>",
       "Total Firms: ", comma(total_firms)))
+
+# map of the US
+us_map <- tigris::states(cb = TRUE, resolution = "20m", class = "sf", progress_bar = FALSE) |>
+  filter(STUSPS != "PR") |>
+  mutate(GEOID = str_pad(GEOID, 2, pad = "0")) |>
+  select(GEOID, STUSPS)
 ```
 
 ---
@@ -779,12 +795,6 @@ add_trace(
 Pivoting back to revenue, are states across the US truly seeing success? As it turns out, the AI hubs found previously are also associated with the highest amount of total revenue. California in particular generates nearly 4 Trillion dollars in revenue, with Texas following behind. As for most of the other states, their revenue falls well below 1 Trillion dollars.
 
 ```{r fig-rev, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
-# map of the US
-us_map <- tigris::states(cb = TRUE, resolution = "20m", class = "sf") |>
-  filter(STUSPS != "PR") |>
-  mutate(GEOID = str_pad(GEOID, 2, pad = "0")) |>
-  select(GEOID, STUSPS)
-
 # filtered to 2017 data (since that was the only year in which revenue was reported)
 state_revenue_2017 <- cs_panel_clean |>
   filter(year == 2017) |>
@@ -806,7 +816,8 @@ plot_ly() |>
     z            = ~total_revenue,
     colorscale   = list(list(0, "#034E7B"), list(1, "#F1EEF6")),
     reversescale = TRUE,
-    showscale    = FALSE,
+    showscale    = TRUE,
+    colorbar     = list(title = "Revenue (Trillions $)"),
     name         = "Total Revenue",
     text         = ~hover_info,
     hoverinfo    = "text",
