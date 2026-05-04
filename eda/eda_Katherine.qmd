@@ -428,14 +428,19 @@ What Does Average Wage Look Like Across Industries?
 cs_panel_clean |> 
   filter(year == 2018) |> 
   mutate(high_wage = if_else(
-    naics_label %in% c("Finance and Insurance", "Information", "Management"), 
+    naics_label %in% c("Finance and Insurance", "Information", "Management", "Utilities"), 
     naics_label, 
     "Other")) |>
   group_by(naics_label) |> 
   ggplot(aes(x = n_emp, y = avg_wage, color = high_wage)) +
-  geom_point() +
+  geom_point(alpha = 0.5) +
   theme_minimal() +
-  scale_color_paletteer_d("khroma::BuRd") +
+  facet_wrap(~high_wage) +
+  scale_color_manual(values = 
+                       c("Finance and Insurance" = "#2166AC", 
+                         "Information" = "#6baed6", 
+                         "Management" = "#92C5DE",
+                         "Utilities" = "#08519c")) +
   theme(legend.position = "right",
         plot.title = element_text(face = "bold", size = 16),
         plot.subtitle = element_text(color = "grey30"),
