@@ -465,7 +465,7 @@ subplot(
 
 Management of Companies & Enterprises led AI adoption at 7.7%. Those industries where AI-compatible tasks (forecasting, automation, analysis) were most embedded in daily operations. Knowledge-intensive sectors moved first.
 
-```{r fig-ai-leaders, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5}
+```{r fig-ai-leaders, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5, fig.cap= "Management led the AI race in 2018 with an AI implementation rate of 7.7%."}
 ai_plot_data <- ai_industry_leaders |>
   filter(ai_firms > 0) |>
   arrange(ai_rate)
@@ -477,21 +477,24 @@ plot_ly(ai_plot_data,
         orientation = "h",
         marker = list(
           color      = ~ai_rate,
-          colorscale = list(c(0, "#deebf7"), c(0.5, "#6baed6"), c(1, "#08519c")),
+          colorscale = list(c(0, "#2c5f8a"), c(0.5, "#1a3a5c"), c(1, "#0a1f35")),
           showscale  = FALSE,
-          opacity    = 0.88),
-        hovertemplate = "<b>%{y}</b><br>AI Adoption Rate: <b>%{x:.2%}</b><extra></extra>"
-) |>
+          opacity    = 0.95),
+        hovertemplate = "<b>%{y}</b><br>AI Adoption Rate: <b>%{x:.2%}</b><extra></extra>") |>
   layout(
     xaxis = list(
-      title     = "AI Adoption Rate",
+      title      = "AI Adoption Rate",
       tickformat = ".1%",
-      gridcolor = "#f0f0f0"),
-    yaxis = list(title = ""),
+      gridcolor  = "#b0bec5",
+      tickfont   = list(color = "#1a1a1a"),
+      titlefont  = list(color = "#1a1a1a")),
+    yaxis = list(
+      title    = "",
+      tickfont = list(color = "#1a1a1a")),
     paper_bgcolor = "rgba(0,0,0,0)",
     plot_bgcolor  = "rgba(0,0,0,0)",
     margin = list(l = 10, r = 20, t = 10, b = 40),
-    font   = list(size = 12, family = "inherit")
+    font   = list(size = 12, family = "inherit", color = "#1a1a1a")
   ) |>
   config(displayModeBar = FALSE)
 ```
@@ -502,7 +505,7 @@ plot_ly(ai_plot_data,
 
 Tracking payroll from 2017 to 2021, the four highest AI-adopting industries consistently outpaced the rest. The grey lines of lower-adoption sectors trail below, suggesting a structural divergence — not a short-term blip.
 
-```{r fig-payroll-growth, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
+```{r fig-payroll-growth, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5, fig.cap= "The top four industries by AI adoption maintained steady payroll growth, whereas the bottom four displayed volatility, suggesting a potential link between AI integration and workforce stability."}
 hi_cols_top <- setNames(
   c("#440154", "#31688e", "#35b779", "#fde725"),
   top_4_industries)
@@ -626,7 +629,7 @@ But did AI adoption simply follow the money? The 2017 revenue snapshot reveals a
 **FUN FACT:** The [US Census Bureau](https://www.census.gov/library/stories/2020/11/2017-economic-census-data-breaks-out-industry-growth-changes-by-state.html) also reported this exact figure as in our visualization below.
 :::
 
-```{r fig-revenue, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5}
+```{r fig-revenue, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5, fig.cap="Wholesale Trade topped all industries in 2017, generating $8.6 trillion USD in revenue."}
 rev_data <- revenue_2017 |> arrange(total_revenue)
 
 plot_ly(rev_data,
@@ -636,11 +639,12 @@ plot_ly(rev_data,
         orientation = "h",
         marker = list(
           color      = ~total_revenue,
-          colorscale = list(c(0, "#deebf7"), c(0.5, "#6baed6"), c(1, "#08519c")),
+          colorscale = list(c(0, "#2c5f8a"), c(0.5, "#1a3a5c"), c(1, "#0a1f35")),
           showscale  = FALSE,
-          opacity    = 0.88),
+          opacity    = 0.95),
         text          = ~rev_label,
         textposition  = "outside",
+        textfont      = list(color = "#1a1a1a", size = 11),
         hovertemplate = "<b>%{y}</b><br>2017 Revenue: <b>%{text}</b><extra></extra>"
 ) |>
   layout(
@@ -648,13 +652,17 @@ plot_ly(rev_data,
       title      = "Total Revenue (USD)",
       tickprefix = "$",
       tickformat = ".2s",
-      gridcolor  = "#f0f0f0"),
-    yaxis      = list(title = ""),
-    showlegend = FALSE,
+      gridcolor  = "#b0bec5",
+      tickfont   = list(color = "#1a1a1a"),
+      titlefont  = list(color = "#1a1a1a")),
+    yaxis = list(
+      title    = "",
+      tickfont = list(color = "#1a1a1a")),
+    showlegend    = FALSE,
     paper_bgcolor = "rgba(0,0,0,0)",
     plot_bgcolor  = "rgba(0,0,0,0)",
     margin = list(l = 10, r = 80, t = 10, b = 40),
-    font   = list(size = 12, family = "inherit")
+    font   = list(size = 12, family = "inherit", color = "#1a1a1a")
   ) |>
   config(displayModeBar = FALSE)
 ```
@@ -665,7 +673,7 @@ plot_ly(rev_data,
 
 Setting revenue aside, the wage difference between AI-adopting and non-adopting firms is consistent. Across nearly every sector, workers at AI firms earned more, not by a little, but by thousands of dollars per year. Hover over any industry to see both figures precisely.
 
-```{r fig-wage-gap, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5.5}
+```{r fig-wage-gap, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5.5, fig.cap = "Across nearly all industries in 2018, workers at AI-adopting firms earned higher average annual payroll per employee than their counterparts at non-adopting firms."}
 ordered_inds <- wage_wide |> arrange(wage_gap) |> pull(naics_label)
 wd <- wage_wide |>
   mutate(naics_label = factor(naics_label, levels = ordered_inds))
@@ -714,7 +722,7 @@ plot_ly() |>
 
 Expressing the gap as a percentage premium reveals a striking inversion: the industries where AI adoption was *lowest* in 2018 often show the *highest* wage premium. Food Services leads at ~86%, Healthcare follows at ~68%, both low-adoption sectors. In Finance & Insurance, a top adopter, the premium has already compressed to ~24%. Early movers still capture an outsized return.
 
-```{r fig-wage-premium, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5}
+```{r fig-wage-premium, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5, fig.cap = "AI wage premiums were highest in low-adoption industries such as Food Services (~86%) and Health Care (~68%), while early-adopting sectors like Finance & Insurance showed compressed premiums (~24%), suggesting diminishing returns as adoption spreads."}
 prem_data <- wage_wide |>
   filter(!is.na(premium_pct)) |>
   arrange(premium_pct) |>
@@ -756,7 +764,7 @@ plot_ly(prem_data,
 
 Combining the wage premium with the *share of industry workers actually at AI firms* paints a fuller picture. The upper-left quadrant (high premium, low workforce share) marks industries where AI is still a genuine differentiator. As adoption spreads rightward, the premium compresses. Bubble size reflects total employment.
 
-```{r fig-bubble, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5}
+```{r fig-bubble, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5, fig.cap = "Industries with low AI workforce share and high wage premiums (upper-left quadrant) represent sectors where AI remains a competitive differentiator. As adoption spreads, the premium compresses. Bubble size reflects total industry employment."}
 bubble_data <- wage_wide |>
   filter(!is.na(premium_pct), !is.na(ai_emp_share)) |>
   mutate(premium_sign = if_else(premium_pct >= 0, "Positive Premium", "Negative Premium"))
@@ -816,7 +824,7 @@ plotly::plot_ly(
 
 Where does AI adoption cluster geographically? California dominates, but this is largely a proxy for industrial composition. States with denser concentrations of Management, Information, and Professional Services firms show higher adoption rates. The state itself carries near-zero predictive power once firm characteristics are known.
 
-```{r fig-map, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
+```{r fig-map, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5, fig.cap = "California leads the U.S. in AI adoption rates, largely driven by its concentration of Management, Information, and Professional Services firms. Geographic variation in adoption reflects industrial composition more than state-level factors."}
 plot_ly(state_map_data,
         type         = "choropleth",
         locationmode = "USA-states",
@@ -905,7 +913,7 @@ plot_ly() |>
 
 Pivoting back to revenue, are states across the US truly seeing success? As it turns out, the AI hubs found previously are also associated with the highest amount of total revenue. California in particular generates nearly 4 Trillion dollars in revenue, with Texas following behind. As for most of the other states, their revenue falls well below 1 Trillion dollars.
 
-```{r fig-rev, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
+```{r fig-rev, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5, fig.cap = "California and Texas led all states in total revenue in 2017, while most states generated well under $1 trillion, highlighting the geographic concentration of economic activity."}
 # filtered to 2017 data (since that was the only year in which revenue was reported)
 state_revenue_2017 <- cs_panel_clean |>
   filter(year == 2017) |>
@@ -954,7 +962,7 @@ plot_ly() |>
 
 In terms of industry, the highest revenue generated type across each US state is by far Wholesale Trade, followed by Manufacturing in the Eastern US. Interestingly, New York displays their Finance and Insurance industry as the one with the most revenue, which makes sense given as Wall Street is located in Lower Manhattan.
 
-```{r fig-rev-ind, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5}
+```{r fig-rev-ind, echo=FALSE, message=FALSE, warning=FALSE, fig.height=4.5, fig.cap = "Wholesale Trade dominated as the top revenue-generating industry across most U.S. states in 2017, with Manufacturing leading in parts of the Eastern U.S. and Finance & Insurance topping New York."}
 # filtered to 2017 data (since that was the only year in which revenue was reported)
 ind_revenue_2017 <- cs_panel_clean |>
   filter(year == 2017) |>
