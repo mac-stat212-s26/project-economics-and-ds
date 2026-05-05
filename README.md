@@ -63,4 +63,4 @@ When scrolling through the file, the user is able to interact with the visualiza
 
 For a brief walkthrough of the project/website, please refer to the following video created by the collaborators!
 
-https://github.com/user-attachments/assets/a35506a7-9ce0-430c-ac1d-7327d6ecd943
+https://github.com/user-attachments/assets/f4b76db1-2f12-4f03-b433-f809132ca523
