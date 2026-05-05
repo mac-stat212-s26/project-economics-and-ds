@@ -53,6 +53,7 @@ If the files are being rendered for an `.html` view, the result should open on t
 
 <img width="1440" height="819" alt="opening-html-page" src="https://github.com/user-attachments/assets/8a9c9fba-a9f8-487f-bae8-27251c05312f" />
 
+
 When scrolling through the file, the user is able to interact with the visualizations by the hovering of their mouse cursor over specific objects. For example, hovering over a point on a scatterplot should look something like this:
 
 <img width="1440" height="818" alt="html-interactive" src="https://github.com/user-attachments/assets/dfea54da-5dbd-4927-a208-141503161f5f" />
@@ -62,4 +63,4 @@ When scrolling through the file, the user is able to interact with the visualiza
 
 For a brief walkthrough of the project/website, please refer to the following video created by the collaborators!
 
-
+https://github.com/user-attachments/assets/a35506a7-9ce0-430c-ac1d-7327d6ecd943
