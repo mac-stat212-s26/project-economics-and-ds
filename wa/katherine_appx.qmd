@@ -1,0 +1,112 @@
+---
+title: "Katherine M."
+---
+
+# Welcome!
+
+This is Katherine's appendix area for additional visualizations and non-visualization code. The research here may prove useful for audiences, but it is complementary to the main findings 
+located in the main index. 
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE} 
+# setting up packages and data 
+library(tidyverse)
+library(ggplot2)
+source(here::here("data", "data_cleaning.R"))
+
+k_tech_2018_clean <- tech_2018_clean |> 
+  filter(tech_type == "artificial intelligence") |> 
+  filter(naics_sector != "Total") |> 
+  filter(naics_sector != "Other") |> 
+  filter(!is.na(use_level)) |> 
+  filter(!is.na(n_firms)) |> 
+  group_by(state, naics_sector) |>
+  mutate(industry_total = sum(n_firms, na.rm = TRUE),
+         pct_of_industry = (n_firms / sum(n_firms, na.rm = TRUE)) * 100) |>
+  ungroup()
+```
+
+
+# Non-Graph: Which states lead for lowest, moderate, and highest AI adoption rates? 
+
+```{r}
+# Which states have the LOWEST AI adoption rates? Non-Graph. 
+k_tech_2018_clean |> 
+    # Grouping for total amounts. 
+  group_by(state) |>
+  mutate(overall_state_total = sum(n_firms, na.rm = TRUE)) |>
+  ungroup() |>
+  group_by(state, naics_sector) |>
+  mutate(
+    state_industry_total = sum(n_firms, na.rm = TRUE),
+    pct_of_industry = (n_firms / state_industry_total) * 100) |>
+  ungroup() |> 
+    # data cleaning 
+  filter(tech_type == "artificial intelligence") |> 
+  filter(naics_sector != "Total") |> 
+  filter(naics_sector != "Other") |> 
+  filter(!is.na(use_level)) |> 
+  filter(!is.na(n_firms)) |> 
+  filter(use_level == "Did not use") |> 
+    # creating groups for summaries 
+  group_by(state_label) |> 
+  summarize(
+    state_non_users = sum(n_firms, na.rm = TRUE),
+    state_total_all_firms = first(overall_state_total),
+    nonusers_to_allfirms = (state_non_users / state_total_all_firms)) |>
+  arrange(desc(nonusers_to_allfirms)) |> 
+  head(3)
+
+# Which states have the HIGHEST AI adoption rates? (only counting "High use")
+k_tech_2018_clean |> 
+    # Grouping for total amounts. 
+  group_by(state) |>
+  mutate(overall_state_total = sum(n_firms, na.rm = TRUE)) |>
+  ungroup() |>
+  group_by(state, naics_sector) |>
+  mutate(
+    state_industry_total = sum(n_firms, na.rm = TRUE),
+    pct_of_industry = (n_firms / state_industry_total) * 100) |>
+  ungroup() |> 
+    # data cleaning 
+  filter(tech_type == "artificial intelligence") |> 
+  filter(naics_sector != "Total") |> 
+  filter(naics_sector != "Other") |> 
+  filter(!is.na(use_level)) |> 
+  filter(!is.na(n_firms)) |> 
+  filter(use_level == "High use") |> 
+    # creating groups for summaries 
+  group_by(state_label) |> 
+  summarize(
+    state_high_users = sum(n_firms, na.rm = TRUE),
+    state_total_all_firms = first(overall_state_total),
+    highusers_to_allfirms = (state_high_users / state_total_all_firms)) |>
+  arrange(desc(highusers_to_allfirms)) |> 
+  head(3)
+
+# Which states have the most MODERATE AI adoption rates? (only counting "Low use" and "Moderate Use")
+k_tech_2018_clean |> 
+    # Grouping for total amounts. 
+  group_by(state) |>
+  mutate(overall_state_total = sum(n_firms, na.rm = TRUE)) |>
+  ungroup() |>
+  group_by(state, naics_sector) |>
+  mutate(
+    state_industry_total = sum(n_firms, na.rm = TRUE),
+    pct_of_industry = (n_firms / state_industry_total) * 100) |>
+  ungroup() |> 
+    # data cleaning 
+  filter(tech_type == "artificial intelligence") |> 
+  filter(naics_sector != "Total") |> 
+  filter(naics_sector != "Other") |> 
+  filter(!is.na(use_level)) |> 
+  filter(!is.na(n_firms)) |> 
+  filter(use_level %in% c("Moderate use", "Low use")) |> 
+    # creating groups for summaries 
+  group_by(state_label) |> 
+  summarize(
+    state_some_users = sum(n_firms, na.rm = TRUE),
+    state_total_all_firms = first(overall_state_total),
+    someusers_to_allfirms = (state_some_users / state_total_all_firms)) |>
+  arrange(desc(someusers_to_allfirms)) |> 
+  head(3)
+```

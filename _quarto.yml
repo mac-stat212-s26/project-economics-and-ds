@@ -21,11 +21,11 @@ number-depth: 2
 
 
 book:
-  title: "Project Title"
-  author: ["Member 1 first and last name initial", "Member 2 first and last name initial", "Member 3 first and last name initial"]
+  title: "AI Usage in the U.S. Companies"
+  author: ["David R.", "Katherine M.", "Isauro R."]
   date: today  # use today to update date published based on last time project was edited
   date-format: full
-  # favicon: path/to/favorite-logo.png
+  favicon: assets/ds212_logo.png
   reader-mode: true
   # site-url: https://site-url
   page-navigation: true
@@ -45,8 +45,8 @@ book:
       # footer text
 
   sidebar:
-    title: "Team Name"
-    logo: assets/sidebar-logo.png
+    title: "DS 212 Final Project."
+    logo: assets/ds212_logo.png
     logo-alt: "Random negative space illustration"
     collapse-level: 2
     style: "docked"
@@ -61,23 +61,23 @@ book:
 
     - part: "EDA"
       chapters:
-        - eda/eda-member1.qmd
-        - eda/eda-member2.qmd
-        - eda/eda-member3.qmd
+        - eda/eda_David.qmd
+        - eda/eda_Isauro.qmd
+        - eda/eda_Katherine.qmd
 
   appendices:
   - appx/proposal.qmd
   - appx/case-study.qmd
-  - wa/wa-member1.qmd
-  - wa/wa-member2.qmd
-  - wa/wa-member3.qmd
+  - wa/david_appx.qmd
+  - wa/katherine_appx.qmd
+  - wa/isauro_appx.qmd
 
 
 
 format:
   html:
     theme: # bootswatch themes--other options https://bootswatch.com/
-      light: flatly
+      light: morph
       dark: darkly
     search: true
     toc: true
@@ -111,7 +111,7 @@ format:
 execute:
   echo: true
   warning: false
-  error: false
+  error: true
   cache: false
 #   freeze: auto # remove when using GitHub action to execute code
 
