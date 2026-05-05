@@ -43,7 +43,7 @@ in order:
 3. Open the `project.Rproj` file using the `Show in Finder` button on GitHub desktop. Here is where all of the R files will be ran.
 4. Run the `data_Import.R` file first, then the `data_cleaning.R` file located in the data folder. 
 5. Run the appropriate file you would like to access. (ex. team member appendices, `index.qmd`). For an `.html` view, select the `=> Render` button in the RStudio.
-6. Alternatively, you can access our completed website at: https://mac-stat212-s26.github.io/project-economics-and-ds/
+6. Alternatively, you can access our [completed website](https://mac-stat212-s26.github.io/project-economics-and-ds/).
 7. Explore the results!
 
 <!-- Expected Output -->
@@ -51,11 +51,11 @@ in order:
 
 If the files are being rendered for an `.html` view, the result should open on the following page:
 
-![image](https://github.com/mac-stat212-s26/project-economics-and-ds/assets/opening-html-page.png)
+<img width="1440" height="819" alt="opening-html-page" src="https://github.com/user-attachments/assets/8a9c9fba-a9f8-487f-bae8-27251c05312f" />
 
 When scrolling through the file, the user is able to interact with the visualizations by the hovering of their mouse cursor over specific objects. For example, hovering over a point on a scatterplot should look something like this:
 
-![image](https://github.com/mac-stat212-s26/project-economics-and-ds/assets/html-interactive.png)
+<img width="1440" height="818" alt="html-interactive" src="https://github.com/user-attachments/assets/dfea54da-5dbd-4927-a208-141503161f5f" />
 
 <!-- Website Walkthrough -->
 ## Website Walkthrough
