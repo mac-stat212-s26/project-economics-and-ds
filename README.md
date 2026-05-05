@@ -1,71 +1,65 @@
----
-editor: 
-  markdown: 
-    wrap: 72
----
+ <h3 align="center">AI Business Wellbeing in 2018</h3>
+ 
+<!-- Welcome! -->
+## Welcome!
 
-# AI Business Wellbeing in 2018
-
-Code
-
-Each team should push the code of their project to GitHub. Each
-repository should include a README.md file that answers the following
-questions:
-
--   What is this GitHub repository all about?
--   What software (with the version numbers) need to be installed to run
-    the code contained in this GitHub repository, eg, R version 4.4.3+
-    and RStudio 2024.12.1 Build 563?
--   What steps need to be taken to run the code contained in this GitHub
-    repository? Think about the steps you did at the beginning of the
-    semester to prepare your machine for class.
--   What does the expected output look like? You can use one or more
-    screenshots of the main features.
-
-\
-
-# Welcome! 
-
-The purpose of this repository is to provide information on the state of AI in 
+The purpose of this repository is to provide information on the state of AI across 
 U.S. businesses in 2018. It was created through the joint efforts of David Rios, 
 Isauro Reyes, and Katherine Manuel from March - May 2026 for their STAT212:
-Intermediate Data Science course. 
+Intermediate Data Science course at Macalester College. 
 
-It includes multiple types of data analysis, including spatial visualizations
+Included are multiple types of data analysis, specifically spatial visualizations
 and multivariate visualizations. The majority of visualizations can be found
 in the primary appendix, with more supplementary information and data 
-located in the team members' exploratory data analyses (EDAs) and appendices. 
+located in the team members' exploratory data analyses (EDAs) and associated appendices. 
 
-A video of the team members going through their final presentation is also
-available should viewers be interested in hearing them go through their results. 
+<!-- Software Requirements -->
+## Software Requirements
 
-# Software Requirements
+To run all the code provided in this repository, users must have at a minimum:
+- RStudio: 2026.01.0 Build 392
+- R: 4.5.2.
+- GitHub Desktop: 3.5.4
 
-To run all the code provided in this repository, users must have at a minimum 
-RStudio Version 2026.01.0 Build 392 and R version 4.5.2. 
+<!-- Data Sources -->
+## Data Sources
 
-# Data Sources
+This repository pulls its data from a variety of sources, in-depth 
+information and citations can be found in the primary index file. The two main 
+datasets are taken from the [United States Census Annual Business Survey](https://www.census.gov/programs-surveys/abs.html), 
+and were retrieved via an API:
+- Technology Characteristics of Businesses (ABSTCB) for 2018 
+- Company Summary (ABSCS) for 2017-2021
+Reuters, King University, and Forbes are also used as references, but are typically reserved to supplement the findings. 
 
-This repository pulls its data from a variety of sources, and in-depth 
-information and citations can be found in the primary index. The two main 
-datasets are taken from the United States Census Annual Business Survey, 
-and were retrieved with an API: specifically, the Technology Characteristics
-of Businesses (ABSTCB) for 2018, and the Company Summary (ABSCS) for 2017-2021.
-Other additional sources include Reuters, King University, and Forbes, though
-these sources are not used as extensively. 
+<!-- Steps to Properly Run Our Code -->
+## Steps to Properly Run  Our Code
 
-## Steps to Properly Run Our Code
+To properly run the code, the following steps should be completed
+in order:
 
-Though all the code in this repository is already complete and ready for
-outside usage, to properly run our code the following steps should be completed
-in the following order:
+1. Install the latest versions of RStudio, R, and GitHub Desktop.
+2. Click the green `<> Code` dropdown in the GitHub project page, then select `Open with GitHub Desktop`. Clone the repository in GitHub Desktop.
+3. Open the `project.Rproj` file using the `Show in Finder` button on GitHub desktop. Here is where all of the R files will be ran.
+4. Run the `data_Import.R` file first, then the `data_cleaning.R` file located in the data folder. 
+5. Run the appropriate file you would like to access. (ex. team member appendices, `index.qmd`). For an `.html` view, select the `=> Render` button in the RStudio.
+6. Alternatively, you can access our completed website at: https://mac-stat212-s26.github.io/project-economics-and-ds/
+7. Explore the results!
 
-1. Run the `data_Import.R` file, located in the data folder. 
-2. Run the `data_cleaning.R` file, located in the data folder. 
-3. Run the appropriate file you would like to access. (ex. team member 
-appendices, main index),
-4. Alternatively, you can access our completed website at: https://mac-stat212-s26.github.io/project-economics-and-ds/
-
+<!-- Expected Output -->
 ## Expected Output
+
+If the files are being rendered for an `.html` view, the result should open on the following page:
+
+![image](https://github.com/mac-stat212-s26/project-economics-and-ds/assets/opening-html-page.png)
+
+When scrolling through the file, the user is able to interact with the visualizations by the hovering of their mouse cursor over specific objects. For example, hovering over a point on a scatterplot should look something like this:
+
+![image](https://github.com/mac-stat212-s26/project-economics-and-ds/assets/html-interactive.png)
+
+<!-- Website Walkthrough -->
+## Website Walkthrough
+
+For a brief walkthrough of the project/website, please refer to the following video created by the collaborators!
 
 
